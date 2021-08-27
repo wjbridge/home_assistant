@@ -1,0 +1,12 @@
+#-------------------------------------------
+#  Switches
+#  Log Severities: notset, debug, info, warn, warning, error, fatal, critical
+#-------------------------------------------
+switch:
+  - platform: command_line
+    switches:
+      oli_night_light:
+        command_on: "PYTHONWARNINGS='ignore' /usr/local/bin/python3 -m flux_led 192.168.1.115 --on"
+        command_off: "PYTHONWARNINGS='ignore' /usr/local/bin/python3 -m flux_led 192.168.1.115 --off"
+        command_state: "PYTHONWARNINGS='ignore' /usr/local/bin/python3 -m flux_led 192.168.1.115 -i"
+        value_template: '{{ value.split(" ")[3] == "ON"}}'

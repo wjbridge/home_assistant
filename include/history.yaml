@@ -1,0 +1,21 @@
+#-------------------------------------------
+#  History
+#  https://home-assistant.io/components/history/
+#-------------------------------------------
+history:
+  exclude:
+    domains:
+      - automation
+      - sensor
+      - media_player
+      - switch
+      - weather
+      - climate
+      - device_tracker
+      - binary_sensor
+
+####################################################
+#                                                  #
+#          END OF CONFIGURATION FILE               #
+#                                                  #
+####################################################

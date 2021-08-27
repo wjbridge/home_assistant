@@ -1,0 +1,16 @@
+###############################################################################
+# Theme Startup
+###############################################################################
+- id: apply_theme_startup
+  alias: 'Apply Theme Startup'
+  trace:
+      stored_traces: 1
+  trigger:
+    platform: homeassistant
+    event: start
+  action:
+    - service: frontend.set_theme
+      data:
+        name: 'tablet'
+    - service: timer.start
+      entity_id: timer.startup_missing_delay

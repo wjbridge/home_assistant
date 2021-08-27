@@ -1,0 +1,38 @@
+action: fire-dom-event
+browser_mod:
+  command: popup
+  title: Dyson Fan
+  style:
+    hui-grid-card$: |
+      #root {
+        grid-gap: 0 !important;
+      }
+  card:
+    type: grid
+    columns: 1
+    square: false
+    cards:
+      - type: entities
+        state_color: true
+        entities:
+          - entity: fan.pure_cool_link
+            secondary_info: last-changed
+          - entity: sensor.pure_cool_link_filter_life
+          - entity: sensor.pure_cool_link_humidity
+
+      - type: custom:mini-graph-card
+        entities:
+          - color: '#399b56'
+            entity: sensor.pure_cool_link_temperature
+        line_width: 8
+        hour24: true
+        group: true
+        align_icon: left
+        align_state: right
+        align_header: left
+        hours_to_show: 24
+        show:
+          {fill: fade, icon: false, name: false, state: false, 
+          name_adaptive_color: false, labels: hover, legend: false}
+        tap_action:
+          action: none

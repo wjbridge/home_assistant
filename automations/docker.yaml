@@ -1,0 +1,20 @@
+###############################################################################
+# Monitor Docker VPN
+###############################################################################
+- id: docker_vpn_health
+  alias: "Docker VPN Health"
+  trace:
+      stored_traces: 5
+  trigger:
+    - platform: state
+      entity_id: sensor.docker_vpn_health
+      to: 'unhealthy'
+      for:
+        minutes: 5
+
+  action:
+    - service: notify.groot_automation
+      data_template:
+        title: "<b>Warn</b>: Detected Docker VPN Unhealthy"
+        message: "Restarting Docker VPN Container..."
+    - service: script.docker_vpn_restart

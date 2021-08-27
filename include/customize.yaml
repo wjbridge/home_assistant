@@ -1,0 +1,100 @@
+####################################################
+#                                                  #
+#                    CUSTOMIZE                     #
+#                                                  #
+####################################################
+homeassistant:
+  customize:
+
+    #-------------------------------------------
+    #  template
+    #-------------------------------------------
+    switch.oli_night_light:
+      friendly_name: Oli Night Light
+
+    #-------------------------------------------
+    #  home_garage.yaml
+    #-------------------------------------------
+    binary_sensor.garage_contact:
+      friendly_name: Garage Door
+      icon: >
+        {% if is_state('binary_sensor.garage_contact', 'off') %}
+          mdi:garage-open
+        {% else %}
+          mdi:garage
+        {% endif %}
+    #-------------------------------------------
+    #  sidebar_information.yaml
+    #-------------------------------------------
+    sensor.docker_vpn_network_speed_down:
+      friendly_name: ' '
+
+    sensor.docker_vpn_network_speed_up:
+      friendly_name: ' '
+
+    sensor.docker_vpn_health:
+      friendly_name: 'Status'
+
+    sensor.docker_vpn_memory_percent:
+      friendly_name: VPN Memory
+      icon: mdi:memory
+
+    sensor.docker_vpn_1cpu:
+      friendly_name: VPN CPU
+      icon: mdi:chip
+
+    sensor.docker_homeassistant_1cpu:
+      friendly_name: Processor
+      icon: mdi:chip
+
+    sensor.docker_homeassistant_memory_percent: 
+      friendly_name: Memory
+      icon: mdi:memory
+
+    sensor.docker_version:
+      friendly_name: Docker Version
+      icon: custom:docker-watchtower
+
+    sensor.hass_version_installed:
+      friendly_name: Version Installed
+
+    sensor.hass_version_latest:
+      friendly_name: Version Latest
+
+    sensor.docker_homeassistant_health:
+      friendly_name: Status
+
+    sensor.home_assistant_log:
+      friendly_name: Log
+
+    sensor.home_assistant_v2_db:
+      friendly_name: Database
+      icon: mdi:database
+
+    #-------------------------------------------
+    #  climate_status.yaml
+    #-------------------------------------------
+    sensor.dark_sky_apparent_temperature_0h:
+      friendly_name: Outside Temp
+
+    sensor.dark_sky_daytime_high_temperature_0d:
+      friendly_name: High Temp
+
+    #-------------------------------------------
+    #  Batteries
+    #-------------------------------------------
+    sensor.front_door_battery:
+      friendly_name: Front Door
+
+    sensor.garage_battery:
+      friendly_name: Garage Battery
+
+    sensor.office_window_battery:
+      friendly_name: Office Window
+
+    sensor.dining_room_window_battery:
+      friendly_name: Dining Room Window
+
+    sensor.master_bedroom_window_battery:
+      friendly_name: Master Bedroom Window
+

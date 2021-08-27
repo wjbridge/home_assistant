@@ -1,0 +1,107 @@
+###############################################################################
+# Schedule Oli Bedroom
+###############################################################################
+- id: oli_bedroom_schedule
+  alias: "Oli Bedroom Schedule"
+  trace:
+      stored_traces: 10
+  trigger:
+    - platform: time
+      at:
+        - "06:00:00"
+        - "20:30:00"
+
+  action:
+    #-------------------------------------------
+    # Morning
+    #-------------------------------------------
+    - choose:
+        - conditions:
+            - condition: template
+              value_template: "{{ now().hour == 6 }}"
+          sequence:
+            # IF Morning: Fan Plug
+            - choose:
+                - conditions:
+                    - condition: state
+                      entity_id: switch.plug_1
+                      state: 'on'
+                  sequence:
+                    - service: switch.turn_off
+                      entity_id: switch.plug_1
+
+            # IF Morning: Fan Sounds Alexa
+            - choose:
+                - conditions:
+                    - condition: state
+                      entity_id: media_player.oli_echo
+                      attribute: available
+                      state: true
+                  sequence:
+                    - service: script.alexa_fan_sounds
+                      data:
+                        alexa_device: media_player.oli_echo
+                        bool_fan: false
+
+            # IF Morning: Oli Night Light
+            - choose:
+                - conditions:
+                    - condition: state
+                      entity_id: switch.oli_night_light
+                      state: 'on'
+                  sequence:
+                    - service: switch.turn_off
+                      entity_id: switch.oli_night_light
+
+    #-------------------------------------------
+    # Evening
+    #-------------------------------------------
+    - choose:
+        - conditions:
+            - condition: template
+              value_template: "{{ now().hour == 20 }}"
+          sequence:
+            # IF Evening: Fan Plug
+            - choose:
+                - conditions:
+                    - condition: state
+                      entity_id: switch.plug_1
+                      state: 'off'
+                    - condition: numeric_state
+                      entity_id: sensor.olivia_room_temperature
+                      above: 75.0
+                    - condition: state
+                      entity_id: input_boolean.oli_bedroom_fan_en
+                      state: 'on'
+                  sequence:
+                    - service: switch.turn_on
+                      entity_id: switch.plug_1
+
+            # IF Evening: Fan Sounds Alexa
+            - choose:
+                - conditions:
+                    - condition: state
+                      entity_id: media_player.oli_echo
+                      attribute: available
+                      state: true
+                    - condition: state
+                      entity_id: input_boolean.oli_bedroom_echo_en
+                      state: 'on'
+                  sequence:
+                    - service: script.alexa_fan_sounds
+                      data:
+                        alexa_device: media_player.oli_echo
+                        bool_fan: true
+
+            # IF Evening: Oli Night Light
+            - choose:
+                - conditions:
+                    - condition: state
+                      entity_id: switch.oli_night_light
+                      state: 'off'
+                    - condition: state
+                      entity_id: input_boolean.oli_night_light_en
+                      state: 'on'
+                  sequence:
+                    - service: switch.turn_on
+                      entity_id: switch.oli_night_light

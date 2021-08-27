@@ -1,0 +1,64 @@
+script:
+
+  ####################################################
+  #                                                  #
+  #                      SCRIPT                      #
+  #                                                  #
+  ####################################################
+
+  alexa_fan_sounds:
+    mode: queued
+    description: "Turn On/Off Alexa Fans Sounds"
+    fields:
+      alexa_device:
+        description: "The media device"
+      bool_fan:
+        description: "Turn Fan On/Off"
+    sequence:
+      - service: media_player.play_media
+        data_template:
+          entity_id: '{{ alexa_device }}'
+          media_content_id: >
+            {% if bool_fan == true %}
+              amzn1.ask.skill.a5d12421-cbba-465b-9a9d-3495e2dc5e37
+            {% else %}
+              'cancel'
+            {% endif %}
+          media_content_type: >
+            {% if bool_fan == true %}
+              skill
+            {% else %}
+              custom
+            {% endif %}
+      - delay:
+          seconds: 3
+
+  docker_vpn_restart:
+    mode: queued
+    sequence:
+      - service: browser_mod.toast
+        data:
+          duration: 16000
+          message: Restarting VPN container...
+      - service: monitor_docker.restart
+        data:
+          name: 'vpn'
+      - delay:
+          seconds: 5
+      - service: monitor_docker.restart
+        data:
+          name: 'nzbget'
+      - delay:
+          seconds: 2
+      - service: monitor_docker.restart
+        data:
+          name: 'nzbhydra'
+      - delay:
+          seconds: 2
+      - service: monitor_docker.restart
+        data:
+          name: 'youtubedl'
+      - service: browser_mod.toast
+        data:
+          duration: 16000
+          message: Restarting complete...

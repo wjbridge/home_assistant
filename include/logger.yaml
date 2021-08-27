@@ -1,0 +1,21 @@
+#-------------------------------------------
+#  Logger Component
+#  Log Severities: notset, debug, info, warn, warning, error, fatal, critical
+#-------------------------------------------
+logger:
+  default: info
+  logs:
+    homeassistant.components.websocket_api: fatal
+    homeassistant.components.bluetooth_tracker.device_tracker: fatal
+    homeassistant.components.command_line.switch: warning
+    homeassistant.components.mqtt: warning
+    homeassistant.components.sensor: warn
+    homeassistant.setup: info
+    homeassistant.core: info
+    homeassistant.loader: warning
+    pynetgear: warn
+
+    custom_components.alexa_media: info
+    alexapy.alexaapi: info
+
+    homeassistant.components.homekit_controller: info

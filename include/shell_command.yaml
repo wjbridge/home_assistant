@@ -1,0 +1,20 @@
+shell_command:
+
+  ####################################################
+  #                                                  #
+  #                  SHELL COMMAND                   #
+  #                                                  #
+  ####################################################
+
+  ha_purge_logs: truncate -s 0 /config/home-assistant.log
+
+  #-------------------------------------------
+  # Oli Night Light
+  #-------------------------------------------
+  set_brightness_oli_light: 'PYTHONWARNINGS="ignore" python3 -m flux_led 192.168.1.115 -c 35,0,255'
+
+  #-------------------------------------------
+  # Oli Tablet Filter
+  #-------------------------------------------
+  enable_oli_filter: "python3 /config/scripts/adguard_filter.py '/opt/adguardhome/work/oli_tablet_filter.txt' -e"
+  disable_oli_filter: "python3 /config/scripts/adguard_filter.py '/opt/adguardhome/work/oli_tablet_filter.txt'"

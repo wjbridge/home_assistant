@@ -1,0 +1,322 @@
+action: fire-dom-event
+browser_mod:
+  command: popup
+  title: House Climate
+  style:
+    .: |
+      :host .content {
+        width: calc(385px + 300px + 300px);
+        max-width: 90vw;
+      }
+    layout-card$grid-layout:
+      $: |
+        hui-vertical-stack-card {
+          border-radius: 0;
+          animation: hui-vertical-stack-card 1s forwards;
+        }
+        @keyframes hui-vertical-stack-card {
+          0%, 100% {
+              border-right: 1.5px solid rgba(0, 0, 0, 0.2);
+          }
+        }
+        /* phone */
+        @media screen and (max-width: 800px) {
+          hui-vertical-stack-card {
+              border-bottom: 1.5px solid rgba(0, 0, 0, 0.2);
+              padding-right: 0;
+              animation: none;
+          }
+        }
+      $hui-vertical-stack-card:
+        $hui-horizontal-stack-card$: |
+          #root {
+            justify-content: space-evenly !important;
+          }
+        $: |
+          hui-horizontal-stack-card {
+            padding: 0em 2em 2em 2em !important;
+          }
+  card:
+    type: custom:layout-card
+    layout_type: custom:grid-layout
+    layout:
+      grid-template-columns: 385px repeat(2, 300px)
+      grid-template-rows: 1fr
+      grid-template-areas: |
+        "thermostat graph graph"
+      mediaquery:
+        #phone
+        "(max-width: 800px)":
+          grid-template-columns: 1fr
+          grid-template-rows: repeat(2, 1fr)
+          grid-template-areas: |
+            "thermostat"
+            "graph"
+    cards:
+
+      #################################################
+      #                                               #
+      #                 THERMOSTAT                    #
+      #                                               #
+      #################################################
+
+      - type: vertical-stack
+        cards:
+          - type: thermostat
+            entity: climate.thermostat
+
+          - type: entities
+            state_color: true
+            entities:
+              - entity: sensor.dark_sky_temperature
+              - entity: sensor.dark_sky_daytime_high_temperature_0d
+
+          - type: conditional
+            conditions:
+              - entity: sensor.template_equipment_resume
+                state: 'cool'
+              - entity: sensor.cooling_hours_today
+                state_not: 'unknown'
+            card:
+              type: entities
+              state_color: true
+              entities:
+                - type: attribute
+                  entity: sensor.cooling_hours_today
+                  attribute: value
+                  secondary_info: last-changed
+                - type: attribute
+                  entity: sensor.cooling_hours_yesterday
+                  attribute: value
+                  secondary_info: last-changed
+                - type: attribute
+                  entity: sensor.cooling_hours_two_days_ago
+                  attribute: value
+                  secondary_info: last-changed
+
+          - type: conditional
+            conditions:
+              - entity: sensor.template_equipment_resume
+                state: 'heat'
+              - entity: sensor.heating_hours_today
+                state_not: 'unknown'
+            card:
+              type: entities
+              state_color: true
+              entities:
+                - type: attribute
+                  entity: sensor.heating_hours_today
+                  attribute: value
+                  secondary_info: last-changed
+                - type: attribute
+                  entity: sensor.heating_hours_yesterday
+                  attribute: value
+                  secondary_info: last-changed
+                - type: attribute
+                  entity: sensor.heating_hours_two_days_ago
+                  attribute: value
+                  secondary_info: last-changed
+
+          - type: entities
+            state_color: true
+            entities:
+              - entity: sensor.basement_radon_24hrs
+                name: Radon 24 Hrs
+                secondary_info: last-changed
+              - type: custom:mini-graph-card
+                entities:
+                  - color: '#9C3A7E'
+                    entity: sensor.basement_radon_24hrs
+                line_width: 8
+                hour24: true
+                group: true
+                align_icon: left
+                align_state: right
+                align_header: left
+                hours_to_show: 24
+                show:
+                  {fill: fade, icon: false, name: false, state: false, 
+                  name_adaptive_color: false, labels: hover, legend: false}
+                tap_action:
+                  action: none
+
+          - type: horizontal-stack
+            cards:
+
+              - type: custom:button-card
+                icon: mdi:snowflake
+                tap_action:
+                  action: call-service
+                  service: climate.set_hvac_mode
+                  service_data:
+                    entity_id: climate.thermostat
+                    hvac_mode: 'cool'
+                styles:
+                  icon:
+                    - width: 1.8em
+                  card:
+                    - width: 6em
+                template: icon_only
+
+              - type: custom:button-card
+                icon: mdi:radiator
+                tap_action:
+                  action: call-service
+                  service: climate.set_hvac_mode
+                  service_data:
+                    entity_id: climate.thermostat
+                    hvac_mode: 'heat'
+                styles:
+                  icon:
+                    - width: 1.8em
+                  card:
+                    - width: 6em
+                template: icon_only
+
+              - type: custom:button-card
+                icon: mdi:fan-off
+                tap_action:
+                  action: call-service
+                  service: climate.set_hvac_mode
+                  service_data:
+                    entity_id: climate.thermostat
+                    hvac_mode: 'heat'
+                styles:
+                  icon:
+                    - width: 1.8em
+                  card:
+                    - width: 6em
+                template: icon_only
+
+      #################################################
+      #                                               #
+      #                    GRAPHS                     #
+      #                                               #
+      #################################################
+
+      - type: entities
+        view_layout:
+          grid-area: graph
+        state_color: true
+        entities:
+          - entity: sensor.family_room_temperature
+            name: Family Room
+            secondary_info: last-changed
+          - type: custom:mini-graph-card
+            entities:
+              - color: '#399b56'
+                entity: sensor.family_room_temperature
+            line_width: 3
+            hour24: true
+            group: true
+            align_icon: left
+            align_state: right
+            align_header: left
+            hours_to_show: 24
+            show:
+              {fill: fade, icon: false, name: false, state: false, 
+              name_adaptive_color: false, labels: hover, legend: false}
+            tap_action:
+              action: none
+
+          - entity: sensor.master_bedroom_temperature
+            name: Master Bedroom
+            secondary_info: last-changed
+          - type: custom:mini-graph-card
+            entities:
+              - color: '#399b56'
+                entity: sensor.master_bedroom_temperature
+            line_width: 3
+            hour24: true
+            group: true
+            align_icon: left
+            align_state: right
+            align_header: left
+            hours_to_show: 24
+            show:
+              {fill: fade, icon: false, name: false, state: false, 
+              name_adaptive_color: false, labels: hover, legend: false}
+            tap_action:
+              action: none
+
+          - entity: sensor.olivia_room_temperature
+            name: Olivia Bedroom
+            secondary_info: last-changed
+          - type: custom:mini-graph-card
+            entities:
+              - color: '#399b56'
+                entity: sensor.olivia_room_temperature
+            line_width: 3
+            hour24: true
+            group: true
+            align_icon: left
+            align_state: right
+            align_header: left
+            hours_to_show: 24
+            show:
+              {fill: fade, icon: false, name: false, state: false, 
+              name_adaptive_color: false, labels: hover, legend: false}
+            tap_action:
+              action: none
+
+          - entity: sensor.garage_temperature
+            name: Garage
+            secondary_info: >
+              Humidity: {{ states('sensor.garage_humidity') }} %
+          - type: custom:mini-graph-card
+            entities:
+              - color: '#399b56'
+                entity: sensor.garage_temperature
+            line_width: 3
+            hour24: true
+            group: true
+            align_icon: left
+            align_state: right
+            align_header: left
+            hours_to_show: 24
+            show:
+              {fill: fade, icon: false, name: false, state: false, 
+              name_adaptive_color: false, labels: hover, legend: false}
+            tap_action:
+              action: none
+
+          - entity: sensor.basement_temperature
+            name: Basement
+            secondary_info: >
+              Humidity: {{ states('sensor.basement_humidity') }} %
+          - type: custom:mini-graph-card
+            entities:
+              - color: '#399b56'
+                entity: sensor.basement_temperature
+            line_width: 3
+            hour24: true
+            group: true
+            align_icon: left
+            align_state: right
+            align_header: left
+            hours_to_show: 24
+            show:
+              {fill: fade, icon: false, name: false, state: false, 
+              name_adaptive_color: false, labels: hover, legend: false}
+            tap_action:
+              action: none
+
+          - entity: sensor.basement_voc_level
+            name: Basement VOC
+            secondary_info: last-changed
+          - type: custom:mini-graph-card
+            entities:
+              - color: '#9C3A7E'
+                entity: sensor.basement_voc_level
+            line_width: 3
+            hour24: true
+            group: true
+            align_icon: left
+            align_state: right
+            align_header: left
+            hours_to_show: 24
+            show:
+              {fill: fade, icon: false, name: false, state: false, 
+              name_adaptive_color: false, labels: hover, legend: false}
+            tap_action:
+              action: none

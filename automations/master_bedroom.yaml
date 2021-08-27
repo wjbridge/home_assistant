@@ -1,0 +1,56 @@
+###############################################################################
+# Schedule Master Bedroom
+###############################################################################
+- id: master_bedroom_schedule
+  alias: "Master Bedroom Schedule"
+  trace:
+      stored_traces: 10
+  trigger:
+    - platform: time
+      at:
+        - "08:00:00"
+        - "20:15:00"
+
+  condition:
+    - condition: state
+      entity_id: media_player.spot
+      attribute: available
+      state: true
+
+  action:
+    - choose:
+        # IF morning
+        - conditions:
+            - condition: template
+              value_template: "{{ now().hour == 8 }}"
+          sequence:
+            - service: media_player.play_m0edia
+              entity_id: media_player.spot
+              data:
+                media_content_id: 'turn off fan'
+                media_content_type: custom
+            - delay:
+                seconds: 5
+            - service: script.alexa_fan_sounds
+              data:
+                alexa_device: media_player.spot
+                bool_fan: false
+              
+
+        # ELIF night
+        - conditions:
+            - condition: template
+              value_template: "{{ now().hour == 20 }}"
+          sequence:
+            - service: media_player.play_media
+              entity_id: media_player.spot
+              data:
+                media_content_id: 'set fan to 3'
+                media_content_type: custom
+            - delay:
+                seconds: 5
+
+            - service: script.alexa_fan_sounds
+              data:
+                alexa_device: media_player.spot
+                bool_fan: true

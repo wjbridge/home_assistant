@@ -1,0 +1,16 @@
+###############################################################################
+# Update Home Assistant Release Notes
+###############################################################################
+- id: update_hass_release_notes
+  alias: 'Update Hass Release Notes'
+  initial_state: true
+  trigger:
+    - platform: state
+      entity_id:
+        - sensor.hass_version_latest
+        - sensor.hass_version_latest_beta
+  action:
+    - service: homeassistant.update_entity
+      entity_id:
+        - sensor.hass_release_notes
+        - sensor.hass_release_notes_rc

@@ -1,0 +1,46 @@
+###############################################################################
+# Schedule Front Door
+###############################################################################
+- id: front_door_schedule
+  alias: "Front Door Schedule"
+  trace:
+      stored_traces: 5
+  trigger:
+    - platform: sun
+      event: sunset
+      offset: "01:00:00"
+
+    - platform: sun
+      event: sunrise
+      offset: "-01:00:00"
+
+  condition:
+    - condition: not
+      conditions:
+        - condition: state
+          entity_id: switch.outdoor_front_light
+          state: 'unavailable'
+
+  action:
+    - choose:
+        # IF morning
+        - conditions:
+            - condition: state
+              entity_id: switch.outdoor_front_light
+              state: 'on'
+            - condition: template
+              value_template: "{{ trigger.event == 'sunrise' }}"
+          sequence:
+            - service: switch.turn_off
+              entity_id: switch.outdoor_front_light
+
+        # ELIF night
+        - conditions:
+            - condition: template
+              value_template: "{{ trigger.event == 'sunset' }}"
+            - condition: state
+              entity_id: switch.outdoor_front_light
+              state: 'off'
+          sequence:
+            - service: switch.turn_on
+              entity_id: switch.outdoor_front_light

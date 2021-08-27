@@ -1,0 +1,429 @@
+button_card_templates: !include button_card_templates.yaml
+
+kiosk_mode:
+  hide_header: false
+  hide_sidebar: false
+  hide_overflow: false
+
+views:
+  - type: custom:grid-layout
+    path: 0
+    layout:
+      #default
+      grid-gap: var(--custom-layout-card-padding)
+      grid-template-columns: repeat(5, 1fr) 0
+      grid-template-rows: 0 repeat(2, fit-content(100%)) 0fr
+      grid-template-areas: |
+        "sidebar  .           .        .        ."
+        "sidebar  media       options  bedroom  ."
+        "sidebar  camera      outside  home     ."
+        "sidebar  footer      footer   footer   ."
+      mediaquery:
+        #phone
+        "(max-width: 800px)":
+          grid-gap: calc(var(--custom-layout-card-padding) * 1.5)
+          grid-template-columns: 0 repeat(2, 1fr) 0
+          grid-template-rows: 0 repeat(5, fit-content(100%)) 0fr
+          grid-template-areas: |
+            ".  .           .            ."
+            ".  sidebar     sidebar      ."
+            ".  home        bedroom      ."
+            ".  options     outside      ."
+            ".  camera      media        ."
+            ".  footer      footer       ."
+            ".  .           .            ."
+        #portrait
+        "(max-width: 1200px)":
+          grid-gap: var(--custom-layout-card-padding)
+          grid-template-columns: repeat(3, 1fr) 0
+          grid-template-rows: 0 repeat(3, fit-content(100%)) 0fr
+          grid-template-areas: |
+            "sidebar  .           .           ."
+            "sidebar  home        bedroom     ."
+            "sidebar  options     outside     ."
+            "sidebar  camera      media       ."
+            "sidebar  footer      footer      ."
+            "sidebar  .           .           ."
+    cards:
+
+      #################################################
+      #                                               #
+      #                    SIDEBAR                    #
+      #                                               #
+      #################################################
+
+      - type: markdown
+        view_layout:
+          grid-area: sidebar
+        content: |
+          {% set attributes = states.sensor.template_sidebar.attributes | default %}
+          {% for template in attributes %}
+          {{ state_attr('sensor.template_sidebar', template) }}
+          {% endfor %}
+        style: #force style - duplicate of themes markdown
+          {.: "ha-card{background-color:#00000010;border-radius:0;min-height:100vh;animation:ha-card 1s forwards}@keyframes ha-card{0%,100%{border-right:.1vw solid rgba(58,69,73,.2)}}@media screen and (max-width:800px){ha-card{background:0 0;min-height:100%;animation:none}}\n", ha-markdown: {.: "ha-markdown{padding:var(--custom-layout-card-padding) 2vw 0 var(--custom-layout-card-padding)!important;pointer-events:none}@media screen and (max-width:800px){ha-markdown{padding:0!important}}\n", $: "p>span{font-family:SF Text;font-size:var(--markdown-sidebar-clock-font-size);font-weight:200;line-height:var(--markdown-sidebar-clock-line-height);letter-spacing:-.05vw;margin-left:-.3vw;color:var(--ha-card-header-color)}p>span>span{position:relative;top:-.09em}p{font-family:SF Display;font-size:var(--markdown-sidebar-font-size);line-height:var(--markdown-sidebar-line-height);font-weight:300;letter-spacing:.06vw;color:#6a7377}p>b{color:var(--ha-card-header-color)}@media screen and (max-width:1200px){p>span{font-size:calc(var(--markdown-sidebar-clock-font-size) * 1.4);line-height:calc(var(--markdown-sidebar-clock-line-height) * 1.4)}p{font-size:calc(var(--markdown-sidebar-font-size) * 1.4);line-height:calc(var(--markdown-sidebar-line-height) * 1.4)}}@media screen and (max-width:800px){p>span{font-size:calc(var(--markdown-sidebar-clock-font-size) * 2.6);line-height:calc(var(--markdown-sidebar-clock-line-height) * 2.6)}p{font-size:calc(var(--markdown-sidebar-font-size) * 2.6);line-height:calc(var(--markdown-sidebar-line-height) * 2.6);letter-spacing:.16vw}}\n"}}
+
+      - type: grid
+        view_layout:
+          grid-area: sidebar
+        cards:
+          - type: conditional
+            conditions:
+              - entity: sensor.template_unavailable_entities
+                state_not: '0'
+              - entity: timer.startup_missing_delay
+                state: 'idle'
+            card:
+              type: button
+              icon: mdi:alert-rhombus
+              tap_action:
+                !include popup/sidebar_missing_entities.yaml
+
+          - type: button
+            icon: mdi:information-outline
+            tap_action:
+              !include popup/sidebar_information.yaml
+
+          - type: button
+            icon: mdi:arrow-up-bold-circle-outline
+            tap_action:
+              !include popup/sidebar_update.yaml
+            hold_action:
+              action: call-service
+              service: homeassistant.update_entity
+              service_data:
+                entity_id: sensor.hacs
+
+      #################################################
+      #                                               #
+      #                    MEDIA                      #
+      #                                               #
+      #################################################
+
+      - type: grid
+        title: Media
+        view_layout:
+          grid-area: media
+        columns: 1
+        cards:
+
+          - type: custom:swipe-card
+            start_card: 1
+            parameters:
+              roundLengths: true
+              effect: coverflow
+              speed: 650
+              spaceBetween: 20
+              freeModeMomentum: true
+              threshold: 7
+              autoplay:
+                delay: 20000
+              coverflowEffect:
+                rotate: 80
+                depth: 300
+                slideShadows: true
+            cards:
+
+              - type: vertical-stack
+                cards:
+                  - type: custom:button-card
+                    entity: sensor.plex_recently_added
+                    tap_action:
+                      action: none
+                    template:
+                      - conditional_media
+                      - recently_downloaded
+                      - icon_plex
+                    variables:
+                      download_index: >
+                        [[[
+                          return parseInt('1');
+                        ]]]
+              - type: vertical-stack
+                cards:
+                  - type: custom:button-card
+                    entity: sensor.plex_recently_added
+                    tap_action:
+                      action: none
+                    template:
+                      - conditional_media
+                      - recently_downloaded
+                      - icon_plex
+                    variables:
+                      download_index: >
+                        [[[
+                          return parseInt('2');
+                        ]]]
+              - type: vertical-stack
+                cards:
+                  - type: custom:button-card
+                    entity: sensor.plex_recently_added
+                    tap_action:
+                      action: none
+                    template:
+                      - conditional_media
+                      - recently_downloaded
+                      - icon_plex
+                    variables:
+                      download_index: >
+                        [[[
+                          return parseInt('3');
+                        ]]]
+
+      #################################################
+      #                                               #
+      #                    OPTIONS                    #
+      #                                               #
+      #################################################
+
+      - type: grid
+        title: Options
+        view_layout:
+          grid-area: options
+        columns: 2
+        cards:
+
+          - type: custom:button-card
+            entity: input_boolean.oli_bedroom_echo_en
+            name: Oli Echo
+            template:
+              - base
+              - icon_toggle
+
+          - type: custom:button-card
+            entity: input_boolean.weston_bedroom_echo_en
+            name: Wes Echo
+            template:
+              - base
+              - icon_toggle
+
+          - type: custom:button-card
+            entity: input_boolean.oli_bedroom_fan_en
+            name: Oli Fan
+            template:
+              - base
+              - icon_toggle
+          
+          - type: custom:button-card
+            entity: input_boolean.oli_night_light_en
+            name: Oli Light
+            template:
+              - base
+              - icon_toggle
+
+      #################################################
+      #                                               #
+      #                   BEDROOM                     #
+      #                                               #
+      #################################################
+
+      - type: grid
+        title: Bedrooms
+        view_layout:
+          grid-area: bedroom
+        columns: 2
+        cards:
+
+          - type: custom:button-card
+            entity: switch.oli_night_light
+            name: Oli Bed
+            template:
+              - base
+              - icon_hue
+              - loader
+
+          - type: custom:button-card
+            entity: fan.oli_fan
+            name: Oli Fan
+            template:
+              - base
+              - icon_fan2
+              - loader
+
+          - type: custom:button-card
+            entity: fan.pure_cool_link
+            name: Wes Fan
+            hold_action:
+              !include popup/dyson_fan.yaml
+            template:
+              - base
+              - icon_fan2
+              - circle
+              - loader
+            variables:
+              circle_input: >
+                [[[
+                  return entity === undefined ?
+                    null :
+                    parseInt(entity.attributes.percentage);
+                ]]]
+
+      #################################################
+      #                                               #
+      #                   CAMERAS                     #
+      #                                               #
+      #################################################
+
+      - type: grid
+        title: Cameras
+        view_layout:
+          grid-area: camera
+        columns: 1
+        cards:
+
+          - type: custom:swipe-card
+            start_card: 1
+            parameters:
+              roundLengths: true
+              effect: coverflow
+              speed: 650
+              spaceBetween: 20
+              threshold: 7
+              coverflowEffect:
+                rotate: 80
+                depth: 300
+            cards:
+
+              - type: vertical-stack
+                cards:
+                  - type: picture-entity
+                    entity: camera.master_bedroom
+                    camera_view: live
+
+                  - type: picture-entity
+                    entity: camera.oli_bedroom
+                    camera_view: live
+
+              - type: vertical-stack
+                cards:
+
+                  - type: picture-entity
+                    entity: camera.garage
+                    camera_view: live
+
+                  - type: picture-entity
+                    entity: camera.backyard
+                    camera_view: live
+
+              - type: grid
+                columns: 1
+                cards:
+                  - type: picture-entity
+                    entity: camera.doorbell_last_event
+                    camera_view: live
+
+      #################################################
+      #                                               #
+      #                  Outside                      #
+      #                                               #
+      #################################################
+
+      - type: grid
+        title: Outside
+        view_layout:
+          grid-area: outside
+        columns: 2
+        cards:
+
+          - type: custom:button-card
+            entity: switch.outdoor_front_light
+            name: Front
+            template:
+              - base
+              - icon_hue
+              - loader
+
+          - type: custom:button-card
+            entity: lock.front_door
+            name: Door
+            template:
+              - base
+              - lock
+              - icon_door
+              - loader
+
+          - type: custom:button-card
+            entity: switch.outdoor_garage_lights
+            name: Garage
+            template:
+              - base
+              - icon_hue
+              - loader
+
+          - type: custom:button-card
+            entity: binary_sensor.garage_contact
+            name: Garage
+            tap_action:
+              !include popup/home_garage.yaml
+            template:
+              - base
+              - icon_shutter
+
+      #################################################
+      #                                               #
+      #                    HOME                       #
+      #                                               #
+      #################################################
+
+      - type: grid
+        title: Home
+        view_layout:
+          grid-area: home
+        columns: 2
+        cards:
+
+          - type: custom:button-card
+            entity: person.weston
+            name: Weston
+            tap_action:
+              !include popup/home_weston.yaml
+            hold_action:
+              action: none
+            template: person
+
+          - type: custom:button-card
+            entity: person.ana
+            name: Ana
+            tap_action:
+              !include popup/home_ana.yaml
+            hold_action:
+              action: none
+            template: person
+
+          - type: custom:button-card
+            entity: climate.thermostat
+            name: Climate
+            tap_action:
+              !include popup/climate_status.yaml
+            template:
+              - base
+              - icon_ac
+              - climate
+            variables:
+              circle_input: >
+                [[[
+                  return entity === undefined ?
+                    null :
+                    entity.attributes.temperature;
+                ]]]
+
+          - type: custom:button-card
+            entity: input_boolean.fresh_air_mode_en
+            name: Air Mode
+            template:
+              - base
+              - icon_toggle
+
+      #################################################
+      #                                               #
+      #                    FOOTER                     #
+      #                                               #
+      #################################################
+
+      - type: markdown
+        view_layout:
+          grid-area: footer
+        content: >
+          {{ state_attr('sensor.template_apcupsd', 'template') }}
+        style: #force style - duplicate of themes markdown
+          {.: "ha-card,ha-markdown{background:0 0;padding:0!important;pointer-events:none;margin-top:-1vw}ha-markdown{overflow:hidden}\n", ha-markdown$: "ha-markdown-element{opacity:.6;font-size:1.26vw;font-weight:400;--mdc-icon-size:1.2vw;font-family:SF Display;letter-spacing:.05vw;line-height:0;white-space:nowrap}ha-icon{vertical-align:3%;opacity:.4}@media screen and (max-width:800px){ha-markdown-element{display:none}}\n"}

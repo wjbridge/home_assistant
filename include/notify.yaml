@@ -1,0 +1,8 @@
+#-------------------------------------------
+#  Telegram Groot Automation
+#  https://www.home-assistant.io/components/telegram/
+#-------------------------------------------
+notify:
+  - name: groot_automation
+    platform: telegram
+    chat_id: !secret telegram_chat_id

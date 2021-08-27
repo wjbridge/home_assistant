@@ -1,0 +1,90 @@
+###############################################################################
+# Schedule Weston Bedroom
+###############################################################################
+- id: weston_bedroom_schedule
+  alias: "Weston Bedroom Schedule"
+  trace:
+    stored_traces: 10
+  trigger:
+    - platform: time
+      at:
+        - "08:00:00"
+        - "22:30:00"
+
+  action:
+    #-------------------------------------------
+    # Morning
+    #-------------------------------------------
+    - choose:
+        - conditions:
+            - condition: template
+              value_template: "{{ now().hour == 8 }}"
+          sequence:
+            # IF Morning: Dyson Fan
+            - choose:
+                - conditions:
+                    - condition: state
+                      entity_id: fan.pure_cool_link
+                      state: 'on'
+                  sequence:
+                    - service: fan.turn_off
+                      entity_id: fan.pure_cool_link
+                    - delay:
+                        seconds: 2
+
+            # IF Morning: Fan Sounds Alexa
+            - choose:
+                - conditions:
+                    - condition: state
+                      entity_id: media_player.weston_echo
+                      attribute: available
+                      state: true
+                  sequence:
+                    - service: script.alexa_fan_sounds
+                      data:
+                        alexa_device: media_player.weston_echo
+                        bool_fan: false
+
+    #-------------------------------------------
+    # Evening
+    #-------------------------------------------
+    - choose:
+        - conditions:
+            - condition: template
+              value_template: "{{ now().hour == 22 }}"
+          sequence:
+            # IF Evening: Dyson Fan
+            - choose:
+                - conditions:
+                    - condition: state
+                      entity_id: fan.pure_cool_link
+                      state: 'off'
+                    - condition: state
+                      entity_id: input_boolean.weston_bedroom_fan_en
+                      state: 'on'
+                  sequence:
+                    - service: fan.turn_on
+                      entity_id: fan.pure_cool_link
+                    - delay:
+                        seconds: 2
+                    - service: fan.oscillate
+                      target:
+                        entity_id: fan.pure_cool_link
+                      data:
+                        oscillating: true
+
+            # IF Evening: Fan Sounds Alexa
+            - choose:
+                - conditions:
+                    - condition: state
+                      entity_id: media_player.weston_echo
+                      attribute: available
+                      state: true
+                    - condition: state
+                      entity_id: input_boolean.weston_bedroom_echo_en
+                      state: 'on'
+                  sequence:
+                    - service: script.alexa_fan_sounds
+                      data:
+                        alexa_device: media_player.weston_echo
+                        bool_fan: true

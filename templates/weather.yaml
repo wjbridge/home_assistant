@@ -1,0 +1,456 @@
+- sensor:
+    - unique_id: oakland_active_alerts
+      unit_of_measurement: Alerts
+      state: >-
+          {% set alerts_total = namespace(count=0) %}
+          {% if (state_attr('sensor.oakland', 'alerts')) %}
+            {% for alert in state_attr('sensor.oakland', 'alerts') %}
+              {% if as_timestamp(alert['endsExpires']) - as_timestamp(now()) > 0 %}
+                {% set alerts_total.count = alerts_total.count + 1 %} 
+              {% endif %}
+            {% endfor %}
+          {% endif %}
+          {{ alerts_total.count }}
+      attributes:
+        warning_count: >-
+          {% set warnings = namespace(count=0) %}
+          {% if (state_attr('sensor.oakland', 'alerts')) %}
+            {% for alert in state_attr('sensor.oakland', 'alerts') %}
+              {% if 'warning' in alert.event.lower() and (as_timestamp(alert['endsExpires']) - as_timestamp(now()) > 0) %}
+                {% set warnings.count = warnings.count + 1 %} 
+              {% endif %}
+            {% endfor %}
+          {% endif %}
+          {{ warnings.count }}
+        watch_count: >-
+          {% set watches = namespace(count=0) %}
+          {% if (state_attr('sensor.oakland', 'alerts')) %}
+            {% for alert in state_attr('sensor.oakland', 'alerts') %}
+              {% if 'watch' in alert.event.lower() and (as_timestamp(alert['endsExpires']) - as_timestamp(now()) > 0) %}
+                {% set watches.count = watches.count + 1 %} 
+              {% endif %}
+            {% endfor %}
+          {% endif %}
+          {{ watches.count }}
+        advisory_count: >-
+          {% set advisories = namespace(count=0) %}
+          {% if (state_attr('sensor.oakland', 'alerts')) %}
+            {% for alert in state_attr('sensor.oakland', 'alerts') %}
+              {% if 'advisory' in alert.event.lower() and (as_timestamp(alert['endsExpires']) - as_timestamp(now()) > 0) %}
+                {% set advisories.count = advisories.count + 1 %} 
+              {% endif %}
+            {% endfor %}
+          {% endif %}
+          {{ advisories.count }}
+        statement_count: >-
+          {% set statements = namespace(count=0) %}
+          {% if (state_attr('sensor.oakland', 'alerts')) %}
+            {% for alert in state_attr('sensor.oakland', 'alerts') %}
+              {% if 'statement' in alert.event.lower() and (as_timestamp(alert['endsExpires']) - as_timestamp(now()) > 0) %}
+                {% set statements.count = statements.count + 1 %} 
+              {% endif %}
+            {% endfor %}
+          {% endif %}
+          {{ statements.count }}
+        outlook_count: >-
+          {% set outlooks = namespace(count=0) %}
+          {% if (state_attr('sensor.oakland', 'alerts')) %}
+            {% for alert in state_attr('sensor.oakland', 'alerts') %}
+              {% if 'outlook' in alert.event.lower() and (as_timestamp(alert['endsExpires']) - as_timestamp(now()) > 0) %}
+                {% set outlooks.count = outlooks.count + 1 %}
+              {% endif %}
+            {% endfor %}
+          {% endif %}
+          {{ outlooks.count }}
+        alert_count: >-
+          {% set alerts = namespace(count=0) %}
+          {% if (state_attr('sensor.oakland', 'alerts')) %}
+            {% for alert in state_attr('sensor.oakland', 'alerts') %}
+              {% if 'alert' in alert.event.lower() and (as_timestamp(alert['endsExpires']) - as_timestamp(now()) > 0) %}
+                {% set alerts.count = alerts.count + 1 %} 
+              {% endif %}
+            {% endfor %}
+          {% endif %}
+          {{ alerts.count }}
+        message_count: >-
+          {% set messages = namespace(count=0) %}
+          {% if (state_attr('sensor.oakland', 'alerts')) %}
+            {% for alert in state_attr('sensor.oakland', 'alerts') %}
+              {% if 'message' in alert.event.lower() and (as_timestamp(alert['endsExpires']) - as_timestamp(now()) > 0) %}
+                {% set messages.count = messages.count + 1 %} 
+              {% endif %}
+            {% endfor %}
+          {% endif %}
+          {{ messages.count }}
+        important_count: >-
+          {% set important = namespace(count=0) %}
+          {% if (state_attr('sensor.oakland', 'alerts')) %}
+            {% for alert in state_attr('sensor.oakland', 'alerts') %}
+              {% if ('emergency' in alert.event.lower() or 'danger' in alert.event.lower() or 'immediate' in alert.event.lower()) and (as_timestamp(alert['endsExpires']) - as_timestamp(now()) > 0) %}
+                {% set important.count = important.count + 1 %} 
+              {% endif %}
+            {% endfor %}
+          {% endif %}
+          {{ important.count }}
+        test_count: >-
+          {% set test = namespace(count=0) %}
+          {% if (state_attr('sensor.oakland', 'alerts')) %}
+            {% for alert in state_attr('sensor.oakland', 'alerts') %}
+              {% if 'Test' in alert.event and (as_timestamp(alert['endsExpires']) - as_timestamp(now()) > 0) %}
+                {% set test.count = test.count + 1 %} 
+              {% endif %}
+            {% endfor %}
+          {% endif %}
+          {{ test.count }}
+
+- sensor:
+    - unique_id: oakland_alert_1
+      state: >-
+        {% if (states('sensor.oakland') != 'unavailable') %}
+          {% if (state_attr('sensor.oakland', 'alerts')[0] != null) or ((states('sensor.oakland') == 'unavailable') and (as_timestamp(state_attr('sensor.oakland', 'alerts')[0].endsExpires) - as_timestamp(now()) > 0)) %}
+            on
+          {% else %}
+            off
+          {% endif %}
+        {% endif %}
+      attributes:
+        alert_id: >-
+          {% if states('sensor.oakland')|int > 0 or (states('sensor.oakland') == "unavailable" and states('sensor.template_oakland_alert_1') == "on") %}
+            {{ states.sensor.oakland.attributes.alerts[0].id }}
+          {% else %}
+            None
+          {% endif %}
+        alert_event: >-
+          {% if states('sensor.oakland')|int > 0 or (states('sensor.oakland') == "unavailable" and states('sensor.template_oakland_alert_1') == "on") %}
+            {{ states.sensor.oakland.attributes.alerts[0].event }}
+          {% else %}
+            None
+          {% endif %}
+        alert_area: >-
+          {% if states('sensor.oakland')|int > 0 or (states('sensor.oakland') == "unavailable" and states('sensor.template_oakland_alert_1') == "on") %}
+            {{ states.sensor.oakland.attributes.alerts[0].area }}
+          {% else %}
+            None
+          {% endif %}
+        alert_NWSheadline: >-
+          {% if states('sensor.oakland')|int > 0 or (states('sensor.oakland') == "unavailable" and states('sensor.template_oakland_alert_1') == "on") %}
+            {{ states.sensor.oakland.attributes.alerts[0].NWSheadline | regex_replace('\[\'','') | regex_replace('\'\]','') }}
+          {% else %}
+            None
+          {% endif %}
+        alert_description: >-
+          {% if states('sensor.oakland')|int > 0 or (states('sensor.oakland') == "unavailable" and states('sensor.template_oakland_alert_1') == "on") %}
+            {{ states.sensor.oakland.attributes.alerts[0].description  }}
+          {% else %}
+            None
+          {% endif %}
+        alert_messageType: >-
+          {% if states('sensor.oakland')|int > 0 or (states('sensor.oakland') == "unavailable" and states('sensor.template_oakland_alert_1') == "on") %}
+            {{ states.sensor.oakland.attributes.alerts[0].messageType }}
+          {% else %}
+            None
+          {% endif %}
+        alert_status: >-
+          {% if states('sensor.oakland')|int > 0 or (states('sensor.oakland') == "unavailable" and states('sensor.template_oakland_alert_1') == "on") %}
+            {{ states.sensor.oakland.attributes.alerts[0].status }}
+          {% else %}
+            None
+          {% endif %}
+        alert_category: >-
+          {% if states('sensor.oakland')|int > 0 or (states('sensor.oakland') == "unavailable" and states('sensor.template_oakland_alert_1') == "on") %}
+            {{ states.sensor.oakland.attributes.alerts[0].category }}
+          {% else %}
+            None
+          {% endif %}
+        alert_urgency: >-
+          {% if states('sensor.oakland')|int > 0 or (states('sensor.oakland') == "unavailable" and states('sensor.template_oakland_alert_1') == "on") %}
+            {{ states.sensor.oakland.attributes.alerts[0].urgency }}
+          {% else %}
+            None
+          {% endif %}
+        alert_severity: >-
+          {% if states('sensor.oakland')|int > 0 or (states('sensor.oakland') == "unavailable" and states('sensor.template_oakland_alert_1') == "on") %}
+            {{ states.sensor.oakland.attributes.alerts[0].severity }}
+          {% else %}
+            None
+          {% endif %}
+        alert_certainty: >-
+          {% if states('sensor.oakland')|int > 0 or (states('sensor.oakland') == "unavailable" and states('sensor.template_oakland_alert_1') == "on") %}
+            {{ states.sensor.oakland.attributes.alerts[0].certainty }}
+          {% else %}
+            None
+          {% endif %}
+        alert_response: >-
+          {% if states('sensor.oakland')|int > 0 or (states('sensor.oakland') == "unavailable" and states('sensor.template_oakland_alert_1') == "on") %}
+            {{ states.sensor.oakland.attributes.alerts[0].response }}
+          {% else %}
+            None
+          {% endif %}
+        alert_instruction: >-
+          {% if states('sensor.oakland')|int > 0 or (states('sensor.oakland') == "unavailable" and states('sensor.template_oakland_alert_1') == "on") %}
+            {{ states.sensor.oakland.attributes.alerts[0].instruction }}
+          {% else %}
+            None
+          {% endif %}
+        alert_sent: >-
+          {% if states('sensor.oakland')|int > 0 or (states('sensor.oakland') == "unavailable" and states('sensor.template_oakland_alert_1') == "on") %}
+            {{ states.sensor.oakland.attributes.alerts[0].sent }}
+          {% else %}
+            None
+          {% endif %}
+        alert_effective: >-
+          {% if states('sensor.oakland')|int > 0 or (states('sensor.oakland') == "unavailable" and states('sensor.template_oakland_alert_1') == "on") %}
+            {{ states.sensor.oakland.attributes.alerts[0].effective }}
+          {% else %}
+            None
+          {% endif %}
+        alert_onset: >-
+          {% if states('sensor.oakland')|int > 0 or (states('sensor.oakland') == "unavailable" and states('sensor.template_oakland_alert_1') == "on") %}
+            {{ states.sensor.oakland.attributes.alerts[0].onset }}
+          {% else %}
+            None
+          {% endif %}
+        alert_expires: >-
+          {% if states('sensor.oakland')|int > 0 or (states('sensor.oakland') == "unavailable" and states('sensor.template_oakland_alert_1') == "on") %}
+            {{ states.sensor.oakland.attributes.alerts[0].expires }}
+          {% else %}
+            None
+          {% endif %}
+        alert_title: >-
+          {% if states('sensor.oakland')|int > 0 or (states('sensor.oakland') == "unavailable" and states('sensor.template_oakland_alert_1') == "on") %}
+            {{ states.sensor.oakland.attributes.alerts[0].title }}
+          {% else %}
+            None
+          {% endif %}
+        alert_zoneid: >-
+          {% if states('sensor.oakland')|int > 0 or (states('sensor.oakland') == "unavailable" and states('sensor.template_oakland_alert_1') == "on") %}
+            {{ states.sensor.oakland.attributes.alerts[0].zoneid }}
+          {% else %}
+            None
+          {% endif %}
+        display_title: >
+          {% if states('sensor.oakland')|int > 0 or (states('sensor.oakland') == "unavailable" and states('sensor.template_oakland_alert_1') == "on") %}
+            {{ states.sensor.oakland.attributes.alerts[0].title }}
+          {% else %}
+            None
+          {% endif %}
+        display_message: >
+          {% if states('sensor.oakland')|int > 0 or (states('sensor.oakland') == "unavailable" and states('sensor.template_oakland_alert_1') == "on") %}
+            {% if states.sensor.oakland.attributes.alerts[0].NWSheadline != "null" %}
+            {{ states.sensor.oakland.attributes.alerts[0].NWSheadline | regex_replace('\[\'','') | regex_replace('\'\]','') }}<br>
+            {% endif %}
+            <br>{{ states.sensor.oakland.attributes.alerts[0].description | regex_replace('\n\n','<p>') | regex_replace('\n',' ') | regex_replace('\*','\n*') | regex_replace('<p>','\n\n') }}</ul><br>
+            {% if states.sensor.oakland.attributes.alerts[0].instruction != None %}
+            {{ states.sensor.oakland.attributes.alerts[0].instruction | regex_replace('\n\n','<p>') | regex_replace('\n',' ') | regex_replace('\*','\n*') | regex_replace('<p>','\n\n') }}<br>
+            {% endif %}
+            <br>Where : {{ state_attr('sensor.oakland', 'friendly_name') }}
+            <br>Effective: {{ states.sensor.oakland.attributes.alerts[0].effective }}
+            {%- if states.sensor.oakland.attributes.alerts[0].ends != None %}
+              <br>Ends: {{ states.sensor.oakland.attributes.alerts[0].ends }}
+            {%- endif %}
+            <br>Expires: {{ states.sensor.oakland.attributes.alerts[0].expires }}
+          {% else %}
+            None
+          {% endif %}
+        spoken_title: >
+          {% if states('sensor.oakland')|int > 0 or (states('sensor.oakland') == "unavailable" and states('sensor.template_oakland_alert_1') == "on") %}
+            Attention!!! Weather alert for {{ state_attr('sensor.oakland', 'friendly_name') }}. A {{ states.sensor.oakland.attributes.alerts[0].title }}. {{ states.sensor.oakland.attributes.alerts[0].NWSheadline | regex_replace('\[\'','') | regex_replace('\'\]','') | capitalize }}.
+          {% else %}
+            None
+          {% endif %}
+        spoken_message: >
+          {% if states('sensor.oakland')|int > 0 or (states('sensor.oakland') == "unavailable" and states('sensor.template_oakland_alert_1') == "on") %}
+            {{ states.sensor.oakland.attributes.alerts[0].description | regex_replace('\n\n','<p>') | regex_replace('\n',' ') | regex_replace('\*','\n*') | regex_replace('<p>','\n\n') }}
+            {% if states.sensor.oakland.attributes.alerts[0].instruction != None %}
+              {{ states.sensor.oakland.attributes.alerts[0].instruction | regex_replace('\n\n','<p>') | regex_replace('\n',' ') | regex_replace('\*','\n*') | regex_replace('<p>','\n\n') }}
+            {% endif %}
+          {% else %}
+            None
+          {% endif %}
+
+- sensor:
+    - unique_id: oakland_alert_2
+      state: >-
+        {% if (states('sensor.oakland') != 'unavailable') %}
+          {% if (state_attr('sensor.oakland', 'alerts')[1] != null) or ((states('sensor.oakland') == 'unavailable') and (as_timestamp(state_attr('sensor.oakland', 'alerts')[1].endsExpires) - as_timestamp(now()) > 0)) %}
+            on
+          {% else %}
+            off
+          {% endif %}
+        {% endif %}
+      attributes:
+        alert_id: >-
+          {% if states('sensor.oakland')|int > 1 or (states('sensor.oakland') == "unavailable" and states('sensor.template_oakland_alert_2') == "on") %}
+            {{ states.sensor.oakland.attributes.alerts[1].id }}
+          {% else %}
+            None
+          {% endif %}
+        alert_event: >-
+          {% if states('sensor.oakland')|int > 1 or (states('sensor.oakland') == "unavailable" and states('sensor.template_oakland_alert_2') == "on") %}
+            {{ states.sensor.oakland.attributes.alerts[1].event }}
+          {% else %}
+            None
+          {% endif %}
+        alert_area: >-
+          {% if states('sensor.oakland')|int > 1 or (states('sensor.oakland') == "unavailable" and states('sensor.template_oakland_alert_2') == "on") %}
+            {{ states.sensor.oakland.attributes.alerts[1].area }}
+          {% else %}
+            None
+          {% endif %}
+        alert_NWSheadline: >-
+          {% if states('sensor.oakland')|int > 1 or (states('sensor.oakland') == "unavailable" and states('sensor.template_oakland_alert_2') == "on") %}
+            {{ states.sensor.oakland.attributes.alerts[1].NWSheadline | regex_replace('\[\'','') | regex_replace('\'\]','') }}
+          {% else %}
+            None
+          {% endif %}
+        alert_description: >-
+          {% if states('sensor.oakland')|int > 1 or (states('sensor.oakland') == "unavailable" and states('sensor.template_oakland_alert_2') == "on") %}
+            {{ states.sensor.oakland.attributes.alerts[1].description  }}
+          {% else %}
+            None
+          {% endif %}
+        alert_messageType: >-
+          {% if states('sensor.oakland')|int > 1 or (states('sensor.oakland') == "unavailable" and states('sensor.template_oakland_alert_2') == "on") %}
+            {{ states.sensor.oakland.attributes.alerts[1].messageType }}
+          {% else %}
+            None
+          {% endif %}
+        alert_status: >-
+          {% if states('sensor.oakland')|int > 1 or (states('sensor.oakland') == "unavailable" and states('sensor.template_oakland_alert_2') == "on") %}
+            {{ states.sensor.oakland.attributes.alerts[1].status }}
+          {% else %}
+            None
+          {% endif %}
+        alert_category: >-
+          {% if states('sensor.oakland')|int > 1 or (states('sensor.oakland') == "unavailable" and states('sensor.template_oakland_alert_2') == "on") %}
+            {{ states.sensor.oakland.attributes.alerts[1].category }}
+          {% else %}
+            None
+          {% endif %}
+        alert_urgency: >-
+          {% if states('sensor.oakland')|int > 1 or (states('sensor.oakland') == "unavailable" and states('sensor.template_oakland_alert_2') == "on") %}
+            {{ states.sensor.oakland.attributes.alerts[1].urgency }}
+          {% else %}
+            None
+          {% endif %}
+        alert_severity: >-
+          {% if states('sensor.oakland')|int > 1 or (states('sensor.oakland') == "unavailable" and states('sensor.template_oakland_alert_2') == "on") %}
+            {{ states.sensor.oakland.attributes.alerts[1].severity }}
+          {% else %}
+            None
+          {% endif %}
+        alert_certainty: >-
+          {% if states('sensor.oakland')|int > 1 or (states('sensor.oakland') == "unavailable" and states('sensor.template_oakland_alert_2') == "on") %}
+            {{ states.sensor.oakland.attributes.alerts[1].certainty }}
+          {% else %}
+            None
+          {% endif %}
+        alert_response: >-
+          {% if states('sensor.oakland')|int > 1 or (states('sensor.oakland') == "unavailable" and states('sensor.template_oakland_alert_2') == "on") %}
+            {{ states.sensor.oakland.attributes.alerts[1].response }}
+          {% else %}
+            None
+          {% endif %}
+        alert_instruction: >-
+          {% if states('sensor.oakland')|int > 1 or (states('sensor.oakland') == "unavailable" and states('sensor.template_oakland_alert_2') == "on") %}
+            {{ states.sensor.oakland.attributes.alerts[1].instruction }}
+          {% else %}
+            None
+          {% endif %}
+        alert_sent: >-
+          {% if states('sensor.oakland')|int > 1 or (states('sensor.oakland') == "unavailable" and states('sensor.template_oakland_alert_2') == "on") %}
+            {{ states.sensor.oakland.attributes.alerts[1].sent }}
+          {% else %}
+            None
+          {% endif %}
+        alert_effective: >-
+          {% if states('sensor.oakland')|int > 1 or (states('sensor.oakland') == "unavailable" and states('sensor.template_oakland_alert_2') == "on") %}
+            {{ states.sensor.oakland.attributes.alerts[1].effective }}
+          {% else %}
+            None
+          {% endif %}
+        alert_onset: >-
+          {% if states('sensor.oakland')|int > 1 or (states('sensor.oakland') == "unavailable" and states('sensor.template_oakland_alert_2') == "on") %}
+            {{ states.sensor.oakland.attributes.alerts[1].onset }}
+          {% else %}
+            None
+          {% endif %}
+        alert_expires: >-
+          {% if states('sensor.oakland')|int > 1 or (states('sensor.oakland') == "unavailable" and states('sensor.template_oakland_alert_2') == "on") %}
+            {{ states.sensor.oakland.attributes.alerts[1].expires }}
+          {% else %}
+            None
+          {% endif %}
+        alert_title: >-
+          {% if states('sensor.oakland')|int > 1 or (states('sensor.oakland') == "unavailable" and states('sensor.template_oakland_alert_2') == "on") %}
+            {{ states.sensor.oakland.attributes.alerts[1].title }}
+          {% else %}
+            None
+          {% endif %}
+        alert_zoneid: >-
+          {% if states('sensor.oakland')|int > 1 or (states('sensor.oakland') == "unavailable" and states('sensor.template_oakland_alert_2') == "on") %}
+            {{ states.sensor.oakland.attributes.alerts[1].zoneid }}
+          {% else %}
+            None
+          {% endif %}
+        display_title: >
+          {% if states('sensor.oakland')|int > 1 or (states('sensor.oakland') == "unavailable" and states('sensor.template_oakland_alert_2') == "on") %}
+            {{ states.sensor.oakland.attributes.alerts[1].title }}
+          {% else %}
+            None
+          {% endif %}
+        display_message: >
+          {% if states('sensor.oakland')|int > 1 or (states('sensor.oakland') == "unavailable" and states('sensor.template_oakland_alert_2') == "on") %}
+            {% if states.sensor.oakland.attributes.alerts[1].NWSheadline != "null" %}
+            {{ states.sensor.oakland.attributes.alerts[1].NWSheadline | regex_replace('\[\'','') | regex_replace('\'\]','') }}<br>
+            {% endif %}
+            <br>{{ states.sensor.oakland.attributes.alerts[1].description | regex_replace('\n\n','<p>') | regex_replace('\n',' ') | regex_replace('\*','\n*') | regex_replace('<p>','\n\n') }}</ul><br>
+            {% if states.sensor.oakland.attributes.alerts[1].instruction != None %}
+            {{ states.sensor.oakland.attributes.alerts[1].instruction | regex_replace('\n\n','<p>') | regex_replace('\n',' ') | regex_replace('\*','\n*') | regex_replace('<p>','\n\n') }}<br>
+            {% endif %}
+            <br>Where : {{ state_attr('sensor.oakland', 'friendly_name') }}
+            <br>Effective: {{ states.sensor.oakland.attributes.alerts[1].effective }}
+            {%- if states.sensor.oakland.attributes.alerts[1].ends != None %}
+              <br>Ends: {{ states.sensor.oakland.attributes.alerts[1].ends }}
+            {%- endif %}
+            <br>Expires: {{ states.sensor.oakland.attributes.alerts[1].expires }}
+          {% else %}
+            None
+          {% endif %}
+        spoken_title: >
+          {% if states('sensor.oakland')|int > 1 or (states('sensor.oakland') == "unavailable" and states('sensor.template_oakland_alert_2') == "on") %}
+            Attention!!! Weather alert for {{ state_attr('sensor.oakland', 'friendly_name') }}. A {{ states.sensor.oakland.attributes.alerts[1].title }}. {{ states.sensor.oakland.attributes.alerts[1].NWSheadline | regex_replace('\[\'','') | regex_replace('\'\]','') | capitalize }}.
+          {% else %}
+            None
+          {% endif %}
+        spoken_message: >
+          {% if states('sensor.oakland')|int > 1 or (states('sensor.oakland') == "unavailable" and states('sensor.template_oakland_alert_2') == "on") %}
+            {{ states.sensor.oakland.attributes.alerts[1].description | regex_replace('\n\n','<p>') | regex_replace('\n',' ') | regex_replace('\*','\n*') | regex_replace('<p>','\n\n') }}
+            {% if states.sensor.oakland.attributes.alerts[1].instruction != None %}
+              {{ states.sensor.oakland.attributes.alerts[1].instruction | regex_replace('\n\n','<p>') | regex_replace('\n',' ') | regex_replace('\*','\n*') | regex_replace('<p>','\n\n') }}
+            {% endif %}
+          {% else %}
+            None
+          {% endif %}
+
+- sensor:
+    - unique_id: oakland_alert_1_last_changed
+      state: >-
+        {% if (states('sensor.oakland') != 'unavailable') %}
+          {% if states('sensor.template_oakland_alert_1') == "on" %}
+            {{ states.sensor.template_oakland_alert_1.last_updated }}
+          {% else %}
+            None
+          {% endif %}
+        {% endif %}
+
+- sensor:
+    - unique_id: oakland_alert_2_last_changed
+      state: >-
+        {% if (states('sensor.oakland') != 'unavailable') %}
+          {% if states('sensor.template_oakland_alert_2') == "on" %}
+            {{ states.sensor.template_oakland_alert_2.last_updated }}
+          {% else %}
+            None
+          {% endif %}
+        {% endif %}

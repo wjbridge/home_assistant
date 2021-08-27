@@ -1,0 +1,9 @@
+#-------------------------------------------
+#  Weather Alerts
+#  https://github.com/custom-components/weatheralerts
+#-------------------------------------------
+- platform: weatheralerts
+  state: MI
+  zone: 69
+  county: 125
+  scan_interval: 60

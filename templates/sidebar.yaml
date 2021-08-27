@@ -1,0 +1,60 @@
+#-------------------------------------------
+#  Template for sidebar
+#-------------------------------------------
+- sensor:
+    - unique_id: sidebar
+      state: template
+      attributes:
+        time: |
+          {%- set hours = '<span>' + now().strftime('%I') + '<span>' %}
+          {%- set minutes = '</span>' + now().strftime('%M') + '</span>' %}
+          {%- set ampm = '</span>' + now().strftime('%p') + '</span>' %}
+          {{ hours }}:{{ minutes }} {{ampm}}
+        date: |
+          <font color='#6a7377'><b>
+            {%- if strptime(states('sensor.date'), '%Y-%m-%d').day != null %}
+            {%- set days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'] %}
+            {%- set months = ['January', 'Feburary', 'March', 'April', 'May', 'June', 
+            'July', 'August', 'September', 'October', 'November', 'December'] %}
+              {{- days[now().weekday()] }}<br>
+            {{- strptime(states('sensor.date'), '%Y-%m-%d').day }} {{ months[now().month-1] }}
+            {%- endif -%}
+          </b></font>
+        weather: |
+          {%- set temperature = states('sensor.dark_sky_temperature') %}
+          {%- set apparent = states('sensor.dark_sky_apparent_temperature') | round %}
+          {%- set precip = states('sensor.dark_sky_precip_probability') | round %}
+          {%- set alert1 = states('sensor.template_oakland_alert_1') %}
+          {%- set alert2 = states('sensor.template_oakland_alert_2') %}
+          {% if not is_state('sensor.dark_sky_temperature', 'unknown') %}
+            {%- if temperature | float <= 0.0 -%}
+              Feels like {{ apparent }}° with {{ precip }}% risk of snow {{'\u2744\uFE0F'}}
+            {%- elif temperature | float > 0.0 -%} 
+              Feels like {{ apparent}}° with {{ precip }}% risk of rain {{ '\u2614\uFE0F' if precip > 30 }}
+            {%- endif %}
+
+            {%- if alert1 == 'on' -%}
+              <p><font color='#e21f1f'> {{-'\u26A0\uFE0F'}} {{ state_attr('sensor.template_oakland_alert_1', 'alert_event') }} {{-'\u26A0\uFE0F'}}</font></p>
+            {%- endif %}
+            {%- if (alert2 == 'on') and (alert1 != alert2) -%}
+              <p><font color='#e21f1f'> {{-'\u26A0\uFE0F'}} {{ state_attr('sensor.template_oakland_alert_2', 'alert_event') }} {{-'\u26A0\uFE0F'}}</font></p>
+            {%- endif %}
+
+          {%- else %}
+            Unable to load weather information...
+          {%- endif %}
+
+    - unique_id: apcupsd
+      icon: mdi:battery
+      state: template
+      attributes:
+        template: >
+          {% if not is_state('sensor.ups_status', 'unknown') %}
+            {% set break = '‍ ‍ ‍ ‍ ‍ ‍<font color="#2f3436">|</font> ‍ ‍ ‍ ‍ ' %}
+            <font color='#6a7377'>
+            <ha-icon icon="mdi:information-outline"></ha-icon> <b>{{ states('sensor.ups_status') }}</b>{{ break -}}
+            <ha-icon icon="mdi:battery"></ha-icon> <b>{{ states('sensor.ups_battery') }}%</b>{{ break -}}
+            <ha-icon icon="mdi:gauge"></ha-icon> <b>{{ states('sensor.ups_load') }}%</b> Load{{ break -}}
+            <ha-icon icon="mdi:clock-alert"></ha-icon> <b>{{ states('sensor.ups_time_left') }}</b> Minutes
+            </font>
+          {% endif %}

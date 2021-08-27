@@ -1,0 +1,56 @@
+#-------------------------------------------
+# Groups
+# https://www.home-assistant.io/components/group/
+#-------------------------------------------
+group: 
+  sensor_batteries:
+    name: Sensor Batteries
+    entities:
+      - sensor.front_door_battery
+      - sensor.garage_temp_battery
+      - sensor.master_bedroom_window_battery
+      - sensor.dining_room_window_battery
+      - sensor.office_window_battery
+      - sensor.garage_battery
+
+  contact_sensors:
+    name: Contact Sensors
+    entities:
+      - binary_sensor.master_bedroom_window_contact
+      - binary_sensor.dining_room_window_contact
+      - binary_sensor.office_window_contact
+      - binary_sensor.living_room_window
+      - binary_sensor.deck_door_contact
+
+  ignored_entities:
+    name: Ignored Entities
+    entities: 
+      - binary_sensor.updater # always unknown after restart
+      - sensor.template_unavailable_entities
+      - sensor.docker_nzbhydra_health
+      - sensor.docker_youtubedl_health
+      - sensor.ecobee_next_alarm
+      - sensor.ecobee_next_reminder
+      - sensor.ecobee_next_timer
+      - sensor.oli_echo_next_reminder
+      - sensor.oli_echo_next_timer
+      - sensor.spot_next_alarm
+      - sensor.spot_next_reminder
+      - sensor.spot_next_timer
+      - sensor.template_oakland_alert_1_last_changed
+      - sensor.template_oakland_alert_2_last_changed
+      - sensor.weston_echo_next_alarm
+      - sensor.weston_echo_next_reminder
+      - sensor.weston_echo_next_timer
+      - sensor.weston_phone_ha_charger_type
+      - switch.ecobee_repeat_switch
+      - switch.ecobee_shuffle_switch
+      - switch.everywhere_repeat_switch
+      - switch.everywhere_shuffle_switch
+      - switch.oli_echo_repeat_switch
+      - switch.oli_echo_shuffle_switch
+      - sensor.oli_echo_next_alarm
+      - switch.spot_repeat_switch
+      - switch.spot_shuffle_switch
+      - switch.weston_echo_repeat_switch
+      - switch.weston_echo_shuffle_switch

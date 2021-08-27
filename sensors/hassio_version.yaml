@@ -1,0 +1,48 @@
+#-------------------------------------------
+# Latest Version
+# https://www.home-assistant.io/components/sensor.version/
+#-------------------------------------------
+- platform: version
+  name: hass_version_latest
+  source: container
+
+#-------------------------------------------
+# Current Version
+# https://www.home-assistant.io/components/sensor.version/
+#-------------------------------------------
+- platform: version
+  name: hass_version_installed
+  source: local
+
+#-------------------------------------------
+# Current Version
+# https://www.home-assistant.io/components/sensor.version/
+#-------------------------------------------
+- platform: version
+  name: hass_version_latest_beta
+  source: container
+  beta: true
+
+#-------------------------------------------
+# HACS Version
+#-------------------------------------------
+- platform: command_line
+  name: hacs_version
+  scan_interval: 86400
+  command: >
+    grep -oP 'INTEGRATION_VERSION = "\K[^"]+' custom_components/hacs/const.py
+
+#-------------------------------------------
+# Uptime
+# https://www.home-assistant.io/integrations/uptime/
+#-------------------------------------------
+- platform: uptime
+
+#-------------------------------------------
+# Time & Date
+# https://www.home-assistant.io/integrations/time_date/
+#-------------------------------------------
+- platform: time_date
+  display_options:
+    - time
+    - date

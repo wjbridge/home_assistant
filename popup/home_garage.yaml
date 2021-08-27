@@ -1,0 +1,68 @@
+action: fire-dom-event
+browser_mod:
+  command: popup
+  title: Garage Information
+  style:
+    hui-grid-card:
+      $hui-entities-card$: |
+        #states {
+          padding-bottom: 0 !important;
+        }
+      $hui-history-graph-card$ : |
+        .content {
+          padding: 1.8em 2em 1.8em 2em !important;
+        }
+      $hui-glance-card$ : |
+        .entities.no-header {
+          padding-top: 0 !important;
+        }
+      $: |
+        button-card {
+          justify-self: center;
+          margin: 0.8em 0 2.5em 0;
+          width: 100%;
+        }
+        #root {
+          grid-gap: 0 !important;
+        }
+        hui-map-card {
+          height: 99.5% !important;
+        }
+
+  card:
+    type: grid
+    columns: 1
+    square: false
+    cards:
+      - type: entities
+        entities:
+          - entity: binary_sensor.garage_contact
+            secondary_info: last-changed
+
+      - type: history-graph
+        entities:
+          - entity: binary_sensor.garage_contact
+        hours_to_show: 24
+        refresh_interval: 0
+
+      - type: glance
+        show_state: true
+        state_color: true
+        show_icon: true
+        entities:
+
+          - entity: sensor.garage_battery
+            name: Battery
+
+          - entity: sensor.garage_temp_temperature
+            name: Temperature
+
+          - entity: sensor.garage_linkquality
+            name: Link Quality
+
+          - entity: sensor.garage_temp_humidity
+            name: Humidity
+
+      - type: picture-entity
+        entity: camera.garage
+        camera_view: live

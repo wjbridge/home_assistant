@@ -1,0 +1,93 @@
+action: fire-dom-event
+browser_mod:
+  command: popup
+  title: Missing Entities
+  style:
+    .: |
+      :host .content {
+        width: 40em;
+        height: 100%;
+        padding: 1.1em 1.9em 1.9em 1.9em;
+      }
+  card:
+    type: custom:mod-card
+    style:
+      hui-grid-card:
+        $: |
+          button-card {
+            margin: 0.8em 0 2.5em 1em;
+          }
+          #root {
+            grid-gap: 0 !important;
+          }
+        $hui-markdown-card:
+          $ha-markdown$: |
+            ha-markdown-element {
+              cursor: default;
+            }
+            ha-markdown-element > p > span {
+              font-family: SF Text;
+              font-size: 1.5em;
+              font-weight: 500;
+              vertical-align: 30%;
+            }
+            ha-markdown-element > p > span > ha-icon {
+              vertical-align: 10%;
+              opacity: 0.5;
+            }
+            ha-markdown-element > p > strong {
+              font-family: SF Text;
+              font-size: 1.2em;
+              font-weight: 500;
+              line-height: 1.9em;
+              opacity: 0.5;
+            }
+            ha-markdown-element > ul {
+              font-family: SF Display;
+              font-size: 1.1em;
+              padding-left: 2.5em;
+            }
+            ha-markdown-element > ul > li {
+              margin-bottom: 0.4em;
+            }
+            ha-markdown-element > ul > li:last-child {
+              margin-bottom: 0px;
+            }
+            ha-markdown-element > ul > li > code {
+              background-color: var(--secondary-background-color);
+            }
+
+    card:
+      type: grid
+      columns: 1
+      square: false
+      cards:
+
+        - type: markdown
+          content: >
+            {% set miss = state_attr('sensor.template_unavailable_entities', 'entities') %}
+            {% if states('sensor.template_unavailable_entities') | int > 0 %}
+              <span><ha-icon icon="mdi:home-alert"></ha-icon> Sensors - \#{{ states('sensor.template_unavailable_entities') }}</span>
+              <ul>
+                {%- for s in miss -%}
+                  <li><ha-icon icon="{{ state_attr(s, 'icon') }}"></ha-icon> {{ s }}</li>
+                {%- endfor -%}
+              </ul>
+            {% endif %}
+
+        - type: custom:mini-graph-card
+          entities:
+            - color: '#399b56'
+              entity: sensor.template_unavailable_entities
+          line_width: 3
+          hour24: true
+          group: true
+          align_icon: left
+          align_state: right
+          align_header: left
+          hours_to_show: 24
+          show:
+            {fill: fade, icon: false, name: false, state: false, 
+            name_adaptive_color: false, labels: hover, legend: false}
+          tap_action:
+            action: none

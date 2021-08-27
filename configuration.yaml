@@ -1,0 +1,244 @@
+#-------------------------------------------
+# Default Config
+# https://www.home-assistant.io/integrations/default_config/
+#-------------------------------------------
+homeassistant:
+  # Name of the location where Home Assistant is running
+  name: Home
+
+  # Location required to calculate the time the sun rises and sets
+  latitude: !secret latitude_home
+  longitude: !secret longitude_home
+
+  # Impacts weather/sunrise data (altitude above sea level in meters)
+  elevation: !secret elevation
+
+  # metric for Metric, imperial for Imperial
+  unit_system: imperial
+
+  # Pick yours from here: http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+  time_zone: !secret timezone
+
+  # Setup basic information
+  # https://www.home-assistant.io/docs/configuration/basic/
+  allowlist_external_dirs: [/config/]
+
+  # Packages in Home Assistant provide a way to bundle different component’s configuration together
+  # https://www.home-assistant.io/docs/configuration/packages/
+  packages: !include_dir_named include
+
+#-------------------------------------------
+# Front End UI
+# https://www.home-assistant.io/lovelace
+#-------------------------------------------
+lovelace:
+  mode: yaml
+  resources:
+    [ { url: /hacsfiles/bar-card/bar-card.js,                                       type: module },
+      { url: /hacsfiles/lovelace-auto-entities/auto-entities.js,                    type: module },
+      { url: /hacsfiles/button-card/button-card.js,                                 type: module },
+      { url: /hacsfiles/kiosk-mode/kiosk-mode.js,                                   type: module },
+      { url: /hacsfiles/lovelace-card-mod/card-mod.js,                              type: module },
+      { url: /hacsfiles/lovelace-hui-element/hui-element.js,                        type: module },
+      { url: /hacsfiles/lovelace-layout-card/layout-card.js,                        type: module },
+      { url: /hacsfiles/lovelace-slider-entity-row/slider-entity-row.js,            type: module },
+      { url: /hacsfiles/mini-graph-card/mini-graph-card-bundle.js,                  type: module },
+      { url: /hacsfiles/swipe-card/swipe-card.js,                                   type: module },
+      { url: /hacsfiles/lovelace-canary/canary.js,                                  type: module },
+
+      { url: '/local/custom_icons.js?v=25052001',                                   type: module },
+      { url: '/local/font.css',                                                     type: css    } ]
+
+#-------------------------------------------
+# Web Config
+#-------------------------------------------
+config:
+
+#-------------------------------------------
+# Web Config
+# https://www.home-assistant.io/integrations/mobile_app/
+#-------------------------------------------
+mobile_app:
+
+#-------------------------------------------
+# Http Config
+# https://www.home-assistant.io/integrations/http#use_x_forwarded_for
+#-------------------------------------------
+http:
+  server_port: !secret server_port
+  use_x_forwarded_for: true
+  trusted_proxies:
+    - 192.168.1.0/24
+    - 172.19.0.0/24
+  ip_ban_enabled: false
+
+#-------------------------------------------
+# Network
+# https://www.home-assistant.io/integrations/network/
+#-------------------------------------------
+network:
+
+#-------------------------------------------
+# Zeroconf
+# https://www.home-assistant.io/integrations/zeroconf/
+#-------------------------------------------
+zeroconf:
+
+#-------------------------------------------
+# Homekit Controller
+# https://www.home-assistant.io/integrations/homekit_controller/
+#-------------------------------------------
+homekit_controller:
+
+#-------------------------------------------
+# Find Updates
+# https://www.home-assistant.io/components/updater/
+#-------------------------------------------
+updater:
+
+#-------------------------------------------
+# Sun
+# https://www.home-assistant.io/integrations/sun/
+#-------------------------------------------
+sun:
+
+#-------------------------------------------
+# Include templates
+#-------------------------------------------
+template: !include_dir_merge_list templates
+
+#-------------------------------------------
+# Include sensors
+#-------------------------------------------
+sensor: !include_dir_merge_list sensors
+
+#-------------------------------------------
+# Recorder
+# https://www.home-assistant.io/integrations/recorder/
+#-------------------------------------------
+recorder:
+  auto_purge: true
+  purge_keep_days: 30
+
+#-------------------------------------------
+# MQTT
+# https://www.home-assistant.io/docs/mqtt/broker#run-your-own
+#-------------------------------------------
+mqtt:
+  discovery: true
+  discovery_prefix: homeassistant
+  broker: !secret server_ip
+  port: !secret mqtt_port
+
+#-------------------------------------------
+# Telegram
+# https://www.home-assistant.io/components/telegram/
+#-------------------------------------------
+telegram_bot:
+  - platform: polling
+    api_key: !secret telegram_api
+    parse_mode: html
+    allowed_chat_ids:
+      - !secret telegram_chat_id
+
+#-------------------------------------------
+# Automation
+# https://www.home-assistant.io/docs/automation/
+#-------------------------------------------
+automation: !include_dir_merge_list automations
+
+#-------------------------------------------
+# Apcupsd
+# https://www.home-assistant.io/integrations/apcupsd/
+#-------------------------------------------
+apcupsd:
+  host: !secret server_ip
+
+#-------------------------------------------
+# Monitor Docker
+# https://github.com/ualex73/monitor_docker
+#-------------------------------------------
+monitor_docker:
+  - name: Docker
+    scan_interval: 10
+    containers:
+      - vpn
+      - homeassistant
+      - nzbget
+      - youtubedl
+      - nzbhydra
+    rename:
+      homeassistant: HomeAssistant
+      nzbget: Nzbget
+      youtubedl: YoutubeDL
+      nzbhydra: NzbHydra
+    monitored_conditions:
+      - version
+      - containers_1cpu_percentage
+      - containers_memory_percentage
+      - 1cpu_percentage
+      - memory_percentage
+      - health
+      - state
+      - status
+      - network_speed_up
+      - network_speed_down
+
+#-------------------------------------------
+# Device Tracker
+# https://www.home-assistant.io/integrations/netgear/
+#-------------------------------------------
+device_tracker:
+  - platform: netgear
+    host: !secret orbi_host
+    port: !secret orbi_port
+    username: !secret orbi_username
+    password: !secret orbi_pwd
+    accesspoints:
+     - !secret orbi_router
+     - !secret orbi_satellite
+    devices:
+     - !secret orbi_weston_phone_mac
+     - !secret orbi_ana_phone_mac
+    new_device_defaults:
+      track_new_devices: false
+    interval_seconds: 60
+    consider_home: 180
+
+#-------------------------------------------
+# Weather
+# https://www.home-assistant.io/components/weather.darksky/
+#-------------------------------------------
+weather:
+  - platform: darksky
+    api_key: !secret dark_sky_api
+    units: auto
+    name: Dark Sky
+    mode: daily
+
+#-------------------------------------------
+# TP Link
+# https://www.home-assistant.io/components/tplink/
+#
+# NOT ENABLED
+#  strip:
+#    - host: !secret tplink_outdoor
+#    - host: !secret tplink_plug_2
+#-------------------------------------------
+tplink:
+  discovery: false
+  switch:
+    - host: !secret tplink_plug_1
+    - host: !secret tplink_garage_lights_outdoor
+    - host: !secret tplink_front_lights_outdoor
+
+#-------------------------------------------
+# Browser Mod
+# https://github.com/thomasloven/hass-browser_mod
+#-------------------------------------------
+browser_mod:
+  devices:
+    8d998404-7967b945:
+      name: nexus_tab
+  disable:
+    - all

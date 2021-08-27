@@ -1,0 +1,83 @@
+###############################################################################
+# Climate Contact Sensor
+###############################################################################
+- id: climate_contact_sensors
+  alias: "Climate Contact Sensors"
+  trace:
+      stored_traces: 10
+  trigger:
+    - platform: state
+      id: 'close_to_open'
+      entity_id:  group.contact_sensors
+      from: 'off'
+      to: 'on'
+      for:
+        hours: 0
+        minutes: 7
+        seconds: 0
+
+    - platform: state
+      id: 'open_to_close'
+      entity_id:  group.contact_sensors
+      from: 'on'
+      to: 'off'
+      for:
+        hours: 0
+        minutes: 7
+        seconds: 0
+
+  condition:
+    - condition: not
+      conditions:
+        - condition: state
+          entity_id: climate.thermostat
+          state: 'unavailable'
+        - condition: state
+          entity_id: climate.thermostat
+          state: 'unknown'
+
+  action:
+    - choose:
+          # IF contact sensors close to open
+          - conditions:
+              - condition: trigger
+                id: 'close_to_open'
+              - condition: state
+                entity_id: input_boolean.fresh_air_mode_en
+                state: 'off'
+            sequence:
+              - service: notify.groot_automation
+                data_template:
+                  title: "<b>Info</b>: Detected Open Contact Sensors"
+                  message: >
+                    {% set open_windows = states | selectattr('entity_id', 'in', state_attr('group.contact_sensors','entity_id')) | selectattr('state','in',['on','open']) | map(attribute='name') | list %}
+                    {% if open_windows | length == 1 %}
+                      The {{ open_windows[0] }} door is open. Suspending thermostat operations.
+                    {% else %}
+                      The {{ open_windows[:-1] | join(' door, ') }}{{' door,' if open_windows | length > 2 else ' door'}} and {{ open_windows[-1]}} door are open. Suspending thermostat operations.
+                    {% endif %}
+              - service: input_boolean.turn_on
+                entity_id: input_boolean.fresh_air_mode_en
+              - service: climate.set_hvac_mode
+                entity_id: climate.thermostat
+                data:
+                  hvac_mode: 'off'
+
+          # ELIF night
+          - conditions:
+              - condition: trigger
+                id: 'open_to_close'
+              - condition: state
+                entity_id: input_boolean.fresh_air_mode_en
+                state: 'on'
+            sequence:
+              - service: input_boolean.turn_off
+                entity_id: input_boolean.fresh_air_mode_en
+              - service: notify.groot_automation
+                data_template:
+                  title: "<b>Info</b>: Detected All Closed Contact Sensors"
+                  message: "Resuming normal thermostat operations"
+              - service: climate.set_hvac_mode
+                entity_id: climate.thermostat
+                data_template:
+                  hvac_mode: "{{ states('sensor.template_equipment_resume') }}"

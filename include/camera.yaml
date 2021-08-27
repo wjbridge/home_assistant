@@ -1,0 +1,28 @@
+#-------------------------------------------
+# Camera
+# https://www.home-assistant.io/integrations/camera/
+#-------------------------------------------
+camera:
+  - platform: generic
+    name: Backyard
+    still_image_url: !secret shinobi_backyard
+    content_type: image/jpeg
+    framerate: 2
+
+  - platform: generic
+    name: Garage
+    still_image_url: !secret shinobi_garage
+    content_type: image/jpeg
+    framerate: 2
+
+  - platform: generic
+    name: Master Bedroom
+    still_image_url: !secret shinobi_master_bedroom
+    content_type: image/jpeg
+    framerate: 2
+
+  - platform: generic
+    name: Oli Bedroom
+    still_image_url: !secret shinobi_oli_bedroom
+    content_type: image/jpeg
+    framerate: 2

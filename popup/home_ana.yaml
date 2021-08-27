@@ -1,0 +1,64 @@
+action: fire-dom-event
+browser_mod:
+  command: popup
+  title: Ana
+  style:
+    hui-grid-card:
+      $hui-entities-card$: |
+        #states {
+          padding-bottom: 0 !important;
+        }
+      $hui-history-graph-card$ : |
+        .content {
+          padding: 1.8em 2em 1.8em 2em !important;
+        }
+      $hui-glance-card$ : |
+        .entities.no-header {
+          padding-top: 0 !important;
+        }
+      $: |
+        button-card {
+          justify-self: center;
+          margin: 0.8em 0 2.5em 0;
+          width: 100%;
+        }
+        #root {
+          grid-gap: 0 !important;
+        }
+      $hui-entities-card:last-of-type$: |
+        #states {
+          padding-top: 0 !important;
+        }
+  card:
+    type: grid
+    columns: 1
+    square: false
+    cards:
+      - type: entities
+        entities:
+          - entity: person.ana
+            secondary_info: last-changed
+
+      - type: history-graph
+        entities:
+          - entity: person.ana
+        hours_to_show: 24
+        refresh_interval: 0
+
+      - type: glance
+        show_state: false
+        entities:
+
+          - entity: device_tracker.ana_usa_phone
+            name: Router
+            icon: mdi:wifi
+            style: &style |
+              state-badge {
+                color: {{ '#3182b7' if is_state(config.entity, 'home') else '#3c3f3f' }};
+              }
+
+      - type: map
+        entities:
+          - device_tracker.ana_usa_phone
+        default_zoom: 16
+        dark_mode: true

@@ -1,0 +1,17 @@
+#-------------------------------------------
+#  Template for HA Docker Memory
+#-------------------------------------------
+fan:
+  - platform: template
+    fans:
+      oli_fan:
+        friendly_name: "Oli Bedroom Fan"
+        value_template: >
+          {{ 'off' if is_state('switch.plug_1', 'unavailable') 
+          else states('switch.plug_1') }}
+        turn_on:
+          - service: switch.turn_on
+            entity_id: switch.plug_1
+        turn_off:
+          - service: switch.turn_off
+            entity_id: switch.plug_1

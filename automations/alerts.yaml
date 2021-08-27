@@ -1,0 +1,107 @@
+###############################################################################
+# New Home Assistant Version
+###############################################################################
+- id: new_home_assistant_version_alert
+  alias: "New Home Assistant Version Alert"
+  trigger:
+    platform: state
+    entity_id: sensor.hass_version_latest
+
+  condition:
+    - condition: template
+      value_template: "{{ states('sensor.hass_version_latest') != 'unavailable' }}"
+
+  action:
+    service: notify.groot_automation
+    data_template:
+      title: "<b>Info</b>: New Home Assistant Version"
+      message: "Version <a href=\"https://github.com/home-assistant/core/releases/tag/{{states('sensor.hass_version_latest')}}\">{{states('sensor.hass_version_latest')}}</a> is available!"
+
+###############################################################################
+# New Software Program Version
+###############################################################################
+- id: new_sw_release_alert
+  alias: "New Software Release Alert"
+  trigger:
+    platform: state
+    entity_id:
+      - sensor.papermerge_release_notes
+      - sensor.fireflyiii_release_notes
+      - sensor.photoprism_release_notes
+      - sensor.adguardhome_release_notes
+      - sensor.homeassistant_desktop_release_notes
+
+  condition:
+    - condition: template
+      value_template: "{{ states(trigger.entity_id) != 'unavailable' }}"
+
+  action:
+    service: notify.groot_automation
+    data_template:
+      title: "<b>Info</b>: New Version [{{ trigger.entity_id }}]"
+      message: "<a href=\"{{state_attr(trigger.entity_id, 'html_url') }}\">{{state_attr(trigger.entity_id, 'tag_name')}}</a> is available!"
+
+###############################################################################
+# New Device on Network
+###############################################################################
+- id: notify_if_new_devices_alert
+  alias: Notify If New Devices Alert
+  trigger:
+    platform: event
+    event_type: device_tracker_new_device
+
+  action:
+    service: notify.groot_automation
+    data_template:
+      title: "<b>Info</b>: New Device Detected"
+      message: 'New device: {{ trigger.event.data.entity_id }}'
+
+###############################################################################
+# Windows Left Open or Rain Coming
+###############################################################################
+- id: window_left_open_alert
+  alias: Window Left Open Alert
+  trigger:
+    - platform: time
+      at: '23:00:00'
+
+    - platform: numeric_state
+      entity_id: sensor.dark_sky_precip_probability_1h
+      above: 60
+
+  condition:
+    - condition: state
+      entity_id: group.contact_sensors
+      state: 'on'
+
+  action:
+    - service: notify.groot_automation
+      data_template:
+        title: '<b>Alert</b>: Window / Door Open'
+        message: > 
+          {% set open_windows = states | selectattr('entity_id', 'in', state_attr('group.contact_sensors','entity_id')) | selectattr('state','in',['on','open']) | map(attribute='name') | list %}
+          {% if open_windows | length == 1 %}
+            The {{ open_windows[0] }} door is open.
+          {% else %}
+            The {{ open_windows[:-1] | join(' door, ') }}{{' door,' if open_windows | length > 2 else ' door'}} and {{ open_windows[-1]}} door are open.
+          {% endif %}
+
+###############################################################################
+# Battery Low
+###############################################################################
+- id: battery_low_alert
+  alias: 'Battery Low Alert'
+  trigger:
+    platform: numeric_state
+    entity_id:
+      - group.sensor_batteries
+    above: 0
+    below: 40
+    for:
+      minutes: 15
+
+  action:
+    - service: notify.groot_automation
+      data_template:
+        title: '<b>Alert</b>: Low Battery'
+        message: "Battery Report: {{ trigger.to_state.state }} \n The battery for {{ trigger.to_state.friendly_name }} is below 20 percent"

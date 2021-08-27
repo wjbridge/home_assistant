@@ -1,0 +1,164 @@
+action: fire-dom-event
+browser_mod:
+  command: popup
+  title: Updates
+  style:
+    .: |
+      :host .content {
+        width: 60em;
+        height: 100%;
+        padding: 1.1em 1.9em 1.9em 1.9em;
+      }
+  card:
+    type: custom:mod-card
+    style:
+      hui-grid-card:
+        $: |
+          button-card {
+            margin: 0.8em 0 2.5em 1em;
+          }
+          #root {
+            grid-gap: 0 !important;
+          }
+        $hui-markdown-card:
+          $ha-markdown$: |
+            ha-markdown-element {
+              cursor: default;
+            }
+            ha-markdown-element > p > span {
+              font-family: SF Text;
+              font-size: 1.5em;
+              font-weight: 500;
+              vertical-align: 30%;
+            }
+            ha-markdown-element > p > span > ha-icon {
+              vertical-align: 10%;
+              opacity: 0.5;
+            }
+            ha-markdown-element > p > strong {
+              font-family: SF Text;
+              font-size: 1.2em;
+              font-weight: 500;
+              line-height: 1.9em;
+              opacity: 0.5;
+            }
+            ha-markdown-element > ul {
+              font-family: SF Display;
+              font-size: 1.1em;
+              padding-left: 2.5em;
+            }
+            ha-markdown-element > ul > li {
+              margin-bottom: 0.4em;
+            }
+            ha-markdown-element > ul > li:last-child {
+              margin-bottom: 0px;
+            }
+            ha-markdown-element > ul > li > code {
+              background-color: var(--secondary-background-color);
+            }
+    card:
+      type: grid
+      columns: 1
+      square: false
+      cards:
+
+        ### hass
+        - type: markdown
+          content: >
+
+            {% if states('sensor.hass_version_installed') | regex_search('b') %}
+              <span><ha-icon icon="mdi:home-assistant"></ha-icon> Home Assistant {{ states('sensor.hass_version_installed') }}</span><br>
+              {% if states('sensor.hass_version_installed') == states('sensor.hass_version_latest_beta') %}
+                **No updates**
+              {% else %}
+                **{{ states('sensor.hass_version_latest_beta') }} available** {{ '\U0001f389' }}
+        
+              {% if states('sensor.hass_version_latest_beta') == states('sensor.hass_release_notes_rc') %}
+                {{- state_attr('sensor.hass_release_notes_rc', 'body') }}
+              {% endif %}
+            {% endif %}
+            {% else %}
+              <span><ha-icon icon="mdi:home-assistant"></ha-icon> Home Assistant {{ states('sensor.hass_version_installed') }}</span><br>
+            {% if states('sensor.hass_version_installed') == states('sensor.hass_version_latest') %}
+              **No updates**
+            {% else %}
+              **{{ states('sensor.hass_version_latest') }} available** {{ '\U0001f389' }}
+
+            {% if states('sensor.hass_version_latest') == states('sensor.hass_release_notes') %}
+              {{- state_attr('sensor.hass_release_notes', 'body') }}
+            {% endif %}
+            {% endif %}
+            {% endif %}
+
+        - type: custom:button-card
+          entity: sensor.hass_version_installed
+          triggers_update:
+            - sensor.hass_version_latest
+            - sensor.hass_version_latest_beta
+          name: Update HASS
+          icon: mdi:update
+          styles:
+            card:
+              - filter: >
+                  [[[
+                    return entity.state === (states['sensor.hass_version_latest'].state || 
+                    states['sensor.hass_version_latest_beta'].state) ? 
+                      'opacity(30%)' : 
+                      'drop-shadow(3px 3px 5px #00000050)';
+                  ]]]
+          tap_action:
+            services: |
+              [[[
+                hass.callService('browser_mod', 'toast', {
+                  message: 'Starting watchtower...'
+                });
+                hass.callService('switch', 'turn_on', {
+                  entity_id: 'switch.watchtower'
+                });
+              ]]]
+          template: icon_name
+
+        ### hacs
+        - type: markdown
+          content: >
+            <span><ha-icon icon="hacs:hacs"></ha-icon> Community Store {{ states('sensor.hacs_version') }}</span><br>
+            {% if is_state('sensor.hacs', '0') or is_state('sensor.hacs', 'unknown') %}
+            **No updates**
+            {% else %}
+            **{{ states('sensor.hacs') }} {{ 'updates available' if is_state('sensor.hacs', '1') else 'updates available' }}** {{ '\U0001f389' }}
+
+              {% for repo in state_attr('sensor.hacs', 'repositories') %}
+              * **[{{ repo.display_name }}](https://github.com/{{ repo.name }}/releases)** {{ repo.installed_version + ' \u279e ' + repo.available_version }}
+              {% endfor %}
+            {% endif %}
+
+        - type: custom:button-card
+          entity: sensor.hacs
+          name: Open HACS
+          icon: mdi:open-in-new
+          styles:
+            card:
+              - filter: >
+                  [[[
+                    return entity.state === '0' ?
+                      'opacity(30%)' :
+                      'drop-shadow(3px 3px 5px #00000050)';
+                  ]]]
+          tap_action:
+            action: fire-dom-event
+            browser_mod:
+              command: popup
+              title: Home Assistant Community Store
+              style: >
+                :host .content {
+                  width: 75em;
+                }
+              card:
+                type: iframe
+                url: /hacs
+                aspect_ratio: 65%
+                style: |
+                  ha-card {
+                    border-radius: 0 0 1em 1em;
+                  }
+          template: icon_name

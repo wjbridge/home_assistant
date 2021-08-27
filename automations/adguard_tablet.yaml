@@ -1,0 +1,36 @@
+###############################################################################
+# Schedule Oli Tablet
+###############################################################################
+- id: oli_tablet_schedule
+  alias: "Oli Tablet Schedule"
+  trace:
+      stored_traces: 10
+  trigger:
+    - platform: time
+      at:
+        - "10:00:00"
+        - "18:50:00"
+        - "20:00:00"
+
+  action:
+    - choose:
+        # IF morning
+        - conditions:
+            - condition: template
+              value_template: "{{ now().hour == 10 }}"
+          sequence:
+            - service: shell_command.enable_oli_filter
+
+        # ELIF night
+        - conditions:
+            - condition: template
+              value_template: "{{ now().hour == 18 }}"
+          sequence:
+            - service: shell_command.disable_oli_filter
+
+        # ELIF night
+        - conditions:
+            - condition: template
+              value_template: "{{ now().hour == 20 }}"
+          sequence:
+            - service: shell_command.enable_oli_filter

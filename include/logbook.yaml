@@ -1,0 +1,13 @@
+#-------------------------------------------
+# Logbook
+# https://www.home-assistant.io/components/logbook/
+#-------------------------------------------
+logbook:
+  include:
+    domains:
+      - switch
+      - light
+      - lock
+      - automation
+      - sensor
+      - person

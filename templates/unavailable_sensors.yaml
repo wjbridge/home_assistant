@@ -1,0 +1,27 @@
+#-------------------------------------------
+# Template for Unavailable Entities
+# https://gist.github.com/jazzyisj/45fce29d825b8f9b29c5974444299d90
+#-------------------------------------------
+- trigger:
+    - platform: time_pattern
+      minutes: "/2"
+  sensor:
+    - unique_id: unavailable_entities
+      unit_of_measurement: entities
+      state: >-
+        {{ states
+            |rejectattr('domain','eq','group')
+            |rejectattr('entity_id','in',state_attr('group.ignored_entities','entity_id'))
+            |selectattr('state','in',['unavailable','unknown'])
+            |list
+            |count
+          }}
+      attributes:
+        entities: >-
+          {{ states
+            |rejectattr('domain','eq','group')
+            |rejectattr('entity_id','in',state_attr('group.ignored_entities','entity_id'))
+            |selectattr('state','in',['unavailable','unknown']) 
+            |map(attribute='entity_id')
+            |list
+          }}

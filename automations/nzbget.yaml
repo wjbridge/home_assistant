@@ -1,0 +1,16 @@
+###############################################################################
+# Nzbget Download Limit
+###############################################################################
+- id: nzbget_download_limit
+  alias: 'Nzbget Download Limit'
+  trigger:
+    platform: numeric_state
+    entity_id: sensor.nzbget_speed
+    above: 10.3
+    for:
+      seconds: 10
+
+  action:
+    service: nzbget.set_speed
+    data:
+      speed: 80000

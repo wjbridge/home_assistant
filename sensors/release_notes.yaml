@@ -1,0 +1,80 @@
+#-------------------------------------------
+#  Release Notes
+#-------------------------------------------
+
+- platform: rest
+  name: hass_release_notes
+  resource: https://api.github.com/repos/home-assistant/core/releases/latest
+  value_template: >
+    {{ value_json.name }}
+  json_attributes:
+    - body
+    - html_url
+    - tag_name
+  scan_interval: 21600
+
+- platform: rest
+  name: hass_release_notes_rc
+  resource: https://api.github.com/repos/home-assistant/core/releases?per_page=1
+  value_template: >
+    {{ value_json[0].name }}
+  json_attributes:
+    - body
+    - html_url
+    - tag_name
+  scan_interval: 21600
+
+- platform: rest
+  name: adguardhome_release_notes
+  resource: https://api.github.com/repos/AdguardTeam/AdGuardHome/releases/latest
+  value_template: >
+    {{ value_json.name }}
+  json_attributes:
+    - body
+    - html_url
+    - tag_name
+  scan_interval: 21600
+
+- platform: rest
+  name: photoprism_release_notes
+  resource: https://api.github.com/repos/photoprism/photoprism/releases/latest
+  value_template: >
+    {{ value_json.name }}
+  json_attributes:
+    - body
+    - html_url
+    - tag_name
+  scan_interval: 21600
+
+- platform: rest
+  name: fireflyIII_release_notes
+  resource: https://api.github.com/repos/firefly-iii/firefly-iii/releases/latest
+  value_template: >
+    {{ value_json.name }}
+  json_attributes:
+    - body
+    - html_url
+    - tag_name
+  scan_interval: 21600
+
+- platform: rest
+  name: papermerge_release_notes
+  resource: https://api.github.com/repos/papermerge/papermerge-core/releases/latest
+  value_template: >
+    {{ value_json.name }}
+  json_attributes:
+    - body
+    - html_url
+    - tag_name
+  scan_interval: 21600
+
+- platform: rest
+  name: homeassistant_desktop_release_notes
+  resource: https://api.github.com/repos/mrvnklm/homeassistant-desktop/releases/latest
+  value_template: >
+    {{ value_json.name }}
+  json_attributes:
+    - body
+    - html_url
+    - tag_name
+  scan_interval: 21600
