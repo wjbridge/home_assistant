@@ -14,34 +14,36 @@ views:
       grid-template-columns: repeat(5, 1fr) 0
       grid-template-rows: 0 repeat(2, fit-content(100%)) 0fr
       grid-template-areas: |
-        "sidebar  .           .        .        ."
-        "sidebar  media       options  bedroom  ."
-        "sidebar  camera      outside  home     ."
-        "sidebar  footer      footer   footer   ."
+        "sidebar  .           .        .          .       ."
+        "sidebar  plex        media    bedroom    options ."
+        "sidebar  camera      outside  home       .       ."
+        "sidebar  footer      footer   footer     .       ."
       mediaquery:
         #phone
         "(max-width: 800px)":
           grid-gap: calc(var(--custom-layout-card-padding) * 1.5)
           grid-template-columns: 0 repeat(2, 1fr) 0
-          grid-template-rows: 0 repeat(5, fit-content(100%)) 0fr
+          grid-template-rows: 0 repeat(6, fit-content(100%)) 0fr
           grid-template-areas: |
             ".  .           .            ."
             ".  sidebar     sidebar      ."
             ".  home        bedroom      ."
             ".  options     outside      ."
-            ".  camera      media        ."
+            ".  camera      plex         ."
+            ".  media       .            ."
             ".  footer      footer       ."
             ".  .           .            ."
         #portrait
         "(max-width: 1200px)":
           grid-gap: var(--custom-layout-card-padding)
           grid-template-columns: repeat(3, 1fr) 0
-          grid-template-rows: 0 repeat(3, fit-content(100%)) 0fr
+          grid-template-rows: 0 repeat(4, fit-content(100%)) 0fr
           grid-template-areas: |
             "sidebar  .           .           ."
             "sidebar  home        bedroom     ."
             "sidebar  options     outside     ."
-            "sidebar  camera      media       ."
+            "sidebar  camera      plex        ."
+            "sidebar  media       .           ."
             "sidebar  footer      footer      ."
             "sidebar  .           .           ."
     cards:
@@ -96,14 +98,14 @@ views:
 
       #################################################
       #                                               #
-      #                    MEDIA                      #
+      #                    PLEX                       #
       #                                               #
       #################################################
 
       - type: grid
-        title: Media
+        title: Plex
         view_layout:
-          grid-area: media
+          grid-area: plex
         columns: 1
         cards:
 
@@ -210,6 +212,37 @@ views:
             template:
               - base
               - icon_toggle
+
+      #################################################
+      #                                               #
+      #                    MEDIA                      #
+      #                                               #
+      #################################################
+
+      - type: grid
+        title: Media
+        view_layout:
+          grid-area: media
+        columns: 2
+        cards:
+
+          - type: custom:button-card
+            entity: media_player.yamaha_receiver_family_room
+            name: Yamaha
+            template:
+              - base
+              - icon_monitors
+              - circle
+              - loader
+            hold_action:
+              !include popup/media_yamaha.yaml
+            variables:
+              circle_input: >
+                [[[
+                  return entity === undefined ?
+                    null :
+                    parseInt(entity.attributes.volume_level * 100);
+                ]]]
 
       #################################################
       #                                               #

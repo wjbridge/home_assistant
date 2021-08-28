@@ -1,7 +1,7 @@
 action: fire-dom-event
 browser_mod:
   command: popup
-  title: Vardagsrum Tv
+  title: Yamaha
   style:
     hui-grid-card:
       $hui-horizontal-stack-card$: |
@@ -23,30 +23,29 @@ browser_mod:
     cards:
       - type: entities
         state_color: true
-        show_header_toggle: false
         entities:
 
-          - entity: switch.tv_sony
-            name: Sony Bravia
+          - entity: media_player.yamaha_receiver_family_room
             secondary_info: last-changed
-          - entity: automation.tv_on_lights
-          - entity: input_select.hdmi
+
+          - type: attribute
+            entity: media_player.yamaha_receiver_family_room
+            attribute: source
+            name: Source
+            icon: mdi:volume-source
 
       - type: horizontal-stack
         cards:
 
           - type: custom:button-card
-            entity: media_player.sony_bravia_tv
-            icon: mdi:volume-mute
+            entity: media_player.yamaha_receiver_family_room
             show_name: false
+            icon: mdi:volume-mute
             tap_action:
               action: call-service
               service: media_player.volume_mute
               service_data:
-                entity_id: >
-                  [[[ return entity.entity_id; ]]]
-                is_volume_muted: >
-                  [[[ return entity.attributes.is_volume_muted === 'false' ? 'true' : 'false'; ]]]
+                entity_id: media_player.yamaha_receiver_family_room
             template: icon_only
 
           - type: custom:button-card
@@ -55,7 +54,7 @@ browser_mod:
               action: call-service
               service: media_player.volume_down
               service_data:
-                entity_id: media_player.sony_bravia_tv
+                entity_id: media_player.yamaha_receiver_family_room
             template: icon_only
 
           - type: custom:button-card
@@ -64,5 +63,5 @@ browser_mod:
               action: call-service
               service: media_player.volume_up
               service_data:
-                entity_id: media_player.sony_bravia_tv
+                entity_id: media_player.yamaha_receiver_family_room
             template: icon_only

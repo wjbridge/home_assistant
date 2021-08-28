@@ -27,8 +27,8 @@ media_player:
       - USB
       - V-AUX
     source_names:
-      HDMI1: "Nintendo Switch"
       HDMI2: "Nvidia Shield"
+      HDMI3: "Nintendo Switch"
     zone_names:
       Main_Zone: "Family Room"
     zone_ignore:

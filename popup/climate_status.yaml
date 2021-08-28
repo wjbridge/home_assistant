@@ -127,7 +127,7 @@ browser_mod:
                 entities:
                   - color: '#9C3A7E'
                     entity: sensor.basement_radon_24hrs
-                line_width: 8
+                line_width: 3
                 hour24: true
                 group: true
                 align_icon: left
@@ -259,14 +259,14 @@ browser_mod:
             tap_action:
               action: none
 
-          - entity: sensor.garage_temperature
+          - entity: sensor.garage_temp_temperature
             name: Garage
             secondary_info: >
-              Humidity: {{ states('sensor.garage_humidity') }} %
+              Humidity: {{ states('sensor.garage_temp_humidity') | round(1) }} %
           - type: custom:mini-graph-card
             entities:
               - color: '#399b56'
-                entity: sensor.garage_temperature
+                entity: sensor.garage_temp_temperature
             line_width: 3
             hour24: true
             group: true
