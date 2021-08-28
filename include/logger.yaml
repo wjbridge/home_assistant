@@ -19,3 +19,6 @@ logger:
     alexapy.alexaapi: info
 
     homeassistant.components.homekit_controller: info
+
+  filters:
+    - ".*\sReceiver\sis\soffline:\sYamaha Receiver"

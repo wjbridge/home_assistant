@@ -24,7 +24,7 @@
             - condition: template
               value_template: "{{ now().hour == 8 }}"
           sequence:
-            - service: media_player.play_m0edia
+            - service: media_player.play_media
               entity_id: media_player.spot
               data:
                 media_content_id: 'turn off fan'
