@@ -24,15 +24,6 @@
   beta: true
 
 #-------------------------------------------
-# HACS Version
-#-------------------------------------------
-- platform: command_line
-  name: hacs_version
-  scan_interval: 86400
-  command: >
-    grep -oP 'INTEGRATION_VERSION = "\K[^"]+' custom_components/hacs/const.py
-
-#-------------------------------------------
 # Uptime
 # https://www.home-assistant.io/integrations/uptime/
 #-------------------------------------------

@@ -3,38 +3,54 @@ browser_mod:
   command: popup
   title: Weston
   style:
-    hui-grid-card:
-      $hui-entities-card$: |
-        #states {
-          padding-bottom: 0 !important;
-        }
+    hui-vertical-stack-card:
       $hui-history-graph-card$ : |
         .content {
-          padding: 1.8em 2em 1.8em 2em !important;
-        }
-      $hui-glance-card$ : |
-        .entities.no-header {
-          padding-top: 0 !important;
+          padding: 0.2em 1.7em 1.2em 1.7em !important;
         }
       $: |
         button-card {
-          justify-self: center;
-          margin: 0.8em 0 2.5em 0;
-          width: 100%;
+          align-self: center;
+          padding: 0.2em 0 2.3em 0;
         }
-        #root {
-          grid-gap: 0 !important;
-        }
-        hui-map-card {
-          height: 99.5% !important;
-        }
+      $hui-map-card:
+        $: |
+          mwc-icon-button {
+            color: var(--primary-color);
+          }
+          ha-card {
+            border-radius: 0;
+            animation: border 1s forwards;
+          }
+          @keyframes border {
+            0%, 100% {
+              border-top: 2px solid #1a1a1a;
+            }
+          }
+        $ha-map$: |
+          #map {
+            background-color: #191919 !important;
+          }
+          .leaflet-control-attribution {
+            display: none;
+          }
+          .leaflet-bar a {
+            background-color: rgba(47, 51, 51, 0.9) !important;
+            color: #9da0a2 !important;
+          }
+          a.leaflet-control-zoom-in {
+            border-bottom: 1px solid #181818 !important;
+          }
+          .leaflet-pane.leaflet-tile-pane {
+            filter: contrast(85%);
+          }
 
   card:
-    type: grid
-    columns: 1
-    square: false
+    type: vertical-stack
     cards:
       - type: entities
+        card_mod:
+          class: content
         entities:
           - entity: person.weston
             secondary_info: last-changed
@@ -42,8 +58,6 @@ browser_mod:
       - type: history-graph
         entities:
           - entity: person.weston
-        hours_to_show: 24
-        refresh_interval: 0
 
       - type: glance
         show_state: false
@@ -58,7 +72,7 @@ browser_mod:
               }
 
       - type: map
-        entities:
-          - device_tracker.weston_phone
         default_zoom: 16
         dark_mode: true
+        entities:
+          - device_tracker.weston_phone

@@ -3,23 +3,17 @@ browser_mod:
   command: popup
   title: Yamaha
   style:
-    hui-grid-card:
-      $hui-horizontal-stack-card$: |
-        #root {
-          justify-content: space-evenly !important;
-        }
+    hui-vertical-stack-card:
       $: |
         hui-horizontal-stack-card {
-          padding: 0em 2em 0 2em !important;
-          height: 7em !important;
+          padding: 0em 2em 2.3em 2em;
         }
+      $hui-horizontal-stack-card$: |
         #root {
-          grid-gap: 0 !important;
+          justify-content: space-evenly;
         }
   card:
-    type: grid
-    columns: 1
-    square: false
+    type: vertical-stack
     cards:
       - type: entities
         state_color: true

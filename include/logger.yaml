@@ -21,4 +21,5 @@ logger:
     homeassistant.components.homekit_controller: info
 
   filters:
-    - ".*\sReceiver\sis\soffline:\sYamaha Receiver"
+    homeassistant.components.yamaha.media_player:
+      - "^.* Receiver is offline: Yamaha Receiver$"

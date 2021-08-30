@@ -11,10 +11,9 @@ browser_mod:
     layout-card$grid-layout:
       $: |
         hui-vertical-stack-card {
-          border-radius: 0;
-          animation: hui-vertical-stack-card 1s forwards;
+          animation: border 1s forwards;
         }
-        @keyframes hui-vertical-stack-card {
+        @keyframes border {
           0%, 100% {
               border-right: 1.5px solid rgba(0, 0, 0, 0.2);
           }
@@ -28,14 +27,33 @@ browser_mod:
           }
         }
       $hui-vertical-stack-card:
-        $hui-horizontal-stack-card$: |
-          #root {
-            justify-content: space-evenly !important;
-          }
         $: |
           hui-horizontal-stack-card {
-            padding: 0em 2em 2em 2em !important;
+            padding: 0em 2em 2.3em 2em;
           }
+        $hui-entities-card$: |
+          .card-content {
+            padding: var(--card-content-padding);
+          }
+        $hui-horizontal-stack-card$: |
+          #root {
+            justify-content: space-evenly;
+          }
+      $hui-picture-elements-card$: |
+        #root {
+          animation: fadein 0.9s both;
+        }
+        @keyframes fadein {
+          0% {
+            opacity: 0;
+          }
+          75% {
+            opacity: 0;
+          }
+          100% {
+            opacity: 1;
+          }
+        }
   card:
     type: custom:layout-card
     layout_type: custom:grid-layout
@@ -64,69 +82,110 @@ browser_mod:
         cards:
           - type: thermostat
             entity: climate.thermostat
+            view_layout:
+              grid-area: thermostat
 
           - type: entities
             state_color: true
+            view_layout:
+              grid-area: thermostat
+            card_mod:
+              class: header
             entities:
               - entity: sensor.dark_sky_temperature
               - entity: sensor.dark_sky_daytime_high_temperature_0d
 
-          - type: conditional
-            conditions:
-              - entity: sensor.template_equipment_resume
-                state: 'cool'
-              - entity: sensor.cooling_hours_today
-                state_not: 'unknown'
-            card:
-              type: entities
-              state_color: true
-              entities:
-                - type: attribute
+              - type: divider
+
+              # Cooling Entities
+              - type: conditional
+                conditions: &cooling_cond
+                  - entity: sensor.template_equipment_resume
+                    state: 'cool'
+                  - entity: sensor.cooling_hours_today
+                    state_not: 'unknown'
+                row:
+                  type: attribute
                   entity: sensor.cooling_hours_today
                   attribute: value
                   secondary_info: last-changed
-                - type: attribute
+
+              - type: conditional
+                conditions: *cooling_cond
+                row:
+                  type: attribute
                   entity: sensor.cooling_hours_yesterday
                   attribute: value
                   secondary_info: last-changed
-                - type: attribute
+
+              - type: conditional
+                conditions: *cooling_cond
+                row:
+                  type: attribute
                   entity: sensor.cooling_hours_two_days_ago
                   attribute: value
                   secondary_info: last-changed
 
-          - type: conditional
-            conditions:
-              - entity: sensor.template_equipment_resume
-                state: 'heat'
-              - entity: sensor.heating_hours_today
-                state_not: 'unknown'
-            card:
-              type: entities
-              state_color: true
-              entities:
-                - type: attribute
+              # Heating Entities
+              - type: conditional
+                conditions: &heating_cond
+                  - entity: sensor.template_equipment_resume
+                    state: 'heat'
+                  - entity: sensor.heating_hours_today
+                    state_not: 'unknown'
+                row:
+                  type: attribute
                   entity: sensor.heating_hours_today
                   attribute: value
                   secondary_info: last-changed
-                - type: attribute
+
+              - type: conditional
+                conditions: *heating_cond
+                row:
+                  type: attribute
                   entity: sensor.heating_hours_yesterday
                   attribute: value
                   secondary_info: last-changed
-                - type: attribute
+
+              - type: conditional
+                conditions: *heating_cond
+                row:
+                  type: attribute
                   entity: sensor.heating_hours_two_days_ago
                   attribute: value
                   secondary_info: last-changed
 
-          - type: entities
-            state_color: true
-            entities:
+              - type: divider
+
+              # Radon
               - entity: sensor.basement_radon_24hrs
                 name: Radon 24 Hrs
                 secondary_info: last-changed
               - type: custom:mini-graph-card
                 entities:
-                  - color: '#9C3A7E'
+                  - color: var(--graph-mini-color)
                     entity: sensor.basement_radon_24hrs
+                line_width: 3
+                hour24: true
+                group: true
+                align_icon: left
+                align_state: right
+                align_header: left
+                hours_to_show: 24
+                show:
+                  {fill: fade, icon: false, name: false, state: false, 
+                  name_adaptive_color: false, labels: hover, legend: false}
+                tap_action:
+                  action: none
+
+              # VOC
+              - entity: sensor.basement_voc_level
+                name: Basement VOC
+                secondary_info: last-changed
+              - type: custom:mini-graph-card
+                entities:
+                  - color: var(--graph-mini-color)
+                    entity: sensor.basement_voc_level
                 line_width: 3
                 hour24: true
                 group: true
@@ -204,7 +263,7 @@ browser_mod:
             secondary_info: last-changed
           - type: custom:mini-graph-card
             entities:
-              - color: '#399b56'
+              - color: var(--primary-graph-mini-color)
                 entity: sensor.family_room_temperature
             line_width: 3
             hour24: true
@@ -224,7 +283,7 @@ browser_mod:
             secondary_info: last-changed
           - type: custom:mini-graph-card
             entities:
-              - color: '#399b56'
+              - color: var(--primary-graph-mini-color)
                 entity: sensor.master_bedroom_temperature
             line_width: 3
             hour24: true
@@ -244,7 +303,7 @@ browser_mod:
             secondary_info: last-changed
           - type: custom:mini-graph-card
             entities:
-              - color: '#399b56'
+              - color: var(--primary-graph-mini-color)
                 entity: sensor.olivia_room_temperature
             line_width: 3
             hour24: true
@@ -265,7 +324,7 @@ browser_mod:
               Humidity: {{ states('sensor.garage_temp_humidity') | round(1) }} %
           - type: custom:mini-graph-card
             entities:
-              - color: '#399b56'
+              - color: var(--primary-graph-mini-color)
                 entity: sensor.garage_temp_temperature
             line_width: 3
             hour24: true
@@ -286,28 +345,8 @@ browser_mod:
               Humidity: {{ states('sensor.basement_humidity') }} %
           - type: custom:mini-graph-card
             entities:
-              - color: '#399b56'
+              - color: var(--primary-graph-mini-color)
                 entity: sensor.basement_temperature
-            line_width: 3
-            hour24: true
-            group: true
-            align_icon: left
-            align_state: right
-            align_header: left
-            hours_to_show: 24
-            show:
-              {fill: fade, icon: false, name: false, state: false, 
-              name_adaptive_color: false, labels: hover, legend: false}
-            tap_action:
-              action: none
-
-          - entity: sensor.basement_voc_level
-            name: Basement VOC
-            secondary_info: last-changed
-          - type: custom:mini-graph-card
-            entities:
-              - color: '#9C3A7E'
-                entity: sensor.basement_voc_level
             line_width: 3
             hour24: true
             group: true

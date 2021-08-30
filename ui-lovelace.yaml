@@ -12,41 +12,41 @@ views:
       #default
       grid-gap: var(--custom-layout-card-padding)
       grid-template-columns: repeat(5, 1fr) 0
-      grid-template-rows: 0 repeat(2, fit-content(100%)) 0fr
+      grid-template-rows: 0 repeat(3, fit-content(100%)) 0fr
       grid-template-areas: |
-        "sidebar  .           .        .          .       ."
-        "sidebar  plex        media    bedroom    options ."
-        "sidebar  camera      outside  home       .       ."
-        "sidebar  footer      footer   footer     .       ."
+        "sidebar  .           .        .          ."
+        "sidebar  plex        media    bedroom    ."
+        "sidebar  camera      outside  home       ."
+        "sidebar  footer      footer   footer     ."
       mediaquery:
         #phone
         "(max-width: 800px)":
           grid-gap: calc(var(--custom-layout-card-padding) * 1.5)
           grid-template-columns: 0 repeat(2, 1fr) 0
-          grid-template-rows: 0 repeat(6, fit-content(100%)) 0fr
+          grid-template-rows: 0 repeat(5, fit-content(100%)) 0fr
           grid-template-areas: |
             ".  .           .            ."
             ".  sidebar     sidebar      ."
             ".  home        bedroom      ."
-            ".  options     outside      ."
+            ".  media       outside      ."
             ".  camera      plex         ."
-            ".  media       .            ."
             ".  footer      footer       ."
             ".  .           .            ."
         #portrait
         "(max-width: 1200px)":
           grid-gap: var(--custom-layout-card-padding)
           grid-template-columns: repeat(3, 1fr) 0
-          grid-template-rows: 0 repeat(5, fit-content(100%)) 0fr
+          grid-template-rows: 0 repeat(3, fit-content(100%)) 0fr
           grid-template-areas: |
             "sidebar  .           .           ."
             "sidebar  home        bedroom     ."
-            "sidebar  options     outside     ."
+            "sidebar  media       outside     ."
             "sidebar  camera      plex        ."
-            "sidebar  media       .           ."
             "sidebar  footer      footer      ."
             "sidebar  .           .           ."
     cards:
+
+      - type: custom:button-card #extra_styles fix
 
       #################################################
       #                                               #
@@ -54,47 +54,54 @@ views:
       #                                               #
       #################################################
 
-      - type: markdown
-        view_layout:
-          grid-area: sidebar
-        content: |
-          {% set attributes = states.sensor.template_sidebar.attributes | default %}
-          {% for template in attributes %}
-          {{ state_attr('sensor.template_sidebar', template) }}
-          {% endfor %}
-        style: #force style - duplicate of themes markdown
-          {.: "ha-card{background-color:#00000010;border-radius:0;min-height:100vh;animation:ha-card 1s forwards}@keyframes ha-card{0%,100%{border-right:.1vw solid rgba(58,69,73,.2)}}@media screen and (max-width:800px){ha-card{background:0 0;min-height:100%;animation:none}}\n", ha-markdown: {.: "ha-markdown{padding:var(--custom-layout-card-padding) 2vw 0 var(--custom-layout-card-padding)!important;pointer-events:none}@media screen and (max-width:800px){ha-markdown{padding:0!important}}\n", $: "p>span{font-family:SF Text;font-size:var(--markdown-sidebar-clock-font-size);font-weight:200;line-height:var(--markdown-sidebar-clock-line-height);letter-spacing:-.05vw;margin-left:-.3vw;color:var(--ha-card-header-color)}p>span>span{position:relative;top:-.09em}p{font-family:SF Display;font-size:var(--markdown-sidebar-font-size);line-height:var(--markdown-sidebar-line-height);font-weight:300;letter-spacing:.06vw;color:#6a7377}p>b{color:var(--ha-card-header-color)}@media screen and (max-width:1200px){p>span{font-size:calc(var(--markdown-sidebar-clock-font-size) * 1.4);line-height:calc(var(--markdown-sidebar-clock-line-height) * 1.4)}p{font-size:calc(var(--markdown-sidebar-font-size) * 1.4);line-height:calc(var(--markdown-sidebar-line-height) * 1.4)}}@media screen and (max-width:800px){p>span{font-size:calc(var(--markdown-sidebar-clock-font-size) * 2.6);line-height:calc(var(--markdown-sidebar-clock-line-height) * 2.6)}p{font-size:calc(var(--markdown-sidebar-font-size) * 2.6);line-height:calc(var(--markdown-sidebar-line-height) * 2.6);letter-spacing:.16vw}}\n"}}
-
-      - type: grid
+      - type: vertical-stack
         view_layout:
           grid-area: sidebar
         cards:
+          - type: custom:button-card
+            entity: sensor.template_sidebar
+            template: sidebar_template
+
           - type: conditional
             conditions:
-              - entity: sensor.template_unavailable_entities
-                state_not: '0'
-              - entity: timer.startup_missing_delay
-                state: 'idle'
+              - entity: sensor.template_oakland_alert_1
+                state: 'on'
             card:
-              type: button
-              icon: mdi:alert-rhombus
+              type: custom:button-card
+              entity: sensor.template_oakland_alert_1
+              template: weather_alert
               tap_action:
-                !include popup/sidebar_missing_entities.yaml
+                !include popup/home_weston.yaml
 
-          - type: button
-            icon: mdi:information-outline
-            tap_action:
-              !include popup/sidebar_information.yaml
+          - type: grid
+            cards:
+              - type: conditional
+                conditions:
+                  - entity: sensor.template_unavailable_entities
+                    state_not: '0'
+                  - entity: timer.startup_missing_delay
+                    state: 'idle'
+                card:
+                  type: button
+                  icon: mdi:alert-rhombus
+                  tap_action:
+                    !include popup/sidebar_missing_entities.yaml
+                  hold_action:
+                    action: none
 
-          - type: button
-            icon: mdi:arrow-up-bold-circle-outline
-            tap_action:
-              !include popup/sidebar_update.yaml
-            hold_action:
-              action: call-service
-              service: homeassistant.update_entity
-              service_data:
-                entity_id: sensor.hacs
+              - type: button
+                icon: mdi:information-outline
+                tap_action:
+                  !include popup/sidebar_information.yaml
+                hold_action:
+                  action: none
+
+              - type: button
+                icon: mdi:arrow-up-bold-circle-outline
+                tap_action:
+                  !include popup/sidebar_update.yaml
+                hold_action:
+                  action: none
 
       #################################################
       #                                               #
@@ -126,92 +133,47 @@ views:
                 slideShadows: true
             cards:
 
-              - type: vertical-stack
-                cards:
-                  - type: custom:button-card
-                    entity: sensor.plex_recently_added
-                    tap_action:
-                      action: none
-                    template:
-                      - conditional_media
-                      - recently_downloaded
-                      - icon_plex
-                    variables:
-                      download_index: >
-                        [[[
-                          return parseInt('1');
-                        ]]]
-              - type: vertical-stack
-                cards:
-                  - type: custom:button-card
-                    entity: sensor.plex_recently_added
-                    tap_action:
-                      action: none
-                    template:
-                      - conditional_media
-                      - recently_downloaded
-                      - icon_plex
-                    variables:
-                      download_index: >
-                        [[[
-                          return parseInt('2');
-                        ]]]
-              - type: vertical-stack
-                cards:
-                  - type: custom:button-card
-                    entity: sensor.plex_recently_added
-                    tap_action:
-                      action: none
-                    template:
-                      - conditional_media
-                      - recently_downloaded
-                      - icon_plex
-                    variables:
-                      download_index: >
-                        [[[
-                          return parseInt('3');
-                        ]]]
+              - type: custom:button-card
+                entity: sensor.plex_recently_added
+                tap_action:
+                  action: none
+                template:
+                  - conditional_media
+                  - recently_downloaded
+                  - icon_plex
+                variables:
+                  download_index: >
+                    [[[
+                      return parseInt('1');
+                    ]]]
 
-      #################################################
-      #                                               #
-      #                    OPTIONS                    #
-      #                                               #
-      #################################################
+              - type: custom:button-card
+                entity: sensor.plex_recently_added
+                tap_action:
+                  action: none
+                template:
+                  - conditional_media
+                  - recently_downloaded
+                  - icon_plex
+                variables:
+                  download_index: >
+                    [[[
+                      return parseInt('2');
+                    ]]]
 
-      - type: grid
-        title: Options
-        view_layout:
-          grid-area: options
-        columns: 2
-        cards:
-
-          - type: custom:button-card
-            entity: input_boolean.oli_bedroom_echo_en
-            name: Oli Echo
-            template:
-              - base
-              - icon_toggle
-
-          - type: custom:button-card
-            entity: input_boolean.weston_bedroom_echo_en
-            name: Wes Echo
-            template:
-              - base
-              - icon_toggle
-
-          - type: custom:button-card
-            entity: input_boolean.oli_bedroom_fan_en
-            name: Oli Fan
-            template:
-              - base
-              - icon_toggle
-          
-          - type: custom:button-card
-            entity: input_boolean.oli_night_light_en
-            name: Oli Light
-            template:
-              - base
-              - icon_toggle
+              - type: custom:button-card
+                entity: sensor.plex_recently_added
+                tap_action:
+                  action: none
+                template:
+                  - conditional_media
+                  - recently_downloaded
+                  - icon_plex
+                variables:
+                  download_index: >
+                    [[[
+                      return parseInt('3');
+                    ]]]
 
       #################################################
       #                                               #
@@ -316,24 +278,30 @@ views:
                 rotate: 80
                 depth: 300
             cards:
-
-              - type: vertical-stack
+              - type: grid
+                columns: 1
                 cards:
                   - type: picture-entity
                     entity: camera.master_bedroom
                     camera_view: live
-
+              
+              - type: grid
+                columns: 1
+                cards:
                   - type: picture-entity
                     entity: camera.oli_bedroom
                     camera_view: live
 
-              - type: vertical-stack
+              - type: grid
+                columns: 1
                 cards:
-
                   - type: picture-entity
                     entity: camera.garage
                     camera_view: live
 
+              - type: grid
+                columns: 1
+                cards:
                   - type: picture-entity
                     entity: camera.backyard
                     camera_view: live
@@ -453,10 +421,7 @@ views:
       #                                               #
       #################################################
 
-      - type: markdown
+      - type: custom:button-card
         view_layout:
           grid-area: footer
-        content: >
-          {{ state_attr('sensor.template_apcupsd', 'template') }}
-        style: #force style - duplicate of themes markdown
-          {.: "ha-card,ha-markdown{background:0 0;padding:0!important;pointer-events:none;margin-top:-1vw}ha-markdown{overflow:hidden}\n", ha-markdown$: "ha-markdown-element{opacity:.6;font-size:1.26vw;font-weight:400;--mdc-icon-size:1.2vw;font-family:SF Display;letter-spacing:.05vw;line-height:0;white-space:nowrap}ha-icon{vertical-align:3%;opacity:.4}@media screen and (max-width:800px){ha-markdown-element{display:none}}\n"}
+        template: apcupsd

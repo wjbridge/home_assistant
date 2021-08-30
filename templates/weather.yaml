@@ -103,7 +103,6 @@
           {% endif %}
           {{ test.count }}
 
-- sensor:
     - unique_id: oakland_alert_1
       state: >-
         {% if (states('sensor.oakland') != 'unavailable') %}
@@ -268,7 +267,6 @@
             None
           {% endif %}
 
-- sensor:
     - unique_id: oakland_alert_2
       state: >-
         {% if (states('sensor.oakland') != 'unavailable') %}
@@ -433,7 +431,6 @@
             None
           {% endif %}
 
-- sensor:
     - unique_id: oakland_alert_1_last_changed
       state: >-
         {% if (states('sensor.oakland') != 'unavailable') %}
@@ -444,7 +441,6 @@
           {% endif %}
         {% endif %}
 
-- sensor:
     - unique_id: oakland_alert_2_last_changed
       state: >-
         {% if (states('sensor.oakland') != 'unavailable') %}

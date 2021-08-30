@@ -2,15 +2,8 @@ action: fire-dom-event
 browser_mod:
   command: popup
   title: Dyson Fan
-  style:
-    hui-grid-card$: |
-      #root {
-        grid-gap: 0 !important;
-      }
   card:
-    type: grid
-    columns: 1
-    square: false
+    type: vertical-stack
     cards:
       - type: entities
         state_color: true

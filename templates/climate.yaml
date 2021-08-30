@@ -5,7 +5,6 @@
     - unique_id: operating_state
       state: "{{ state_attr('climate.thermostat', 'hvac_action') }}"
 
-- sensor:
     - unique_id: equipment_resume
       state: >
         {% set new_temp = states('sensor.dark_sky_overnight_low_temperature_0d') | float %}

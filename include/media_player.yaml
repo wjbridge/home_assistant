@@ -13,6 +13,7 @@ media_player:
       - AV4
       - AV5
       - AV6
+      - HDMI1
       - HDMI2
       - HDMI3
       - HDMI4
@@ -27,8 +28,8 @@ media_player:
       - USB
       - V-AUX
     source_names:
-      HDMI2: "Nvidia Shield"
-      HDMI3: "Nintendo Switch"
+      HDMI1: "Nvidia Shield"
+      HDMI2: "Nintendo Switch"
     zone_names:
       Main_Zone: "Family Room"
     zone_ignore:

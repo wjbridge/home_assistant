@@ -8,6 +8,34 @@ browser_mod:
         width: calc(385px + 385px + 385px);
         max-width: 90vw;
       }
+    layout-card:
+      $grid-layout$:
+        hui-entities-card:
+          $: |
+            .card-content {
+              padding: 1.5em 2.7em 2.3em 2em;
+            }
+            ha-card {
+              animation: border 1s forwards;
+              border-radius: 0;
+            }
+            @keyframes border {
+              0%, 100% {
+                border-right: 1px solid rgba(0, 0, 0, 0.3);
+              }
+            }
+            /* phone */
+            @media screen and (max-width: 800px) {
+              ha-card {
+                animation: none;
+              }
+            }
+          $hui-horizontal-stack-card$: |
+            #root {
+              justify-content: space-evenly;
+              margin-top: 1.9em;
+              margin-left: 0.8em;
+            }
   card:
     type: custom:layout-card
     layout_type: custom:grid-layout
@@ -38,26 +66,12 @@ browser_mod:
           grid-area: hass
         title: Home Assistant
         show_header_toggle: false
-        style: &border |
-          ha-card {
-            border-radius: 0;
-            animation: ha-card 1s forwards;
-          }
-
-          @keyframes ha-card {
-            0%, 100% {
-                border-right: 1.5px solid rgba(0, 0, 0, 0.2);
-            }
-          }
-
-          /* phone */
-          @media screen and (max-width: 800px) {
+        card_mod:
+          class: header
+          style: |
             ha-card {
-                border-bottom: 1.5px solid rgba(0, 0, 0, 0.2);
-                padding-right: 0;
-                animation: none;
+              margin: 0px !important;
             }
-          }
         entities:
           - entity: sensor.hass_version_installed
 
@@ -109,14 +123,7 @@ browser_mod:
                   service_data:
                     entity_id: sensor.docker_homeassistant_memory_percent
 
-          - type: custom:hui-element
-            card_type: horizontal-stack
-            style: &horizontal-style |
-              #root {
-                justify-content: space-evenly;
-                margin-top: 2em;
-                margin-left: 1em;
-              }
+          - type: custom:hui-horizontal-stack-card
             cards:
               - type: custom:button-card
                 name: Home Assistant
@@ -152,7 +159,12 @@ browser_mod:
           grid-area: sensor
         title: Sensor Status
         show_header_toggle: false
-        style: *border
+        card_mod:
+          class: header
+          style: |
+            ha-card {
+              margin: 0px !important;
+            }
         entities:
           - entity: sensor.front_door_battery
             secondary_info: >
@@ -197,11 +209,46 @@ browser_mod:
       #                  DOCKER                       #
       #                                               #
       #################################################
+
       - type: entities
         view_layout:
           grid-area: docker
         title: Docker Status
         show_header_toggle: false
+        card_mod:
+          class: header
+          style:
+            .: |
+              ha-card {
+                animation: none !important;
+                margin: 0px !important;
+              }
+            mini-graph-card:
+              $: |
+                ha-card {
+                  padding: 0px !important;
+                }
+            hui-horizontal-stack-card:
+              $:
+                .: |
+                  #root {
+                    margin-top: 1em;
+                    margin-right: 1.5em;
+                  }
+                  #root > * {
+                    flex: none !important;
+                  }
+                hui-entities-card:
+                  $:
+                    .: |
+                      #states {
+                        padding: 0;
+                      }
+                    hui-sensor-entity-row:
+                      $hui-generic-entity-row$: |
+                        .info {
+                          margin: 0 8px 0 8px !important;
+                        }
         entities:
           - entity: sensor.docker_version
 
@@ -236,26 +283,16 @@ browser_mod:
                   service_data:
                     entity_id: sensor.docker_vpn_memory_percent
 
-          - type: custom:hui-element
-            card_type: horizontal-stack
+          - type: custom:hui-horizontal-stack-card
             cards:
               - type: entities
-                style: |
-                  #states {
-                    padding: 0;
-                  }
                 entities:
                   - entity: sensor.docker_vpn_network_speed_down
                     style: |
                       :host {
                         --paper-item-icon-color: green;
                       }
-
               - type: entities
-                style: |
-                  #states {
-                    padding: 0;
-                  }
                 entities:
                   - entity: sensor.docker_vpn_network_speed_up
                     style: |

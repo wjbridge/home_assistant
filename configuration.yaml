@@ -46,7 +46,7 @@ lovelace:
       { url: /hacsfiles/swipe-card/swipe-card.js,                                   type: module },
       { url: /hacsfiles/lovelace-canary/canary.js,                                  type: module },
 
-      { url: '/local/custom_icons.js?v=25052001',                                   type: module },
+      { url: '/local/custom_icons.js?v=28082021',                                   type: module },
       { url: '/local/font.css',                                                     type: css    } ]
 
 #-------------------------------------------
@@ -203,7 +203,7 @@ device_tracker:
     new_device_defaults:
       track_new_devices: false
     interval_seconds: 60
-    consider_home: 180
+    consider_home: 240
 
 #-------------------------------------------
 # Weather
@@ -237,8 +237,5 @@ tplink:
 # https://github.com/thomasloven/hass-browser_mod
 #-------------------------------------------
 browser_mod:
-  devices:
-    8d998404-7967b945:
-      name: nexus_tab
   disable:
     - all
