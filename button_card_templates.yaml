@@ -216,19 +216,23 @@
       action: none
     state_display: >
       [[[
-        if (states["sensor.ups_status"].state != 'unknown') {
-          let spacer = '‍ ‍ ‍ ‍ ‍ ‍<font color="#2f3436">|</font> ‍ ‍ ‍ ‍ ';
-          let ups_status = states["sensor.ups_status"].state;
-          let ups_battery = states["sensor.ups_battery"].state;
-          let ups_load = states["sensor.ups_load"].state;
-          let ups_time_left = states["sensor.ups_time_left"].state;
+        if (states["sensor.ups_status"]) {
+          if (states["sensor.ups_status"].state != 'unknown') {
+            let spacer = '‍ ‍ ‍ ‍ ‍ ‍<font color="#2f3436">|</font> ‍ ‍ ‍ ‍ ';
+            let ups_status = states["sensor.ups_status"].state;
+            let ups_battery = states["sensor.ups_battery"].state;
+            let ups_load = states["sensor.ups_load"].state;
+            let ups_time_left = states["sensor.ups_time_left"].state;
 
-          return `
-            <ha-icon icon="mdi:information-outline"></ha-icon> <b>${ups_status}</b>${spacer}
-            <ha-icon icon="mdi:battery"></ha-icon> <b>${ups_battery} %</b>${spacer}
-            <ha-icon icon="mdi:gauge"></ha-icon> <b>${ups_load} %</b> Load${spacer}
-            <ha-icon icon="mdi:clock-alert"></ha-icon> <b>${ups_time_left}</b> Minutes
-          `;
+            return `
+              <ha-icon icon="mdi:information-outline"></ha-icon> <b>${ups_status}</b>${spacer}
+              <ha-icon icon="mdi:battery"></ha-icon> <b>${ups_battery} %</b>${spacer}
+              <ha-icon icon="mdi:gauge"></ha-icon> <b>${ups_load} %</b> Load${spacer}
+              <ha-icon icon="mdi:clock-alert"></ha-icon> <b>${ups_time_left}</b> Minutes
+            `;
+          }
+        } else {
+          return `Unknown`;
         }
       ]]]
     styles:
@@ -878,6 +882,13 @@
         - font-family: SF Mono
         - opacity: 0.65
         - padding: 0.55vw 1.2vw 0.5vw 1.2vw
+      custom_fields:
+        icon:
+          - fill: >
+              [[[ 
+                let alert_ev = entity.attributes.alert_event;
+                return alert_ev === 'Severe Thunderstorm Warning' ? '#ff370a' : '#9da0a2'; 
+              ]]]
     extra_styles: |
       #state {
         font-size: 1.0vw;
@@ -1573,14 +1584,67 @@
           const room = 'd="M11.4,1.4h27.2v43.1H11.4V1.4z" fill="#bcbcbc"';
           const door = 'd="M11.4 1.4v43.1h27.2V1.4H11.4zm23 23.4c0 1.1-.9 1.9-1.9 1.9h0c-1.1 0-1.9-.9-1.9-1.9V21c0-1.1.9-1.9 1.9-1.9h0c1.1 0 1.9.9 1.9 1.9v3.8z"';
 
-          if (states["binary_sensor.front_door_open"].state === 'on' && variables.timeout < 2000) {
-            return `
+          if (states["binary_sensor.front_door_open"]) {
+            if (states["binary_sensor.front_door_open"].state === 'on' && variables.timeout < 2000) {
+              return `
+                <style>
+                  .state {
+                    animation: state 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+                  }
+                  .opacity {
+                    animation: opacity 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+                  }
+                  @keyframes state {
+                    0% {
+                      transform: none;
+                      fill: #9da0a2;
+                    }
+                    100% {
+                      transform: skewY(10deg) translate(4.5%, -3.9%) scaleX(0.8);
+                      fill: #b68349;
+                    }
+                  }
+                  @keyframes opacity {
+                    0% {
+                      opacity: 0;
+                    }
+                    100% {
+                      opacity: 1;
+                    }
+                  }
+                </style>
+                <svg viewBox="0 0 50 50">
+                  <path class="opacity" ${room}/>
+                  <path class="state" ${door}/>
+                </svg>
+              `;
+            }
+
+            if (states["binary_sensor.front_door_open"].state === 'on' && variables.timeout > 2000) {
+              return `
+                <svg viewBox="0 0 50 50">
+                  <style>
+                    .state_timeout_on {
+                      transform: skewY(10deg) translate(4.5%, -3.9%) scaleX(0.8);
+                      fill: #b68349;
+                    }
+                  </style>
+                  <path ${room}/>
+                  <path class="state_timeout_on" ${door}/>
+                </svg>
+              `;
+            }
+
+            return states["binary_sensor.front_door_open"].state === 'off' && variables.timeout < 2000 ? `
               <style>
                 .state {
-                  animation: state 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+                  animation: state 0.4s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
                 }
                 .opacity {
-                  animation: opacity 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+                  animation: opacity 0.4s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+                }
+                .reverse {
+                  animation-direction: reverse;
                 }
                 @keyframes state {
                   0% {
@@ -1602,71 +1666,20 @@
                 }
               </style>
               <svg viewBox="0 0 50 50">
-                <path class="opacity" ${room}/>
-                <path class="state" ${door}/>
+                <path class="opacity reverse" ${room}/>
+                <path class="state reverse" ${door}/>
               </svg>
-            `;
-          }
-
-          if (states["binary_sensor.front_door_open"].state === 'on' && variables.timeout > 2000) {
-            return `
+            ` : `
               <svg viewBox="0 0 50 50">
                 <style>
-                  .state_timeout_on {
-                    transform: skewY(10deg) translate(4.5%, -3.9%) scaleX(0.8);
-                    fill: #b68349;
+                  .state_timeout_off {
+                    fill: var(--state-icon-color);
                   }
                 </style>
-                <path ${room}/>
-                <path class="state_timeout_on" ${door}/>
+                <path class="state_timeout_off" ${door}/>
               </svg>
             `;
           }
-
-          return states["binary_sensor.front_door_open"].state === 'off' && variables.timeout < 2000 ? `
-            <style>
-              .state {
-                animation: state 0.4s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
-              }
-              .opacity {
-                animation: opacity 0.4s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
-              }
-              .reverse {
-                animation-direction: reverse;
-              }
-              @keyframes state {
-                0% {
-                  transform: none;
-                  fill: #9da0a2;
-                }
-                100% {
-                  transform: skewY(10deg) translate(4.5%, -3.9%) scaleX(0.8);
-                  fill: #b68349;
-                }
-              }
-              @keyframes opacity {
-                0% {
-                  opacity: 0;
-                }
-                100% {
-                  opacity: 1;
-                }
-              }
-            </style>
-            <svg viewBox="0 0 50 50">
-              <path class="opacity reverse" ${room}/>
-              <path class="state reverse" ${door}/>
-            </svg>
-          ` : `
-            <svg viewBox="0 0 50 50">
-              <style>
-                .state_timeout_off {
-                  fill: var(--state-icon-color);
-                }
-              </style>
-              <path class="state_timeout_off" ${door}/>
-            </svg>
-          `;
         ]]]
 
   icon_closet:

@@ -14,7 +14,7 @@
   action:
     service: notify.groot_automation
     data_template:
-      title: "<b>Info</b>: New Home Assistant Version"
+      title: "<b>Info</b>: New Home Assistant Version -> {{ trigger.from_state }} to {{ trigger.to_state }}"
       message: "Version <a href=\"https://github.com/home-assistant/core/releases/tag/{{states('sensor.hass_version_latest')}}\">{{states('sensor.hass_version_latest')}}</a> is available!"
 
 ###############################################################################
@@ -34,11 +34,13 @@
   condition:
     - condition: template
       value_template: "{{ states(trigger.entity_id) != 'unavailable' }}"
+    - condition: template
+      value_template: "{{ states(trigger.entity_id) != 'None' }}"
 
   action:
     service: notify.groot_automation
     data_template:
-      title: "<b>Info</b>: New Version [{{ trigger.entity_id }}]"
+      title: "<b>Info</b>: [{{ trigger.entity_id }}] -> {{ trigger.from_state }} to {{ trigger.to_state }}"
       message: "<a href=\"{{state_attr(trigger.entity_id, 'html_url') }}\">{{state_attr(trigger.entity_id, 'tag_name')}}</a> is available!"
 
 ###############################################################################

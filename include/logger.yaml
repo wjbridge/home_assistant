@@ -18,8 +18,14 @@ logger:
     custom_components.alexa_media: info
     alexapy.alexaapi: info
 
+    homeassistant.components.samsungtv: info
+
     homeassistant.components.homekit_controller: info
+    samsungtvws: debug
+    samsungctl: debug
 
   filters:
     homeassistant.components.yamaha.media_player:
       - "^.* Receiver is offline: Yamaha Receiver$"
+    root:
+      - "Sending handshake$"

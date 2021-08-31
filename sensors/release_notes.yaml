@@ -15,6 +15,9 @@
 
 - platform: rest
   name: hass_release_notes_rc
+  authentication: basic
+  username: !secret github_username 
+  password: !secret github_token
   resource: https://api.github.com/repos/home-assistant/core/releases?per_page=1
   value_template: >
     {{ value_json[0].name }}
@@ -23,6 +26,10 @@
     - html_url
     - tag_name
   scan_interval: 21600
+  headers:
+    Accept: application/vnd.github.v3+json
+    Content-Type: application/json
+    User-Agent: HAS Releases
 
 - platform: rest
   name: adguardhome_release_notes
