@@ -5,7 +5,7 @@ browser_mod:
   style:
     .: |
       :host .content {
-        width: 60em;
+        width: 40em;
         height: 100%;
         padding: 2.1em 1.9em 1.9em 2.7em;
       }
@@ -142,7 +142,7 @@ browser_mod:
           browser_mod:
             command: popup
             title: Home Assistant Community Store
-            style: >
+            style: |
               :host .content {
                 width: 75em;
               }

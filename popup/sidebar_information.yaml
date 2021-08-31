@@ -123,31 +123,6 @@ browser_mod:
                   service_data:
                     entity_id: sensor.docker_homeassistant_memory_percent
 
-          - type: custom:hui-horizontal-stack-card
-            cards:
-              - type: custom:button-card
-                name: Home Assistant
-                icon: mdi:reload
-                tap_action:
-                  services: |
-                    [[[
-                      hass.callService('browser_mod', 'toast', {
-                        message: 'Restart Home Assistant...'
-                      });
-                      hass.callService('homeassistant', 'restart');
-                    ]]]
-                template: icon_name
-
-              - type: custom:button-card
-                name: Docker VPN
-                icon: mdi:reload
-                tap_action:
-                  action: call-service
-                  service: script.turn_on
-                  service_data:
-                    entity_id: script.docker_vpn_restart
-                template: icon_name
-
       #################################################
       #                                               #
       #                   BATTERY                     #
@@ -203,6 +178,31 @@ browser_mod:
 
           - entity: sensor.garage_temp_battery
             style: *style_bat
+
+          - type: custom:hui-horizontal-stack-card
+            cards:
+              - type: custom:button-card
+                name: Home Assistant
+                icon: mdi:reload
+                tap_action:
+                  services: |
+                    [[[
+                      hass.callService('browser_mod', 'toast', {
+                        message: 'Restart Home Assistant...'
+                      });
+                      hass.callService('homeassistant', 'restart');
+                    ]]]
+                template: icon_name
+
+              - type: custom:button-card
+                name: Docker VPN
+                icon: mdi:reload
+                tap_action:
+                  action: call-service
+                  service: script.turn_on
+                  service_data:
+                    entity_id: script.docker_vpn_restart
+                template: icon_name
 
       #################################################
       #                                               #

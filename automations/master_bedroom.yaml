@@ -24,13 +24,10 @@
             - condition: template
               value_template: "{{ now().hour == 8 }}"
           sequence:
-            - service: media_player.play_media
-              entity_id: media_player.spot
-              data:
-                media_content_id: 'turn off fan'
-                media_content_type: custom
+            - service: fan.turn_off
+              entity_id: fan.master_bedroom
             - delay:
-                seconds: 5
+                seconds: 3
             - service: script.alexa_fan_sounds
               data:
                 alexa_device: media_player.spot
@@ -42,14 +39,12 @@
             - condition: template
               value_template: "{{ now().hour == 20 }}"
           sequence:
-            - service: media_player.play_media
-              entity_id: media_player.spot
+            - service: fan.turn_on
+              entity_id: fan.master_bedroom
               data:
-                media_content_id: 'set fan to 3'
-                media_content_type: custom
+                percentage: 75
             - delay:
-                seconds: 5
-
+                seconds: 3
             - service: script.alexa_fan_sounds
               data:
                 alexa_device: media_player.spot

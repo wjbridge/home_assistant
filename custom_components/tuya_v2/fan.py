@@ -128,7 +128,6 @@ class TuyaHaFan(TuyaHaDevice, FanEntity):
                             self.dp_code_speed_enum, {}
                         ).values
                     ).get("range")
-                    _LOGGER.error(data)
                     if data:
                         self.air_purifier_speed_range_len = len(data)
                         self.air_purifier_speed_range_enum = data
@@ -149,6 +148,7 @@ class TuyaHaFan(TuyaHaDevice, FanEntity):
             value_in_range = percentage_to_ordered_list_item(
                 self.air_purifier_speed_range_enum, percentage
             )
+
             self._send_command(
                 [
                     {
@@ -224,15 +224,14 @@ class TuyaHaFan(TuyaHaDevice, FanEntity):
             return 0
 
         if self.tuya_device.category == "kj" or self.tuya_device.category == "fskg":
-            if self.air_purifier_speed_range_len > 1:
-                if not self.air_purifier_speed_range_enum:
-                    # if air-purifier speed enumeration is supported we will prefer it.
-                    return ordered_list_item_to_percentage(
-                        self.air_purifier_speed_range_enum,
-                        self.tuya_device.status.get(DPCODE_AP_FAN_SPEED_ENUM, 0),
-                    )
-
-        return self.tuya_device.status.get(DPCODE_FAN_SPEED, 0)
+            if self.air_purifier_speed_range_len > 1 and self.air_purifier_speed_range_enum:
+                # if air-purifier speed enumeration is supported we will prefer it.
+                return ordered_list_item_to_percentage(
+                    self.air_purifier_speed_range_enum,
+                    self.tuya_device.status.get(DPCODE_AP_FAN_SPEED_ENUM, 0),
+                )
+        else:
+            return self.tuya_device.status.get(DPCODE_FAN_SPEED, 0)
 
     @property
     def speed_count(self) -> int:
