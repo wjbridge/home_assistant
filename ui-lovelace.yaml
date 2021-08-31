@@ -206,6 +206,17 @@ views:
                     parseInt(entity.attributes.volume_level * 100);
                 ]]]
 
+          - type: custom:button-card
+            entity: media_player.samsung_1080p
+            name: TV
+            tap_action:
+              action: none
+            hold_action:
+              !include popup/family_room_tv.yaml
+            template:
+              - base
+              - icon_tv
+
       #################################################
       #                                               #
       #                   BEDROOM                     #
@@ -221,7 +232,7 @@ views:
 
           - type: custom:button-card
             entity: switch.oli_night_light
-            name: Oli Bed
+            name: Oli Night
             template:
               - base
               - icon_hue
@@ -229,7 +240,7 @@ views:
 
           - type: custom:button-card
             entity: fan.oli_fan
-            name: Oli Fan
+            name: Olivia
             template:
               - base
               - icon_fan2
@@ -237,9 +248,26 @@ views:
 
           - type: custom:button-card
             entity: fan.pure_cool_link
-            name: Wes Fan
+            name: Guest
             hold_action:
               !include popup/dyson_fan.yaml
+            template:
+              - base
+              - icon_fan2
+              - circle
+              - loader
+            variables:
+              circle_input: >
+                [[[
+                  return entity === undefined ?
+                    null :
+                    parseInt(entity.attributes.percentage);
+                ]]]
+
+          # https://github.com/tuya/tuya-home-assistant/pull/387
+          - type: custom:button-card
+            entity: fan.master_bedroom
+            name: Master
             template:
               - base
               - icon_fan2
