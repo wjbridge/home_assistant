@@ -122,6 +122,11 @@ frontend:
             border-right: 0.1vw solid rgba(58, 69, 73, 0.2);
             min-height: 100vh;
           }
+
+          #root > :last-child {
+            margin-top: auto;
+          }
+
           /* phone */
           @media screen and (max-width: 800px) {
             #root {
@@ -172,7 +177,6 @@ frontend:
           .: |
             hui-grid-card {
               display: flex;
-              flex: auto;
               align-items: flex-end;
             }
 
