@@ -1,7 +1,7 @@
 # Home Assistant Configuration
 [Home Assistant Container](https://www.home-assistant.io/installation/#compare-installation-methods) ([Docker](https://hub.docker.com/r/homeassistant/home-assistant)) on a Ubuntu 20.04. I won't document the features of Mattias's repository but I will try to document the differences.
 
-![screenshot](https://raw.githubusercontent.com/wjbridge/home_assistant/master/www/img/screenshot.png)
+![screenshot](https://raw.githubusercontent.com/wjbridge/home_assistant/master/www/img/homescreen.png)
 
 # Features
 * Identify any missing or unavailable entities (including a filter list) and display a warning
@@ -60,7 +60,9 @@ Poster of last downloaded episodes with swiping to reveal other downloaded episo
 
 ### Misc
 ![person](https://raw.githubusercontent.com/wjbridge/home_assistant/master/www/img/person.png)
+
 ![garage](https://raw.githubusercontent.com/wjbridge/home_assistant/master/www/img/garage.png)
+
 ![fan](https://raw.githubusercontent.com/wjbridge/home_assistant/master/www/img/fan.png)
 
 ***
