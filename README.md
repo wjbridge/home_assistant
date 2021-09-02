@@ -37,6 +37,9 @@ The three icons at the bottom in order:
 * List any missing or unavailable entities
 * Lists available HACS updates and release notes for Home Assistant
 
+### Missing or Update Available Animation
+![warning](https://raw.githubusercontent.com/wjbridge/home_assistant/master/www/img/missing_update.gif)
+
 ### Information Dialog Box
 ![info](https://raw.githubusercontent.com/wjbridge/home_assistant/master/www/img/info.png)
 
