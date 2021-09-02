@@ -1,12 +1,23 @@
 #-------------------------------------------
 #  Switches
-#  Log Severities: notset, debug, info, warn, warning, error, fatal, critical
 #-------------------------------------------
 switch:
   - platform: command_line
     switches:
+
+      #-------------------------------------------
+      # Oli Night Light
+      #-------------------------------------------
       oli_night_light:
         command_on: "PYTHONWARNINGS='ignore' /usr/local/bin/python3 -m flux_led 192.168.1.115 --on"
         command_off: "PYTHONWARNINGS='ignore' /usr/local/bin/python3 -m flux_led 192.168.1.115 --off"
         command_state: "PYTHONWARNINGS='ignore' /usr/local/bin/python3 -m flux_led 192.168.1.115 -i"
         value_template: '{{ value.split(" ")[3] == "ON"}}'
+
+      #-------------------------------------------
+      # Oli Tablet Filter
+      #-------------------------------------------
+      oli_tablet_filter:
+        command_on: "python3 /config/scripts/adguard_filter.py '/opt/adguardhome/work/oli_tablet_filter.txt' -e"
+        command_off: "python3 /config/scripts/adguard_filter.py '/opt/adguardhome/work/oli_tablet_filter.txt' -d"
+        command_state: "python3 /config/scripts/adguard_filter.py '/opt/adguardhome/work/oli_tablet_filter.txt' -s"

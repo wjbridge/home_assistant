@@ -19,18 +19,21 @@
             - condition: template
               value_template: "{{ now().hour == 10 }}"
           sequence:
-            - service: shell_command.enable_oli_filter
+            - service: switch.turn_on
+              entity_id: switch.oli_tablet_filter
 
         # ELIF night
         - conditions:
             - condition: template
               value_template: "{{ now().hour == 18 }}"
           sequence:
-            - service: shell_command.disable_oli_filter
+            - service: switch.turn_off
+              entity_id: switch.oli_tablet_filter
 
         # ELIF night
         - conditions:
             - condition: template
               value_template: "{{ now().hour == 20 }}"
           sequence:
-            - service: shell_command.enable_oli_filter
+            - service: switch.turn_on
+              entity_id: switch.oli_tablet_filter
