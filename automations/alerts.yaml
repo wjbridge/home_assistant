@@ -35,12 +35,12 @@
     - condition: template
       value_template: "{{ states(trigger.entity_id) != 'unavailable' }}"
     - condition: template
-      value_template: "{{ states(trigger.entity_id) != 'None' }}"
+      value_template: "{{ states(trigger.from_state) != 'None' }}"
 
   action:
     service: notify.groot_automation
     data_template:
-      title: "<b>Info</b>: [{{ trigger.entity_id }}] -> {{ trigger.from_state }} to {{ trigger.to_state }}"
+      title: "<b>Info</b>: [{{ trigger.entity_id }}] -> {{ states(trigger.from_state) }} to {{ states(trigger.to_state) }}"
       message: "<a href=\"{{state_attr(trigger.entity_id, 'html_url') }}\">{{state_attr(trigger.entity_id, 'tag_name')}}</a> is available!"
 
 ###############################################################################
