@@ -12,6 +12,10 @@
     - html_url
     - tag_name
   scan_interval: 21600
+  headers: &rest_header
+    Accept: application/vnd.github.v3+json
+    Content-Type: application/json
+    User-Agent: HAS Releases
 
 - platform: rest
   name: hass_release_notes_rc
@@ -26,13 +30,13 @@
     - html_url
     - tag_name
   scan_interval: 21600
-  headers:
-    Accept: application/vnd.github.v3+json
-    Content-Type: application/json
-    User-Agent: HAS Releases
+  headers: *rest_header
 
 - platform: rest
   name: adguardhome_release_notes
+  authentication: basic
+  username: !secret github_username 
+  password: !secret github_token
   resource: https://api.github.com/repos/AdguardTeam/AdGuardHome/releases/latest
   value_template: >
     {{ value_json.name }}
@@ -41,9 +45,13 @@
     - html_url
     - tag_name
   scan_interval: 21600
+  headers: *rest_header
 
 - platform: rest
   name: photoprism_release_notes
+  authentication: basic
+  username: !secret github_username 
+  password: !secret github_token
   resource: https://api.github.com/repos/photoprism/photoprism/releases/latest
   value_template: >
     {{ value_json.name }}
@@ -52,9 +60,13 @@
     - html_url
     - tag_name
   scan_interval: 21600
+  headers: *rest_header
 
 - platform: rest
   name: fireflyIII_release_notes
+  authentication: basic
+  username: !secret github_username 
+  password: !secret github_token
   resource: https://api.github.com/repos/firefly-iii/firefly-iii/releases/latest
   value_template: >
     {{ value_json.name }}
@@ -63,9 +75,13 @@
     - html_url
     - tag_name
   scan_interval: 21600
+  headers: *rest_header
 
 - platform: rest
   name: papermerge_release_notes
+  authentication: basic
+  username: !secret github_username 
+  password: !secret github_token
   resource: https://api.github.com/repos/papermerge/papermerge-core/releases/latest
   value_template: >
     {{ value_json.name }}
@@ -74,9 +90,13 @@
     - html_url
     - tag_name
   scan_interval: 21600
+  headers: *rest_header
 
 - platform: rest
   name: homeassistant_desktop_release_notes
+  authentication: basic
+  username: !secret github_username 
+  password: !secret github_token
   resource: https://api.github.com/repos/mrvnklm/homeassistant-desktop/releases/latest
   value_template: >
     {{ value_json.name }}
@@ -85,3 +105,4 @@
     - html_url
     - tag_name
   scan_interval: 21600
+  headers: *rest_header

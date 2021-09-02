@@ -98,3 +98,20 @@ homeassistant:
     sensor.master_bedroom_window_battery:
       friendly_name: Master Bedroom Window
 
+    #-------------------------------------------
+    #  Rest Software Sensors
+    #-------------------------------------------
+    sensor.homeassistant_desktop_release_notes:
+      friendly_name: HA Desktop App
+
+    sensor.adguardhome_release_notes:
+      friendly_name: AdguardHome
+
+    sensor.photoprism_release_notes:
+      friendly_name: Photoprism
+
+    sensor.fireflyiii_release_notes:
+      friendly_name: FireflyIII
+
+    sensor.papermerge_release_notes:
+      friendly_name: Papermerge
