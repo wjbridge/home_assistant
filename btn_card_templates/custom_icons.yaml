@@ -553,13 +553,6 @@
           fill="rgb(95,98,103)" stroke="none" stroke-width="1"/></g></g></svg>';
           ]]]
 
-  icon_thermostat:
-    custom_fields:
-      thermostat: >
-        [[[ const state = entity.attributes.current_temperature; 
-        return `<svg viewBox="0 0 50 50"><circle cx="25" cy="25" r="20.5" stroke="#b2b2b2" stroke-width="1.5" fill="none" />
-        <text x="50%" y="54%" fill="#8d8e90" font-size="14" text-anchor="middle" alignment-baseline="middle">${state}°</text></svg>`; ]]]
-
   icon_battery_empty:
     custom_fields:
       icon: >

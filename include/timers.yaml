@@ -1,4 +1,8 @@
+#-------------------------------------------
+# Timers
+#-------------------------------------------
+
 timer:
   startup_missing_delay:
-    duration: 00:05:00
+    duration: 00:06:00
     icon: mdi:stop

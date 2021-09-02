@@ -202,7 +202,45 @@ frontend:
               }
             }
 
-          #conditional color
+          #conditional missing entities
+          "$hui-button-card:nth-last-child(2)$": |
+            {% if states('sensor.template_unavailable_entities') | int > 0 and not is_state('timer.startup_missing_delay', 'active') %}
+
+              ha-card, ha-icon {
+                color: rgb(205, 1, 1) !important;
+                opacity: 1 !important;
+                animation: update 1.5s ease-out infinite;
+              }
+
+              ha-card:hover {
+                filter: brightness(130%);
+                animation-play-state: paused;
+              }
+
+            {% endif %}
+
+              @keyframes update {
+                0% {
+                  transform: scale(1);
+                }
+                40% {
+                  transform: scale(1.08);
+                }
+                50% {
+                  transform: scale(0.98);
+                }
+                55% {
+                  transform: scale(1.02);
+                }
+                60% {
+                  transform: scale(0.98);
+                }
+                100% {
+                  transform: scale(1);
+                }
+              }
+
+          #conditional color update
           "$hui-button-card:last-of-type$": |
             {% if is_state('binary_sensor.template_sidebar_update_color', 'on') %}
 

@@ -177,7 +177,7 @@
   #                    CLIMATE                    #
   #                                               #
   #################################################
-  climate2:
+  climate:
     show_state: false
     show_icon: true
     template:

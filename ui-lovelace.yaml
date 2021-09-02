@@ -1,10 +1,27 @@
+#-------------------------------------------
+#  Custom Button Card Templates
+#  https://github.com/custom-cards/button-card
+#-------------------------------------------
 button_card_templates: !include_dir_merge_named btn_card_templates/
 
+#-------------------------------------------
+#  Kiosk Mode
+#  https://github.com/maykar/kiosk-mode
+#-------------------------------------------
 kiosk_mode:
   hide_header: false
   hide_sidebar: false
   hide_overflow: false
 
+  mobile_settings:
+    hide_header: true
+    hide_sidebar: true
+    hide_overflow: true
+    custom_width: 800
+
+#-------------------------------------------
+#  Default View
+#-------------------------------------------
 views:
   - type: custom:grid-layout
     path: 0
@@ -77,24 +94,17 @@ views:
 
           - type: grid
             cards:
-              - type: conditional
-                conditions:
-                  - entity: sensor.template_unavailable_entities
-                    state_not: '0'
-                  - entity: timer.startup_missing_delay
-                    state: 'idle'
-                card:
-                  type: button
-                  icon: mdi:alert-rhombus
-                  tap_action:
-                    !include popup/sidebar_missing_entities.yaml
-                  hold_action:
-                    action: none
-
               - type: button
                 icon: mdi:information-outline
                 tap_action:
                   !include popup/sidebar_information.yaml
+                hold_action:
+                  action: none
+
+              - type: button
+                icon: mdi:alert-rhombus
+                tap_action:
+                  !include popup/sidebar_missing_entities.yaml
                 hold_action:
                   action: none
 
@@ -216,6 +226,14 @@ views:
             template:
               - base
               - icon_tv
+
+          - type: custom:button-card
+            entity: switch.oli_tablet_filter
+            name: Filter Tab
+            template:
+              - base
+              - icon_toggle
+              - loader
 
       #################################################
       #                                               #
@@ -464,7 +482,7 @@ views:
             hold_action:
               action: none
             template:
-              - climate2
+              - climate
               - icon_temperature
             variables:
               value_1: >
@@ -480,7 +498,7 @@ views:
             hold_action:
               action: none
             template:
-              - climate2
+              - climate
               - icon_temperature
             variables:
               value_1: >
@@ -500,7 +518,7 @@ views:
             hold_action:
               action: none
             template:
-              - climate2
+              - climate
               - icon_temperature
             variables:
               value_1: >
@@ -548,7 +566,7 @@ views:
             hold_action:
               action: none
             template:
-              - climate2
+              - climate
               - icon_temperature
 
           - type: custom:button-card
@@ -559,7 +577,7 @@ views:
             hold_action:
               action: none
             template:
-              - climate2
+              - climate
               - icon_temperature
 
           - type: custom:button-card
@@ -570,7 +588,7 @@ views:
             hold_action:
               action: none
             template:
-              - climate2
+              - climate
               - icon_temperature
 
       #################################################

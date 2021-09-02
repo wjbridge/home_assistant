@@ -35,7 +35,7 @@
     - condition: template
       value_template: "{{ states(trigger.entity_id) != 'unavailable' }}"
     - condition: template
-      value_template: "{{ states(trigger.from_state) != 'None' }}"
+      value_template: "{{ states(trigger.from_state) != None }}"
 
   action:
     service: notify.groot_automation
