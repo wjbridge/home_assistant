@@ -546,6 +546,34 @@ views:
                   }
                 ]]]
 
+          - type: custom:button-card
+            entity: sensor.dark_sky_apparent_temperature
+            name: Outside
+            tap_action:
+              action: none
+            hold_action:
+              action: none
+            template:
+              - climate
+              - icon_temperature
+            variables:
+              value_1: >
+                [[[ 
+                  if (states["weather.dark_sky"]) {
+                    return Math.round(states["weather.dark_sky"].attributes.humidity) + '%';
+                  } else {
+                    return null;
+                  }
+                ]]]
+              value_2: >
+                [[[ 
+                  if (states["weather.dark_sky"]) {
+                    return Math.round((Math.abs(states["weather.dark_sky"].attributes.pressure) > 999 ? Math.sign(states["weather.dark_sky"].attributes.pressure)*((Math.abs(states["weather.dark_sky"].attributes.pressure)/1000).toFixed(1)) + 'k' : Math.sign(states["weather.dark_sky"].attributes.pressure)*Math.abs(states["weather.dark_sky"].attributes.pressure))) + ' hPa';
+                  } else {
+                    return null;
+                  }
+                ]]]
+
       #################################################
       #                                               #
       #                    ROOMS                      #
