@@ -204,7 +204,7 @@ frontend:
 
           #conditional color
           "$hui-button-card:last-of-type$": |
-            {% if is_state('binary_sensor.sidebar_update_color', 'on') %}
+            {% if is_state('binary_sensor.template_sidebar_update_color', 'on') %}
 
               ha-card, ha-icon {
                 color: rgb(35, 78 ,106) !important;
