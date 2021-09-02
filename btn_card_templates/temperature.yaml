@@ -1,0 +1,193 @@
+  # !toggle word-wrap
+
+  #################################################
+  #                                               #
+  #                 TEMP BASE                     #
+  #                                               #
+  #################################################
+  temp_base:
+    variables:
+      state: >
+        [[[ return entity === undefined || entity.state; ]]]
+      timeout: >
+        [[[ return entity === undefined || Date.now() - Date.parse(entity.last_changed); ]]]
+    aspect_ratio: 1/1
+    show_state: true
+    show_icon: false
+    state_display: >
+      [[[ if (variables.state === true) return 'unknown'; ]]]
+    tap_action:      
+      animation_card: |
+        [[[
+          const animation_speed_ms = 900;
+          const animation = `card_bounce ${animation_speed_ms}ms cubic-bezier(0.22, 1, 0.36, 1)`;
+          this.shadowRoot.getElementById("card").style.animation = animation;
+          window.setTimeout(() => {
+            this.shadowRoot.getElementById("card").style.animation = "none";
+          }, animation_speed_ms)
+        ]]]
+      action: toggle
+      haptic: medium
+    styles:
+      grid:
+        - grid-template-areas: |
+            "icon  values"
+            "n     n"
+            "s     s"
+        - grid-template-columns: repeat(2, 1fr)
+        - grid-template-rows: auto repeat(2, min-content)
+        - gap: 2%
+        - align-items: start
+      name:
+        - justify-self: start
+        - line-height: 105%
+      state:
+        - justify-self: start
+        - line-height: 105%
+      card:
+        - font-family: Sf Display
+        - border-radius: var(--custom-button-card-border-radius)
+        - -webkit-tap-highlight-color: rgba(0,0,0,0)
+        - transition: none
+        - padding: 8%
+        - --mdc-ripple-color: >
+            [[[
+              return (variables.state === 'on' || variables.state === 'home') ?
+                'rgb(0, 0, 0)' :
+                'rgba(255, 255, 255, 0.3)';
+            ]]]
+        - color: >
+            [[[
+              return (variables.state === 'on' || variables.state === 'home') ?
+                'rgba(0, 0, 0, 0.6)' :
+                'rgba(255, 255, 255, 0.3)';
+            ]]]
+        - background-color: >
+            [[[
+              return (variables.state === 'on' || variables.state === 'home') ?
+                'rgba(255, 255, 255, 0.8)' :
+                'rgba(115, 115, 115, 0.2)';
+            ]]]
+    extra_styles: |
+      #name, #state {
+        font-size: 1.1vw;
+        letter-spacing: 0.05vw;
+      }
+      /* portrait */
+      @media screen and (max-width: 1200px) {
+        #name, #state {
+          font-size: 2vw;
+          letter-spacing: 0.05vw;
+        }
+      }
+      /* phone */
+      @media screen and (max-width: 800px) {
+        #name, #state {
+          font-size: 3.1vw;
+          letter-spacing: 0.12vw;
+        }
+      }
+      @keyframes card_bounce {
+        0% {
+          transform: scale(1);
+        }
+        15% {
+          transform: scale(0.9);
+        }
+        25% {
+          transform: scale(1);
+        }
+        30% {
+          transform: scale(0.98);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+
+  #################################################
+  #                                               #
+  #              ADIDITIONAL VALUES               #
+  #                                               #
+  #################################################
+  additional_values:
+    custom_fields:
+      values: >
+        [[[
+          if ( variables.state != 'problem' && variables.state != 'unavailable' ) {
+            const value1 = variables.value_1 ? variables.value_1 : null;
+            const value2 = variables.value_2 ? variables.value_2 : null;
+            const value3 = variables.value_3 ? variables.value_3 : null;
+
+            if (value1 != null && value2 != null && value3 != null) {
+              return `
+              <svg viewBox="0 0 50 50">
+                <text x="5%" y="28%" fill="#8d8e90" font-size="12" text-anchor="start" alignment-baseline="middle" dominant-baseline="middle">${value1}</text>
+                <text x="5%" y="62%" fill="#8d8e90" font-size="12" text-anchor="start" alignment-baseline="middle" dominant-baseline="middle">${value2}</text>
+                <text x="5%" y="94%" fill="#8d8e90" font-size="12" text-anchor="start" alignment-baseline="middle" dominant-baseline="middle">${value3}</text>
+              </svg>
+              `;
+            } else if (value1 != null && value2 != null) {
+              return `
+              <svg viewBox="0 0 50 50">
+                <text x="5%" y="28%" fill="#8d8e90" font-size="12" text-anchor="start" alignment-baseline="middle" dominant-baseline="middle">${value1}</text>
+                <text x="5%" y="62%" fill="#8d8e90" font-size="12" text-anchor="start" alignment-baseline="middle" dominant-baseline="middle">${value2}</text>
+              </svg>
+              `;
+            } else if (value1 != null) {
+              return `
+                <svg viewBox="0 0 50 50">
+                  <text x="5%" y="28%" fill="#8d8e90" font-size="12" text-anchor="start" alignment-baseline="middle" dominant-baseline="middle">${value1}</text>
+                </svg>
+              `
+            }
+
+          } else if( variables.state === 'problem') {
+              const string1 = entity.attributes.problem;
+              if ( string1.includes('unavailable')) {
+                
+                return `
+                  <svg viewBox="0 0 50 50">
+                    <path fill="#855151" d="M19.817 18.932L1.068.183c-.244-.244-.64-.244-.884 0s-.244.64 0 .884l1.935 1.935c-.621.286-1.231.596-1.819.952-.142.086-.245.227-.284.39a.62.62 0 0 0 .08.476l1.671 2.655a15.05 15.05 0 0 1 3.224-1.6l.995.995c-1.27.389-2.469.942-3.554 1.661l1.33 2.112c1.275-.852 2.745-1.414 4.315-1.682l1.1 1.1c-1.745.144-3.372.711-4.75 1.639l1.334 2.117C6.969 12.988 8.428 12.5 10 12.5c.644 0 1.265.09 1.86.244l7.072 7.072c.122.122.282.184.442.184a.63.63 0 0 0 .442-.182c.244-.245.244-.64 0-.885zm.165-14.587a.62.62 0 0 0-.284-.391C16.787 2.185 13.433 1.25 10 1.25a18.77 18.77 0 0 0-5.322.776l3.135 3.135C8.528 5.056 9.258 5 10 5c3.04 0 5.866.915 8.232 2.475l1.671-2.654a.62.62 0 0 0 .079-.476zM10 6.25l-1.057.041 2.574 2.574c1.727.235 3.334.851 4.721 1.78l1.33-2.114A13.66 13.66 0 0 0 10 6.25zm3.189 4.287l1.911 1.911.471-.749c-.73-.491-1.534-.876-2.382-1.162zM10 13.749a6.2 6.2 0 0 0-3.569 1.132l3.039 4.826a.63.63 0 0 0 .53.291c.215 0 .415-.11.529-.291l3.039-4.826A6.19 6.19 0 0 0 10 13.749z"/>
+                  </svg>
+                `;
+              }else if( string1.includes('moisture low')){
+                return `
+                  <svg viewBox="0 0 50 50">
+                    <path d="M15.341 12.328a7.68 7.68 0 0 1-7.67 7.67A7.68 7.68 0 0 1 0 12.328a7.68 7.68 0 0 1 1.788-4.922L7.67 0l5.882 7.406c1.153 1.377 1.788 3.124 1.788 4.922z" fill="#4abbf0"/><path d="M15.341 12.328a7.68 7.68 0 0 1-7.67 7.67V0l5.882 7.406c1.153 1.377 1.788 3.124 1.788 4.922z" fill="#009be5"/><path d="M18.131 10.529a5.24 5.24 0 0 1-5.23 5.23 5.24 5.24 0 0 1-5.23-5.23c0-1.226.433-2.417 1.219-3.356l4.011-5.05 4.011 5.05c.786.939 1.219 2.13 1.219 3.356z" fill="#78d5f9"/><path d="M18.131 10.529a5.24 5.24 0 0 1-5.23 5.23V2.123l4.011 5.05c.786.939 1.219 2.13 1.219 3.356z" fill="#4abbf0"/>
+                  </svg>
+                `;
+              }
+          }
+        ]]]
+    styles:
+      card:
+        - font-size: 0.8vw;
+      custom_fields:
+        values:
+          - display: initial
+          - width: 95%
+          - letter-spacing: 0.03vw
+          - margin: -6% -6% 0 0
+          - justify-self: end
+          - opacity: 1
+
+  #################################################
+  #                                               #
+  #                    CLIMATE                    #
+  #                                               #
+  #################################################
+  climate2:
+    show_state: false
+    show_icon: true
+    template:
+      - temp_base
+      - additional_values
+
+    state:
+      - value: 'problem'
+        styles:
+          card: [box-shadow: '0px 0px 10px 2px #FFCCCC']
+      - value: 'ok'
+        styles:
+          card: [box-shadow: '0px 0px 10px 2px #E5FFCC']

@@ -1,4 +1,4 @@
-button_card_templates: !include button_card_templates.yaml
+button_card_templates: !include_dir_merge_named btn_card_templates/
 
 kiosk_mode:
   hide_header: false
@@ -14,34 +14,36 @@ views:
       grid-template-columns: repeat(5, 1fr) 0
       grid-template-rows: 0 repeat(3, fit-content(100%)) 0fr
       grid-template-areas: |
-        "sidebar  .           .        .          ."
-        "sidebar  plex        media    bedroom    ."
-        "sidebar  camera      outside  home       ."
-        "sidebar  footer      footer   footer     ."
+        "sidebar  .           .        .          .      ."
+        "sidebar  plex        media    bedroom    temps  ."
+        "sidebar  camera      outside  home       rooms  ."
+        "sidebar  footer      footer   footer     footer ."
       mediaquery:
         #phone
         "(max-width: 800px)":
           grid-gap: calc(var(--custom-layout-card-padding) * 1.5)
           grid-template-columns: 0 repeat(2, 1fr) 0
-          grid-template-rows: 0 repeat(5, fit-content(100%)) 0fr
+          grid-template-rows: 0 repeat(6, fit-content(100%)) 0fr
           grid-template-areas: |
             ".  .           .            ."
             ".  sidebar     sidebar      ."
             ".  home        bedroom      ."
             ".  media       outside      ."
             ".  camera      plex         ."
+            ".  temps       rooms        ."
             ".  footer      footer       ."
             ".  .           .            ."
         #portrait
         "(max-width: 1200px)":
           grid-gap: var(--custom-layout-card-padding)
           grid-template-columns: repeat(3, 1fr) 0
-          grid-template-rows: 0 repeat(3, fit-content(100%)) 0fr
+          grid-template-rows: 0 repeat(4, fit-content(100%)) 0fr
           grid-template-areas: |
             "sidebar  .           .           ."
             "sidebar  home        bedroom     ."
             "sidebar  media       outside     ."
             "sidebar  camera      plex        ."
+            "sidebar  temps       rooms       ."
             "sidebar  footer      footer      ."
             "sidebar  .           .           ."
     cards:
@@ -210,8 +212,6 @@ views:
             entity: media_player.samsung_1080p
             name: TV
             tap_action:
-              action: none
-            hold_action:
               !include popup/family_room_tv.yaml
             template:
               - base
@@ -442,6 +442,136 @@ views:
             template:
               - base
               - icon_toggle
+
+      #################################################
+      #                                               #
+      #                    TEMPS                      #
+      #                                               #
+      #################################################
+
+      - type: grid
+        title: Enviroment
+        view_layout:
+          grid-area: temps
+        columns: 2
+        cards:
+
+          - type: custom:button-card
+            entity: sensor.garage_temp_temperature
+            name: Garage
+            tap_action:
+              action: none
+            hold_action:
+              action: none
+            template:
+              - climate2
+              - icon_temperature
+            variables:
+              value_1: >
+                [[[ return entity === undefined || Math.round(entity.attributes.humidity) + '%'; ]]]
+              value_2: >
+                [[[ return entity === undefined || Math.round((Math.abs(entity.attributes.pressure) > 999 ? Math.sign(entity.attributes.pressure)*((Math.abs(entity.attributes.pressure)/1000).toFixed(1)) + 'k' : Math.sign(entity.attributes.pressure)*Math.abs(entity.attributes.pressure))) + ' hPa'; ]]]
+
+          - type: custom:button-card
+            entity: sensor.thermostat_current_temperature
+            name: Office
+            tap_action:
+              action: none
+            hold_action:
+              action: none
+            template:
+              - climate2
+              - icon_temperature
+            variables:
+              value_1: >
+                [[[ 
+                  if (states["sensor.thermostat_current_humidity"]) {
+                    return Math.round(states["sensor.thermostat_current_humidity"].state) + '%';
+                  } else {
+                    return entity === undefined;
+                  }
+                ]]]
+
+          - type: custom:button-card
+            entity: sensor.basement_temperature
+            name: Basement
+            tap_action:
+              action: none
+            hold_action:
+              action: none
+            template:
+              - climate2
+              - icon_temperature
+            variables:
+              value_1: >
+                [[[ 
+                  if (states["sensor.basement_humidity"]) {
+                    return Math.round(states["sensor.basement_humidity"].state) + '%';
+                  } else {
+                    return null;
+                  }
+                ]]]
+              value_2: >
+                [[[ 
+                  if (states["sensor.basement_pressure"]) {
+                    return Math.round((Math.abs(states["sensor.basement_pressure"].state) > 999 ? Math.sign(states["sensor.basement_pressure"].state)*((Math.abs(states["sensor.basement_pressure"].state)/1000).toFixed(1)) + 'k' : Math.sign(states["sensor.basement_pressure"].state)*Math.abs(states["sensor.basement_pressure"].state))) + ' hPa';
+                  } else {
+                    return null;
+                  }
+                ]]]
+              value_3: >
+                [[[ 
+                  if (states["sensor.basement_radon_24hrs"]) {
+                    return states["sensor.basement_radon_24hrs"].state + ' pCi';
+                  } else {
+                    return null;
+                  }
+                ]]]
+
+      #################################################
+      #                                               #
+      #                    ROOMS                      #
+      #                                               #
+      #################################################
+
+      - type: grid
+        title: 'Rooms'
+        view_layout:
+          grid-area: rooms
+        columns: 2
+        cards:
+          - type: custom:button-card
+            entity: sensor.master_bedroom_temperature
+            name: Master
+            tap_action:
+              action: none
+            hold_action:
+              action: none
+            template:
+              - climate2
+              - icon_temperature
+
+          - type: custom:button-card
+            entity: sensor.olivia_room_temperature
+            name: Olivia
+            tap_action:
+              action: none
+            hold_action:
+              action: none
+            template:
+              - climate2
+              - icon_temperature
+
+          - type: custom:button-card
+            entity: sensor.family_room_temperature
+            name: Family
+            tap_action:
+              action: none
+            hold_action:
+              action: none
+            template:
+              - climate2
+              - icon_temperature
 
       #################################################
       #                                               #
