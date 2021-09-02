@@ -63,9 +63,15 @@ browser_mod:
         show_state: false
         entities:
 
-          - entity: device_tracker.ana_usa_phone
+          - entity: device_tracker.ana_usa_phone_on_router
             name: Router
-            icon: mdi:wifi
+            style: |
+              state-badge {
+                color: {{ '#3182b7' if is_state(config.entity, 'home') else '#3c3f3f' }};
+              }
+
+          - entity: device_tracker.ana_usa_phone_on_satellite
+            name: Satellite
             style: |
               state-badge {
                 color: {{ '#3182b7' if is_state(config.entity, 'home') else '#3c3f3f' }};
