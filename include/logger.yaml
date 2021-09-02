@@ -28,4 +28,4 @@ logger:
     homeassistant.components.yamaha.media_player:
       - "^.* Receiver is offline: Yamaha Receiver$"
     root:
-      - "Sending handshake$"
+      - "Sending handshake.$"
