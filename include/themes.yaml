@@ -177,6 +177,7 @@ frontend:
           .: |
             hui-grid-card {
               display: flex;
+              flex: auto;
               align-items: flex-end;
             }
 
@@ -190,7 +191,8 @@ frontend:
 
           $: |
             #root {
-              padding: 0 13% 25% 13%;
+              width: 100%;
+              padding: 0 13% 15% 13%;
             }
 
             /* phone */
@@ -264,6 +266,7 @@ frontend:
           --paper-item-icon-color: var(--state-icon-color);
           opacity: 0.2;
           transition: 0.4s;
+          height: initial;
         }
 
         .type-button:hover {
