@@ -14,7 +14,7 @@
   action:
     service: notify.groot_automation
     data_template:
-      title: "<b>Info</b>: New Home Assistant Version -> {{ trigger.from_state }} to {{ trigger.to_state }}"
+      title: "<b>Info</b>: New Home Assistant Version -> {{ trigger.from_state.state }} to {{ trigger.to_state.state }}"
       message: "Version <a href=\"https://github.com/home-assistant/core/releases/tag/{{states('sensor.hass_version_latest')}}\">{{states('sensor.hass_version_latest')}}</a> is available!"
 
 ###############################################################################
@@ -35,12 +35,13 @@
     - condition: template
       value_template: "{{ states(trigger.entity_id) != 'unavailable' }}"
     - condition: template
-      value_template: "{{ states(trigger.from_state) != None }}"
+      value_template: "{{ trigger.entity_id is not none and trigger.to_state.state is not none and trigger.from_state.state is not none }}"
+
 
   action:
     service: notify.groot_automation
     data_template:
-      title: "<b>Info</b>: [{{ trigger.entity_id }}] -> {{ states(trigger.from_state) }} to {{ states(trigger.to_state) }}"
+      title: "<b>Info</b>: [{{ trigger.from_state.name }}] -> {{ trigger.from_state.state }} to {{ trigger.to_state.state }}"
       message: "<a href=\"{{state_attr(trigger.entity_id, 'html_url') }}\">{{state_attr(trigger.entity_id, 'tag_name')}}</a> is available!"
 
 ###############################################################################
@@ -106,4 +107,4 @@
     - service: notify.groot_automation
       data_template:
         title: '<b>Alert</b>: Low Battery'
-        message: "Battery Report: {{ trigger.to_state.state }} \n The battery for {{ trigger.to_state.friendly_name }} is below 20 percent"
+        message: "Battery Report: {{ trigger.to_state.state }} \n The battery for {{ trigger.to_state.name }} is below 20 percent"
