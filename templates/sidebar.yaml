@@ -49,6 +49,20 @@
             {%- endif -%}
           </b></font>
 
+        weather: |
+          {%- set temperature = states('sensor.dark_sky_temperature') %}
+          {%- set apparent = states('sensor.dark_sky_apparent_temperature') | round %}
+          {%- set precip = states('sensor.dark_sky_precip_probability') | round %}
+          {% if not is_state('sensor.dark_sky_temperature', 'unknown') %}
+            {%- if temperature | float <= 0.0 -%}
+              Feels like {{ apparent }}° with {{ precip }}% risk of snow {{'\u2744\uFE0F'}}
+            {%- elif temperature | float > 0.0 -%} 
+              Feels like {{ apparent}}° with {{ precip }}% risk of rain {{ '\u2614\uFE0F' if precip > 30 }}
+            {%- endif %}
+          {%- else %}
+            Unable to load weather information...
+          {%- endif %}
+
     - unique_id: hacs_version
       state: >
         {{ device_attr(device_id('sensor.hacs'), 'sw_version') }}
