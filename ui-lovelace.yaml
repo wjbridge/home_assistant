@@ -482,7 +482,7 @@ views:
             hold_action:
               action: none
             template:
-              - climate
+              - temp
               - icon_temperature
             variables:
               value_1: >
@@ -498,7 +498,7 @@ views:
             hold_action:
               action: none
             template:
-              - climate
+              - temp
               - icon_temperature
             variables:
               value_1: >
@@ -518,7 +518,7 @@ views:
             hold_action:
               action: none
             template:
-              - climate
+              - temp
               - icon_temperature
             variables:
               value_1: >
@@ -554,7 +554,7 @@ views:
             hold_action:
               action: none
             template:
-              - climate
+              - temp
               - icon_temperature
             variables:
               value_1: >
@@ -594,7 +594,7 @@ views:
             hold_action:
               action: none
             template:
-              - climate
+              - temp
               - icon_temperature
 
           - type: custom:button-card
@@ -605,7 +605,7 @@ views:
             hold_action:
               action: none
             template:
-              - climate
+              - temp
               - icon_temperature
 
           - type: custom:button-card
@@ -616,7 +616,7 @@ views:
             hold_action:
               action: none
             template:
-              - climate
+              - temp
               - icon_temperature
 
       #################################################
