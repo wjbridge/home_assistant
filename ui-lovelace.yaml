@@ -506,7 +506,7 @@ views:
                   if (states["sensor.thermostat_current_humidity"]) {
                     return Math.round(states["sensor.thermostat_current_humidity"].state) + '%';
                   } else {
-                    return entity === undefined;
+                    return null;
                   }
                 ]]]
 

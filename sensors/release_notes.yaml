@@ -106,3 +106,36 @@
     - tag_name
   scan_interval: 21600
   headers: *rest_header
+
+#-------------------------------------------
+#  Plex Server
+#-------------------------------------------
+
+- platform: rest
+  name: plex_server_release_notes
+  json_attributes_path: "$.response.data"
+  json_attributes:
+    - update_available
+    - platform
+    - release_date
+    - requirements
+    - extra_info
+    - changelog_added
+    - changelog_fixed
+    - label
+    - distro
+    - distro_build
+  resource: !secret tautulli_api_get_pms_update
+  value_template: "{{ value_json.response.data.version }}"
+  scan_interval: 21600
+
+- platform: rest
+  name: plex_version_installed
+  json_attributes_path: "$.response.data"
+  json_attributes:
+    - pms_name
+    - pms_platform
+    - pms_plexpass
+  resource: !secret tautulli_api_get_server_info
+  value_template: "{{ value_json.response.data.pms_version }}"
+  scan_interval: 21600

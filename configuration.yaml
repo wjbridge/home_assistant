@@ -167,6 +167,7 @@ monitor_docker:
       - nzbget
       - youtubedl
       - nzbhydra
+      - plex
     rename:
       homeassistant: HomeAssistant
       nzbget: Nzbget
