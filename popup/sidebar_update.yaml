@@ -155,3 +155,32 @@ browser_mod:
                   border-radius: 0 0 1em 1em;
                 }
         template: icon_name
+
+      ### other
+      - type: custom:button-card
+        entity: sensor.template_updates
+        state_display: |
+          [[[
+            if (entity) {
+              let output = "";
+              let attr = Object.fromEntries(
+                Object.entries(entity.attributes).filter(([, value]) => {
+                  return value != false;
+                })
+              );
+              let count = Object.keys(attr).length;
+              for (const [, value] of Object.entries(attr)) {
+                output += `<li>${value}</li>`;
+              }
+              let subtitle = count == 0
+                  ? `No Updates`
+                  : `${count} ${count == 1 ? "Update Available" : "Updates Available"} 
+                    ${String.fromCodePoint("0x1f389")}`;
+              return `
+                <ha-icon icon="mdi:update"></ha-icon> <span class="title">Other</span><br>
+                <p class="subtitle">${subtitle}</p>
+                <ul>${output}</ul>
+              `;
+            }
+          ]]]
+        template: updater

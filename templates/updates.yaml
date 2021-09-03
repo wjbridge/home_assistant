@@ -1,0 +1,14 @@
+#-------------------------------------------
+# Template for Updates
+#-------------------------------------------
+- sensor:
+    - unique_id: updates
+      state: template
+      attributes:
+        plex: >
+          {% set installed = states('sensor.plex_version_installed') %}
+          {% set latest = states('sensor.plex_server_release_notes') %}
+          {% set url = 'https://github.com/dhleong/playactor/releases/latest' %}
+          {% if installed != latest and installed != 'unavailable' and latest != 'unavailable' %}
+            <b><a href="#" onclick="window.open('{{ url }}');">plex</a></b> {{ installed + ' \u279e ' + latest }}
+          {% endif %}
