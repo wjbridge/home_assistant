@@ -35,7 +35,6 @@ lovelace:
   mode: yaml
   resources:
     [ { url: /hacsfiles/bar-card/bar-card.js,                                       type: module },
-      { url: /hacsfiles/lovelace-auto-entities/auto-entities.js,                    type: module },
       { url: /hacsfiles/button-card/button-card.js,                                 type: module },
       { url: /hacsfiles/kiosk-mode/kiosk-mode.js,                                   type: module },
       { url: /hacsfiles/lovelace-card-mod/card-mod.js,                              type: module },
@@ -45,6 +44,8 @@ lovelace:
       { url: /hacsfiles/mini-graph-card/mini-graph-card-bundle.js,                  type: module },
       { url: /hacsfiles/swipe-card/swipe-card.js,                                   type: module },
       { url: /hacsfiles/lovelace-canary/canary.js,                                  type: module },
+      { url: /hacsfiles/simple-thermostat/simple-thermostat.js,                     type: module },
+      { url: /hacsfiles/lovelace-more-info-card/more-info-card.js,                  type: module },
 
       { url: '/local/custom_icons.js?v=28082021',                                   type: module },
       { url: '/local/font.css',                                                     type: css    } ]
@@ -177,8 +178,6 @@ monitor_docker:
       - version
       - containers_1cpu_percentage
       - containers_memory_percentage
-      - 1cpu_percentage
-      - memory_percentage
       - health
       - state
       - status

@@ -345,18 +345,12 @@ frontend:
           background: none;
         }
 
-        .type-custom-bar-card bar-card-background  {
+        .type-custom-bar-card bar-card-background {
           background: radial-gradient(circle, rgba(52, 57, 58, 0.1) 0%, rgba(17, 18, 18, 0.2) 75%);
           box-shadow: inset 0 0 25px #00000045;
           border-radius: 0.3em;
           overflow: hidden;
         }
-
-        /* * * * * * * * * * * * * * * * * *
-          *                                 *
-          *      CUSTOM CALENDAR CARD       *
-          *                                 *
-          * * * * * * * * * * * * * * * * * */
 
       card-mod-more-info-yaml: |
         .: |
@@ -375,16 +369,16 @@ frontend:
             color: #9e9e9e;
           }
 
-        "mwc-icon-button":
-          $: |
-            button > mwc-ripple {
-              margin-top: 3px;
-            }
+          "mwc-icon-button":
+            $: |
+              button > mwc-ripple {
+                margin-top: 3px;
+              }
 
-        "layout-card$grid-layout$": |
-            #root {
-              margin: 0 !important;
-            }
+          "layout-card$grid-layout$": |
+              #root {
+                margin: 0 !important;
+              }
 
         $: |
           .mdc-dialog__scrim {
