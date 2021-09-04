@@ -14,7 +14,7 @@ kiosk_mode:
   hide_overflow: false
 
   mobile_settings:
-    hide_header: true
+    hide_header: false
     hide_sidebar: true
     hide_overflow: true
     custom_width: 800
@@ -286,6 +286,8 @@ views:
           - type: custom:button-card
             entity: fan.master_bedroom
             name: Master
+            hold_action:
+              !include popup/master_fan.yaml
             template:
               - base
               - icon_fan2

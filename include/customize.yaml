@@ -13,16 +13,17 @@ homeassistant:
       friendly_name: Oli Night Light
 
     #-------------------------------------------
+    #  master_fan.yaml
+    #-------------------------------------------
+    fan.master_bedroom:
+      friendly_name: Master Bedroom Ceiling Fan
+
+    #-------------------------------------------
     #  home_garage.yaml
     #-------------------------------------------
     binary_sensor.garage_contact:
       friendly_name: Garage Door
-      icon: >
-        {% if is_state('binary_sensor.garage_contact', 'off') %}
-          mdi:garage-open
-        {% else %}
-          mdi:garage
-        {% endif %}
+
     #-------------------------------------------
     #  sidebar_information.yaml
     #-------------------------------------------
@@ -35,19 +36,11 @@ homeassistant:
     sensor.docker_vpn_health:
       friendly_name: 'Status'
 
-    sensor.docker_vpn_memory_percent:
-      friendly_name: VPN Memory
-      icon: mdi:memory
-
-    sensor.docker_vpn_1cpu:
-      friendly_name: VPN CPU
-      icon: mdi:chip
-
-    sensor.docker_homeassistant_1cpu:
+    sensor.docker_1cpu:
       friendly_name: Processor
       icon: mdi:chip
 
-    sensor.docker_homeassistant_memory_percent: 
+    sensor.docker_memory_percent:
       friendly_name: Memory
       icon: mdi:memory
 

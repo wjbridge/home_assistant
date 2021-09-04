@@ -80,10 +80,57 @@ browser_mod:
 
       - type: vertical-stack
         cards:
-          - type: thermostat
+          - type: custom:simple-thermostat
             entity: climate.thermostat
-            view_layout:
-              grid-area: thermostat
+            layout:
+              step: column
+            sensors:
+              - entity: sensor.thermostat_current_temperature
+                name: Temp
+              - entity: sensor.thermostat_current_humidity
+                name: Humidity
+            header: false
+            control: false
+
+          - type: horizontal-stack
+            cards:
+
+              - type: custom:button-card
+                icon: mdi:snowflake
+                tap_action:
+                  action: call-service
+                  service: climate.set_hvac_mode
+                  service_data:
+                    entity_id: climate.thermostat
+                    hvac_mode: 'cool'
+                styles: &climate_style
+                  icon:
+                    - width: 1.8em
+                  card:
+                    - width: 6em
+                template: icon_only
+
+              - type: custom:button-card
+                icon: mdi:radiator
+                tap_action:
+                  action: call-service
+                  service: climate.set_hvac_mode
+                  service_data:
+                    entity_id: climate.thermostat
+                    hvac_mode: 'heat'
+                styles: *climate_style
+                template: icon_only
+
+              - type: custom:button-card
+                icon: mdi:fan-off
+                tap_action:
+                  action: call-service
+                  service: climate.set_hvac_mode
+                  service_data:
+                    entity_id: climate.thermostat
+                    hvac_mode: 'off'
+                styles: *climate_style
+                template: icon_only
 
           - type: entities
             state_color: true
@@ -92,6 +139,7 @@ browser_mod:
             card_mod:
               class: header
             entities:
+              - type: divider
               - entity: sensor.dark_sky_temperature
               - entity: sensor.dark_sky_daytime_high_temperature_0d
 
@@ -198,54 +246,6 @@ browser_mod:
                   name_adaptive_color: false, labels: hover, legend: false}
                 tap_action:
                   action: none
-
-          - type: horizontal-stack
-            cards:
-
-              - type: custom:button-card
-                icon: mdi:snowflake
-                tap_action:
-                  action: call-service
-                  service: climate.set_hvac_mode
-                  service_data:
-                    entity_id: climate.thermostat
-                    hvac_mode: 'cool'
-                styles:
-                  icon:
-                    - width: 1.8em
-                  card:
-                    - width: 6em
-                template: icon_only
-
-              - type: custom:button-card
-                icon: mdi:radiator
-                tap_action:
-                  action: call-service
-                  service: climate.set_hvac_mode
-                  service_data:
-                    entity_id: climate.thermostat
-                    hvac_mode: 'heat'
-                styles:
-                  icon:
-                    - width: 1.8em
-                  card:
-                    - width: 6em
-                template: icon_only
-
-              - type: custom:button-card
-                icon: mdi:fan-off
-                tap_action:
-                  action: call-service
-                  service: climate.set_hvac_mode
-                  service_data:
-                    entity_id: climate.thermostat
-                    hvac_mode: 'heat'
-                styles:
-                  icon:
-                    - width: 1.8em
-                  card:
-                    - width: 6em
-                template: icon_only
 
       #################################################
       #                                               #

@@ -93,7 +93,7 @@ browser_mod:
           - type: custom:hui-horizontal-stack-card
             cards:
               - type: custom:button-card
-                name: Restart HA
+                name: Restart Home Assistant
                 icon: mdi:reload
                 tap_action:
                   services: |
@@ -137,7 +137,7 @@ browser_mod:
                 }
 
           - entity: sensor.office_window_battery
-            secondary_info: &window_status >
+            secondary_info: >
               {% if is_state_attr('sensor.office_window_battery', 'contact', true) %}
                 Closed
               {% else %}
@@ -147,15 +147,30 @@ browser_mod:
             style: *style_bat
 
           - entity: sensor.dining_room_window_battery
-            secondary_info: *window_status
+            secondary_info: >
+              {% if is_state_attr('sensor.dining_room_window_battery', 'contact', true) %}
+                Closed
+              {% else %}
+                Open
+              {% endif %}
             style: *style_bat
 
           - entity: sensor.master_bedroom_window_battery
-            secondary_info: *window_status
+            secondary_info: >
+              {% if is_state_attr('sensor.master_bedroom_window_battery', 'contact', true) %}
+                Closed
+              {% else %}
+                Open
+              {% endif %}
             style: *style_bat
 
           - entity: sensor.garage_battery
-            secondary_info: *window_status
+            secondary_info: >
+              {% if is_state_attr('sensor.garage_battery', 'contact', true) %}
+                Closed
+              {% else %}
+                Open
+              {% endif %}
             style: *style_bat
 
           - entity: sensor.garage_temp_battery
@@ -257,19 +272,19 @@ browser_mod:
             entity_row: true
             entities:
 
-              - entity: sensor.docker_vpn_1cpu
+              - entity: sensor.docker_1cpu
                 tap_action:
                   action: call-service
                   service: homeassistant.update_entity
                   service_data:
-                    entity_id: sensor.docker_vpn_1cpu
+                    entity_id: sensor.docker_1cpu
 
-              - entity: sensor.docker_vpn_memory_percent
+              - entity: sensor.docker_memory_percent
                 tap_action:
                   action: call-service
                   service: homeassistant.update_entity
                   service_data:
-                    entity_id: sensor.docker_vpn_memory_percent
+                    entity_id: sensor.docker_memory_percent
 
           - type: custom:hui-horizontal-stack-card
             cards:
