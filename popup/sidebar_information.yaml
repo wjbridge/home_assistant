@@ -93,7 +93,7 @@ browser_mod:
           - type: custom:hui-horizontal-stack-card
             cards:
               - type: custom:button-card
-                name: Restart Home Assistant
+                name: Restart HA
                 icon: mdi:reload
                 tap_action:
                   services: |
@@ -102,6 +102,19 @@ browser_mod:
                         message: 'Restart Home Assistant...'
                       });
                       hass.callService('homeassistant', 'restart');
+                    ]]]
+                template: icon_name
+
+              - type: custom:button-card
+                name: Refresh Theme
+                icon: mdi:reload
+                tap_action:
+                  services: |
+                    [[[
+                      hass.callService('browser_mod', 'toast', {
+                        message: 'Reload theme...'
+                      });
+                      hass.callService('frontend', 'reload_themes');
                     ]]]
                 template: icon_name
 
