@@ -1,8 +1,11 @@
 #-------------------------------------------
 # Timers
 #-------------------------------------------
-
 timer:
   startup_missing_delay:
     duration: 00:06:00
     icon: mdi:stop
+
+  oli_tablet_filter:
+    duration: 00:30:00
+    icon: mdi:tablet

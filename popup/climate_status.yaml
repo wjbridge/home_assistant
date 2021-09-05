@@ -86,7 +86,7 @@ browser_mod:
               step: column
             sensors:
               - entity: sensor.thermostat_current_temperature
-                name: Temp
+                name: Current
               - entity: sensor.thermostat_current_humidity
                 name: Humidity
             header: false

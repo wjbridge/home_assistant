@@ -37,3 +37,51 @@
           sequence:
             - service: switch.turn_on
               entity_id: switch.oli_tablet_filter
+
+###############################################################################
+# Timer Oli Tablet
+###############################################################################
+- alias: tablet_finished
+  id: 'Tablet Finished'
+  trace:
+      stored_traces: 10
+  trigger:
+    - platform: event
+      id: 'timer_finished'
+      event_type: timer.finished
+      event_data:
+        entity_id: timer.tablet_oli_time
+
+    - platform: event
+      id: 'timer_cancelled'
+      event_type: timer.cancelled
+      event_data:
+        entity_id: timer.tablet_oli_time
+
+    - platform: event
+      id: 'timer_started'
+      event_type: timer.started
+      event_data:
+        entity_id: timer.tablet_oli_time
+
+  action:
+    - choose:
+          # IF 'timer_finished' or 'timer_cancelled'
+          - conditions:
+              - condition: or
+                conditions:
+                  - condition: trigger
+                    id: 'timer_cancelled'
+                  - condition: trigger
+                    id: 'timer_finished'
+            sequence:
+              - service: switch.turn_on
+                entity_id: switch.oli_tablet_filter
+
+          # IF 'timer_started'
+          - conditions:
+              - condition: trigger
+                id: 'timer_started'
+            sequence:
+              - service: switch.turn_off
+                entity_id: switch.oli_tablet_filter

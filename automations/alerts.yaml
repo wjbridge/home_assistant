@@ -35,7 +35,7 @@
     - condition: template
       value_template: "{{ states(trigger.entity_id) != 'unavailable' }}"
     - condition: template
-      value_template: "{{ trigger.entity_id is not none and trigger.to_state.state is not none and trigger.from_state.state is not none }}"
+      value_template: "{{ trigger.entity_id is not none and trigger.to_state.state is not none and trigger.from_state.state is not none and states(trigger.entity_id) != none}}"
 
 
   action:
@@ -71,6 +71,22 @@
     - platform: numeric_state
       entity_id: sensor.dark_sky_precip_probability_1h
       above: 60
+
+    - platform: state
+      entity_id: climate.thermostat
+      to: 'cool'
+      for:
+        hours: 0
+        minutes: 5
+        seconds: 0
+
+    - platform: state
+      entity_id: climate.thermostat
+      to: 'heat'
+      for:
+        hours: 0
+        minutes: 5
+        seconds: 0
 
   condition:
     - condition: state
