@@ -12,6 +12,17 @@
   image_resolution: 500
   exclude_keywords:
     - Linus
+    - GCI
+    - RenoVision
+    - Meld
+    - JayzTwoCents
+    - Lawrence
+    - ShortCircuit
+    - TechLinked
+    - Techquickie
+    - Knorr
+    - Andrei
+    - Steven
 
   section_types:
     - show
