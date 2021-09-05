@@ -362,12 +362,19 @@
           const input = variables.circle_input == null ? ' ' : `${parseInt(variables.circle_input)}<tspan font-size="10">°C</tspan>`;
           const stroke_color = variables.state === 'cool' || variables.state === 'fan_only' ? '#b2b2b2' : 'none';
           const fill_color = variables.state === 'off' ? 'rgba(255,255,255,0.04)' : 'none';
-          return `
-            <svg viewBox="0 0 50 50">
-              <circle cx="25" cy="25" r="20.5" stroke="${stroke_color}" stroke-width="1.5" fill="${fill_color}" />
-              <text x="50%" y="54%" fill="#8d8e90" font-size="14" text-anchor="middle" alignment-baseline="middle" dominant-baseline="middle">${input}</text>
-            </svg>
-          `;
+          
+          // adsdasd
+
+          if (variables.state === 'off') {
+            return ``;;
+          } else {
+            return `
+              <svg viewBox="0 0 50 50">
+                <circle cx="25" cy="25" r="20.5" stroke="${stroke_color}" stroke-width="1.5" fill="${fill_color}" />
+                <text x="50%" y="54%" fill="#8d8e90" font-size="14" text-anchor="middle" alignment-baseline="middle" dominant-baseline="middle">${input}</text>
+              </svg>
+            `;
+          }
         ]]]
     styles:
       custom_fields:
@@ -718,18 +725,22 @@
   recently_downloaded:
     name: >
       [[[
-        const num = variables.download_index;
-        return `Last Downloaded #${num}`
+        if (entity != undefined && entity.attributes.data[0].number !== undefined) {
+          const num = variables.download_index;
+          return `Last Downloaded #${num}`;
+        } else {
+          return ``;
+        }
       ]]]
     state_display: >
       [[[
-        if (entity != undefined) {
+        if (entity != undefined && entity.attributes.data[0].number !== undefined) {
           const num = variables.download_index;
           const data = states[entity.entity_id].attributes.data;
           const number = data[num].number == undefined ? '(' + data[1].aired.split('-')[0] + ')' : data[num].number;
           return `${data[num].title} ${number}`;
         }
-        return 'Unknown';
+        return 'Nothing Recently Added';
       ]]]
     custom_fields:
       blur: >
@@ -739,9 +750,13 @@
         media_image:
           - background-position: center center
           - background-image: >
-              [[[ 
+              [[[
+                if (entity.attributes.data[0].number !== undefined) {
                 const num = variables.download_index;
                 return entity === undefined || `url(${states[entity.entity_id].attributes.data[num].fanart})`;
+                } else {
+                  return undefined;
+                }
               ]]]
         blur:
           - display: >
