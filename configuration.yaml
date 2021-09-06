@@ -203,7 +203,7 @@ device_tracker:
     new_device_defaults:
       track_new_devices: false
     interval_seconds: 60
-    consider_home: 240
+    consider_home: 300
 
 #-------------------------------------------
 # Weather
