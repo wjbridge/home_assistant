@@ -2,6 +2,17 @@ action: fire-dom-event
 browser_mod:
   command: popup
   title: Dyson Fan
+  style:
+    hui-vertical-stack-card:
+      $more-info-card$more-info-fan$: |
+        ha-attributes {
+          display: none !important;
+        }
+
+        .container-oscillating {
+          padding-top: 1em;
+        }
+
   card:
     type: vertical-stack
     cards:
