@@ -81,3 +81,36 @@
                 entity_id: climate.thermostat
                 data_template:
                   hvac_mode: "{{ states('sensor.template_equipment_resume') }}"
+
+###############################################################################
+# Reset Air Mode
+###############################################################################
+- id: climate_air_mode_reset
+  alias: "Climate Air Mode Reset"
+  trace:
+      stored_traces: 10
+  trigger:
+    - platform: state
+      entity_id: climate.thermostat
+      to: 'cool'
+      for:
+        hours: 0
+        minutes: 5
+        seconds: 0
+
+    - platform: state
+      entity_id: climate.thermostat
+      to: 'heat'
+      for:
+        hours: 0
+        minutes: 5
+        seconds: 0
+
+  condition:
+    - condition: state
+      entity_id: input_boolean.fresh_air_mode_en
+      state: 'on'
+
+  action:
+    service: input_boolean.turn_off
+    entity_id: input_boolean.fresh_air_mode_en
