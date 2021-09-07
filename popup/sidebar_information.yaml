@@ -30,6 +30,7 @@ browser_mod:
                 animation: none;
               }
             }
+
           $hui-horizontal-stack-card$: |
             #root {
               justify-content: space-evenly;
@@ -205,10 +206,15 @@ browser_mod:
                 name: Restart Plex
                 icon: mdi:reload
                 tap_action:
-                  action: call-service
-                  service: monitor_docker.restart
-                  service_data:
-                    name: plex
+                  services: |
+                    [[[
+                      hass.callService('browser_mod', 'toast', {
+                        message: 'Restart Plex Container...'
+                      });
+                      hass.callService('monitor_docker', 'restart', {
+                        name: 'plex'
+                      });
+                    ]]]
                 template: icon_name
 
       #################################################

@@ -1,0 +1,124 @@
+action: fire-dom-event
+browser_mod:
+  command: popup
+  title: Active Alerts
+  style:
+    .: |
+      :host .content {
+        width: 40em;
+        height: 100%;
+        padding: 1.1em 1.9em 1.9em 1.9em;
+      }
+  card:
+    type: custom:mod-card
+    style:
+      hui-grid-card:
+        $: |
+          button-card {
+            margin: 0.8em 0 2.5em 1em;
+          }
+          #root {
+            grid-gap: 0 !important;
+          }
+        $hui-markdown-card:
+          $ha-markdown$: |
+            ha-markdown-element {
+              cursor: default;
+            }
+            ha-markdown-element > p > span {
+              font-family: SF Text;
+              font-size: 1.5em;
+              font-weight: 500;
+              vertical-align: 30%;
+            }
+            ha-markdown-element > p > span > ha-icon {
+              vertical-align: 10%;
+              opacity: 0.5;
+            }
+            ha-markdown-element > p > strong {
+              font-family: SF Text;
+              font-size: 1.2em;
+              font-weight: 500;
+              line-height: 1.9em;
+              opacity: 0.5;
+            }
+            ha-markdown-element > ul {
+              font-family: SF Display;
+              font-size: 1.1em;
+              padding-left: 2.5em;
+            }
+            ha-markdown-element > ul > li {
+              margin-bottom: 0.4em;
+            }
+            ha-markdown-element > ul > li:last-child {
+              margin-bottom: 0px;
+            }
+            ha-markdown-element > ul > li > code {
+              background-color: var(--secondary-background-color);
+            }
+
+    card:
+      type: grid
+      columns: 1
+      square: false
+      cards:
+        - type: conditional
+          conditions:
+            - entity: sensor.template_oakland_alert_1
+              state: 'on'
+          card:
+            type: markdown
+            content: >
+              {% set alert_event = state_attr('sensor.template_oakland_alert_1', 'alert_event') %}
+              {% set display_title = state_attr('sensor.template_oakland_alert_1', 'display_title') %}
+              {% set font_color = '#f7e304' if state_attr('sensor.template_oakland_alert_1', 'alert_event') is search('watch', ignorecase=True) else '#fc0505' %}
+              <span><font color={{ font_color }}><ha-icon icon="mdi:weather-lightning"></ha-icon></font> {{ alert_event }} <font color={{ font_color }}><ha-icon icon="mdi:weather-lightning"></ha-icon></font></span>
+              <p>{{ display_title }}</p>
+
+              {% if is_state('sensor.template_oakland_alert_2', 'on') %}
+                {% set alert_event = state_attr('sensor.template_oakland_alert_2', 'alert_event') %}
+                {% set display_title = state_attr('sensor.template_oakland_alert_2', 'display_title') %}
+                {% set font_color = '#f7e304' if state_attr('sensor.template_oakland_alert_2', 'alert_event') is search('watch', ignorecase=True) else '#fc0505' %}
+                <br>
+                <span><font color={{ font_color }}><ha-icon icon="mdi:weather-lightning"></ha-icon></font> {{ alert_event }} <font color={{ font_color }}><ha-icon icon="mdi:weather-lightning"></ha-icon></font></span>
+                <p>{{ display_title }}</p>
+              {% endif %}
+
+        - type: conditional
+          conditions:
+            - entity: sensor.template_unavailable_entities
+              state_not: '0'
+          card:
+            type: markdown
+            content: >
+              {% set miss = state_attr('sensor.template_unavailable_entities', 'entities') %}
+              {% if states('sensor.template_unavailable_entities') | int > 0 %}
+                <span><ha-icon icon="mdi:home-alert"></ha-icon> Missing Sensors - \#{{ states('sensor.template_unavailable_entities') }} <ha-icon icon="mdi:home-alert"></ha-icon></span>
+                <ul>
+                  {%- for s in miss -%}
+                    <li><ha-icon icon="{{ state_attr(s, 'icon') }}"></ha-icon> {{ s }}</li>
+                  {%- endfor -%}
+                </ul>
+              {% endif %}
+
+        - type: conditional
+          conditions:
+            - entity: sensor.template_unavailable_entities
+              state_not: '0'
+          card:
+            type: custom:mini-graph-card
+            entities:
+              - color: '#399b56'
+                entity: sensor.template_unavailable_entities
+            line_width: 3
+            hour24: true
+            group: true
+            align_icon: left
+            align_state: right
+            align_header: left
+            hours_to_show: 24
+            show:
+              {fill: fade, icon: false, name: false, state: false, 
+              name_adaptive_color: false, labels: hover, legend: false}
+            tap_action:
+              action: none

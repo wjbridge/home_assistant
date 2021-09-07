@@ -60,19 +60,22 @@
       message: 'New device: {{ trigger.event.data.entity_id }}'
 
 ###############################################################################
-# Windows Left Open or Rain Coming
+# Windows Left Open, Rain Coming, or thermostat actived
 ###############################################################################
 - id: window_left_open_alert
   alias: Window Left Open Alert
   trigger:
     - platform: time
-      at: '23:00:00'
+      id: 'close_house_down'
+      at: '21:00:00'
 
     - platform: numeric_state
+      id: 'dark_sky_rain_coming'
       entity_id: sensor.dark_sky_precip_probability_1h
       above: 60
 
     - platform: state
+      id: 'climate_to_cool'
       entity_id: climate.thermostat
       to: 'cool'
       for:
@@ -81,6 +84,7 @@
         seconds: 0
 
     - platform: state
+      id: 'climate_to_heat'
       entity_id: climate.thermostat
       to: 'heat'
       for:
@@ -94,16 +98,62 @@
       state: 'on'
 
   action:
-    - service: notify.groot_automation
-      data_template:
-        title: '<b>Alert</b>: Window / Door Open'
-        message: > 
-          {% set open_windows = states | selectattr('entity_id', 'in', state_attr('group.contact_sensors','entity_id')) | selectattr('state','in',['on','open']) | map(attribute='name') | list %}
-          {% if open_windows | length == 1 %}
-            The {{ open_windows[0] }} door is open.
-          {% else %}
-            The {{ open_windows[:-1] | join(' door, ') }}{{' door,' if open_windows | length > 2 else ' door'}} and {{ open_windows[-1]}} door are open.
-          {% endif %}
+    - choose:
+          # IF thermostat is in cool or heat mode
+          - conditions:
+              - condition: or
+                conditions:
+                  - condition: trigger
+                    id: 'climate_to_heat'
+                  - condition: trigger
+                    id: 'climate_to_cool'
+            sequence:
+              - service: notify.groot_automation
+                data_template:
+                  title: >
+                    {{'\u1F6A8'}} Alert Thermostat Active {{'\u1F6A8'}}: Window / Door Open
+                  message: >
+                    {% set open_windows = states | selectattr('entity_id', 'in', state_attr('group.contact_sensors','entity_id')) | selectattr('state','in',['on','open']) | map(attribute='name') | list %}
+                    {% if open_windows | length == 1 %}
+                      The {{ open_windows[0] }} is open! Thermostat is currently in {{ states('sensor.climate.thermostat') }} mode.
+                    {% else %}
+                      The {{ open_windows[:-1] | join(' door, ') }}{{' door,' if open_windows | length > 2 else ' door'}} and {{ open_windows[-1]}} are open. Thermostat is currently in {{ states('sensor.climate.thermostat') }} mode.
+                    {% endif %}
+
+          # ELIF rain is coming
+          - conditions:
+              - condition: trigger
+                id: 'dark_sky_rain_coming'
+            sequence:
+              - service: notify.groot_automation
+                data_template:
+                  title: >
+                    {{'\u1F327\uFE0F'}} Alert Rain Is Coming {{'\u1F327\uFE0F'}}: Window / Door Open'
+                  message: >
+                    {% set open_windows = states | selectattr('entity_id', 'in', state_attr('group.contact_sensors','entity_id')) | selectattr('state','in',['on','open']) | map(attribute='name') | list %}
+                    {% if open_windows | length == 1 %}
+                      The {{ open_windows[0] }} is open! Precipitation probability is at {{ states('sensor.dark_sky_precip_probability_1h') }}.
+                    {% else %}
+                      The {{ open_windows[:-1] | join(' door, ') }}{{' door,' if open_windows | length > 2 else ' door'}} and {{ open_windows[-1]}} are open. Precipitation probability is at {{ states('sensor.dark_sky_precip_probability_1h') }}.
+                    {% endif %}
+            
+          # ELIF house locked up for night
+          - conditions:
+              - condition: trigger
+                id: 'close_house_down'
+            sequence:
+              - service: notify.groot_automation
+                data_template:
+                  title: >
+                    {{'\u1F6A8'}} Alert {{'\u1F6A8'}}: Window / Door Open
+                  message: >
+                    {% set open_windows = states | selectattr('entity_id', 'in', state_attr('group.contact_sensors','entity_id')) | selectattr('state','in',['on','open']) | map(attribute='name') | list %}
+                    {% if open_windows | length == 1 %}
+                      The {{ open_windows[0] }} is left open at night!
+                    {% else %}
+                      The {{ open_windows[:-1] | join(' door, ') }}{{' door,' if open_windows | length > 2 else ' door'}} and {{ open_windows[-1]}} are open at night.
+                    {% endif %}
+
 
 ###############################################################################
 # Battery Low

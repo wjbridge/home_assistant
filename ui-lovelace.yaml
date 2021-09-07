@@ -90,17 +90,6 @@ views:
               entity: timer.tablet_oli_time
               template: tablet
 
-          - type: conditional
-            conditions:
-              - entity: sensor.template_oakland_alert_1
-                state: 'on'
-            card:
-              type: custom:button-card
-              entity: sensor.template_oakland_alert_1
-              template: weather_alert
-              tap_action:
-                !include popup/home_weston.yaml
-
           - type: grid
             cards:
               - type: button
@@ -113,7 +102,7 @@ views:
               - type: button
                 icon: mdi:alert-rhombus
                 tap_action:
-                  !include popup/sidebar_missing_entities.yaml
+                  !include popup/sidebar_active_alerts.yaml
                 hold_action:
                   action: none
 
