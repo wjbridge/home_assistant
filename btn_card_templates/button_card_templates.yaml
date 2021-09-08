@@ -725,8 +725,9 @@
   recently_downloaded:
     name: >
       [[[
-        if (entity != undefined && entity.attributes.data[0].number !== undefined) {
-          const num = variables.download_index;
+        const num = variables.download_index;
+
+        if (entity != undefined && ((entity.attributes.data.length - 1) >= num)) {
           return `Last Downloaded #${num}`;
         } else {
           return ``;
@@ -734,8 +735,9 @@
       ]]]
     state_display: >
       [[[
-        if (entity != undefined && entity.attributes.data[0].number !== undefined) {
-          const num = variables.download_index;
+        const num = variables.download_index;
+
+        if (entity != undefined && ((entity.attributes.data.length - 1) >= num)) {
           const data = states[entity.entity_id].attributes.data;
           const number = data[num].number == undefined ? '(' + data[1].aired.split('-')[0] + ')' : data[num].number;
           return `${data[num].title} ${number}`;
@@ -751,9 +753,10 @@
           - background-position: center center
           - background-image: >
               [[[
-                if (entity.attributes.data[0].number !== undefined) {
                 const num = variables.download_index;
-                return entity === undefined || `url(${states[entity.entity_id].attributes.data[num].fanart})`;
+
+                if ((entity.attributes.data.length - 1) >= num) {
+                  return entity === undefined || `url(${states[entity.entity_id].attributes.data[num].fanart})`;
                 } else {
                   return undefined;
                 }
