@@ -9,7 +9,7 @@
           {% set installed = states('sensor.plex_version_installed') %}
           {% set latest = states('sensor.plex_server_release_notes') %}
           {% set update_available = state_attr('sensor.plex_server_release_notes', 'update_available') %}
-          {% set url = 'https://github.com/dhleong/playactor/releases/latest' %}
+          {% set url = 'https://forums.plex.tv/t/plex-media-server/30447' %}
 
           {% if update_available and installed != 'unavailable' and latest != 'unavailable' %}
             {% if installed != latest and update_available %}
