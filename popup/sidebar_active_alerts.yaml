@@ -70,16 +70,29 @@ browser_mod:
             type: markdown
             content: >
               {% set alert_event = state_attr('sensor.template_oakland_alert_1', 'alert_event') %}
-              {% set display_title = state_attr('sensor.template_oakland_alert_1', 'display_title') %}
-              {% set font_color = '#f7e304' if state_attr('sensor.template_oakland_alert_1', 'alert_event') is search('watch', ignorecase=True) else '#fc0505' %}
+
+              {% if alert_event is search('special', ignorecase=True) %}
+                {% set display_title = state_attr('sensor.template_oakland_alert_1', 'display_message') %}
+                {% set font_color = '#b133e8' %}
+              {% else %}
+                {% set display_title = state_attr('sensor.template_oakland_alert_1', 'display_title') %}
+                {% set font_color = '#f7e304' %}
+              {% endif %}
+
               <span><font color={{ font_color }}><ha-icon icon="mdi:weather-lightning"></ha-icon></font> {{ alert_event }} <font color={{ font_color }}><ha-icon icon="mdi:weather-lightning"></ha-icon></font></span>
               <p>{{ display_title }}</p>
 
               {% if is_state('sensor.template_oakland_alert_2', 'on') %}
-                {% set alert_event = state_attr('sensor.template_oakland_alert_2', 'alert_event') %}
-                {% set display_title = state_attr('sensor.template_oakland_alert_2', 'display_title') %}
-                {% set font_color = '#f7e304' if state_attr('sensor.template_oakland_alert_2', 'alert_event') is search('watch', ignorecase=True) else '#fc0505' %}
-                <br>
+                {% set alert_event = state_attr('sensor.template_oakland_alert_1', 'alert_event') %}
+
+                {% if alert_event is search('special', ignorecase=True) %}
+                  {% set display_title = state_attr('sensor.template_oakland_alert_2', 'display_message') %}
+                  {% set font_color = '#b133e8' %}
+                {% else %}
+                  {% set display_title = state_attr('sensor.template_oakland_alert_2', 'display_title') %}
+                  {% set font_color = '#f7e304' %}
+                {% endif %}
+
                 <span><font color={{ font_color }}><ha-icon icon="mdi:weather-lightning"></ha-icon></font> {{ alert_event }} <font color={{ font_color }}><ha-icon icon="mdi:weather-lightning"></ha-icon></font></span>
                 <p>{{ display_title }}</p>
               {% endif %}
