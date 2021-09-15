@@ -86,6 +86,12 @@ network:
 zeroconf:
 
 #-------------------------------------------
+# Stream
+# https://www.home-assistant.io/integrations/stream/
+#-------------------------------------------
+stream:
+
+#-------------------------------------------
 # Homekit Controller
 # https://www.home-assistant.io/integrations/homekit_controller/
 #-------------------------------------------
