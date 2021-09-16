@@ -9,6 +9,22 @@ browser_mod:
         height: 100%;
         padding: 2.1em 1.9em 1.9em 2.7em;
       }
+
+      /* portrait */
+      @media screen and (max-width: 1200px) {
+        :host .content {
+          width: 30em;
+          padding: 1.1em 1.9em 1.9em 1.9em;
+        }
+      }
+      /* phone */
+      @media screen and (max-width: 800px) {
+        :host .content {
+          width: 20em;
+          padding: 1.1em 1.9em 1.9em 1.9em;
+        }
+      }
+
     hui-grid-card:
       $: |
         button-card:nth-child(2), button-card:nth-child(4) {

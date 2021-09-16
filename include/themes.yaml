@@ -204,11 +204,10 @@ frontend:
 
           #conditional missing entities
           "$hui-button-card:nth-last-child(2)$": |
-            {% if (states('sensor.template_unavailable_entities') | int > 0 and not is_state('timer.startup_missing_delay', 'active')) 
-                   or is_state('sensor.template_oakland_alert_1', 'on') %}
+            {% if is_state('sensor.template_warning_icon_color', 'True') %}
 
               ha-card, ha-icon {
-                color: rgb(205, 1, 1) !important;
+                color: {{ state_attr('sensor.template_warning_icon_color', 'color') }}
                 opacity: 1 !important;
                 animation: update 1.5s ease-out infinite;
               }

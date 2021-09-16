@@ -15,8 +15,8 @@ kiosk_mode:
 
   mobile_settings:
     hide_header: false
-    hide_sidebar: true
-    hide_overflow: true
+    hide_sidebar: false
+    hide_overflow: false
     custom_width: 800
 
 #-------------------------------------------

@@ -410,7 +410,7 @@
         display: none;
       }
       ha-icon {
-        width: 1.5em;
+        width: 1.7em;
         vertical-align: 18%;
         opacity: 0.5;
         padding-right: 2px;
@@ -424,7 +424,7 @@
       .subtitle {
         font-family: SF Text;
         font-size: 1em;
-        line-height: 0.7em;
+        white-space: normal;
         padding-left: 3px;
         padding-bottom: 10px;
         font-weight: 500;
