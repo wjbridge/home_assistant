@@ -250,7 +250,7 @@ frontend:
             {% if is_state('binary_sensor.template_sidebar_update_color', 'on') %}
 
               ha-card, ha-icon {
-                color: rgb(35, 78 ,106) !important;
+                color: rgb(49, 130, 183) !important;
                 opacity: 1 !important;
                 animation: update 1.5s ease-out infinite;
               }

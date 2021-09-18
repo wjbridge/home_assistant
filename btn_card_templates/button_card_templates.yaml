@@ -441,6 +441,7 @@
         letter-spacing: 0.5px;
         padding: 0 0 0 2.5em;
         line-height: 1.6em;
+        white-space: normal;
       }
       code {
         background-color: var(--secondary-background-color);

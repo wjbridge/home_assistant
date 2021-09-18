@@ -67,8 +67,7 @@ browser_mod:
               `;
             }
           ]]]
-        template:
-          - updater
+        template: updater
 
         ### Weather Alert 2
       - type: custom:button-card
@@ -102,8 +101,7 @@ browser_mod:
               `;
             }
           ]]]
-        template:
-          - updater
+        template: updater
 
       ### Missing Entities
       - type: custom:button-card
@@ -134,5 +132,4 @@ browser_mod:
               `;
             }
           ]]]
-        template:
-          - updater
+        template: updater
