@@ -103,6 +103,11 @@ frontend:
         #                                               #
         #################################################
             $swipe-card$:
+              .: |
+                div {
+                  height: 100%;
+                }
+
               hui-horizontal-stack-card$:
                 .: |
                   hui-conditional-card {
