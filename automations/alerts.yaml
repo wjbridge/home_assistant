@@ -35,6 +35,8 @@
     - condition: template
       value_template: "{{ states(trigger.entity_id) != 'unavailable' }}"
     - condition: template
+      value_template: "{{ trigger.from_state != none }}"
+    - condition: template
       value_template: "{{ trigger.platform == 'state' and trigger.to_state.state  and trigger.from_state.state is not none and states(trigger.entity_id) != none}}"
 
   action:
