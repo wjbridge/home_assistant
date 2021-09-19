@@ -48,7 +48,8 @@ lovelace:
       { url: /hacsfiles/lovelace-more-info-card/more-info-card.js,                  type: module },
 
       { url: '/local/custom_icons.js?v=28082021',                                   type: module },
-      { url: '/local/font.css',                                                     type: css    } ]
+      { url: '/local/font.css',                                                     type: css    },
+      { url: '/local/7segment.css',                                                 type: css    } ]
 
 #-------------------------------------------
 # Web Config
@@ -86,10 +87,16 @@ network:
 zeroconf:
 
 #-------------------------------------------
+# FFmpeg
+# https://www.home-assistant.io/integrations/ffmpeg/
+#-------------------------------------------
+ffmpeg:
+
+#-------------------------------------------
 # Stream
 # https://www.home-assistant.io/integrations/stream/
 #-------------------------------------------
-stream:
+# stream:
 
 #-------------------------------------------
 # Homekit Controller

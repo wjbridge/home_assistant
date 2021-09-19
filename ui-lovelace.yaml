@@ -31,10 +31,10 @@ views:
       grid-template-columns: repeat(5, 1fr) 0
       grid-template-rows: 0 repeat(3, fit-content(100%)) 0fr
       grid-template-areas: |
-        "sidebar  .           .        .          .      ."
-        "sidebar  plex        media    bedroom    temps  ."
-        "sidebar  camera      outside  home       rooms  ."
-        "sidebar  footer      footer   footer     footer ."
+        "sidebar  .           .        .          .        ."
+        "sidebar  plex        media    bedroom    temps    ."
+        "sidebar  camera      outside  home       laundry  ."
+        "sidebar  footer      footer   footer     footer   ."
       mediaquery:
         #phone
         "(max-width: 800px)":
@@ -47,7 +47,7 @@ views:
             ".  home        bedroom      ."
             ".  media       outside      ."
             ".  camera      plex         ."
-            ".  temps       rooms        ."
+            ".  temps       laundry      ."
             ".  footer      footer       ."
             ".  .           .            ."
         #portrait
@@ -60,7 +60,7 @@ views:
             "sidebar  home        bedroom     ."
             "sidebar  media       outside     ."
             "sidebar  camera      plex        ."
-            "sidebar  temps       rooms       ."
+            "sidebar  temps       laundry     ."
             "sidebar  footer      footer      ."
             "sidebar  .           .           ."
     cards:
@@ -587,48 +587,52 @@ views:
 
       #################################################
       #                                               #
-      #                    ROOMS                      #
+      #                  LAUNDRY                      #
       #                                               #
       #################################################
 
       - type: grid
-        title: 'Rooms'
+        title: 'Laundry'
         view_layout:
-          grid-area: rooms
+          grid-area: laundry
         columns: 2
         cards:
-          - type: custom:button-card
-            entity: sensor.master_bedroom_temperature
-            name: Master
-            tap_action:
-              action: none
-            hold_action:
-              action: none
-            template:
-              - temp
-              - icon_temperature
 
           - type: custom:button-card
-            entity: sensor.olivia_room_temperature
-            name: Olivia
+            entity: sensor.washer
+            name: Washer
             tap_action:
-              action: none
+              !include popup/laundry_status.yaml
             hold_action:
               action: none
             template:
-              - temp
-              - icon_temperature
+              - laundry
+              - icon_washer
+            variables:
+              circle_input: >
+                [[[
+                  return entity === undefined ?
+                    null :
+                    entity.attributes.remain_time;
+                ]]]
 
           - type: custom:button-card
-            entity: sensor.family_room_temperature
-            name: Family
+            entity: sensor.dryer
+            name: Dryer
             tap_action:
-              action: none
+              !include popup/laundry_status.yaml
             hold_action:
               action: none
             template:
-              - temp
-              - icon_temperature
+              - laundry
+              - icon_dryer
+            variables:
+              circle_input: >
+                [[[
+                  return entity === undefined ?
+                    null :
+                    entity.attributes.remain_time;
+                ]]]
 
       #################################################
       #                                               #

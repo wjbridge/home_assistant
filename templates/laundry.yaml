@@ -1,0 +1,28 @@
+#-------------------------------------------
+#  Template for LG Laundry
+#  https://github.com/phrz/lg-washer-dryer-card
+#-------------------------------------------
+- sensor:
+    - unique_id: washer_door_lock
+      state: "{{ state_attr('sensor.washer','door_lock') }}"
+
+    - unique_id: washer_time_display
+      state: >
+        {% if is_state('sensor.washer_run_state', '-') %}
+        {% elif is_state('sensor.washer_run_state', 'Standby') %}
+          -:--
+        {% else %}
+          {{ state_attr('sensor.washer', 'remain_time') }}
+        {% endif %}
+
+    - unique_id: dryer_time_display
+      state: >
+        {% if is_state('sensor.dryer_run_state', '-') %}
+        {% elif is_state('sensor.dryer_run_state', 'Standby') %}
+          -:--
+        {% else %}
+          {{ state_attr('sensor.dryer', 'remain_time') }}
+        {% endif %}
+
+    - unique_id: blank
+      state: ""

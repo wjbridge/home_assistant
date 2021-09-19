@@ -108,3 +108,21 @@ homeassistant:
 
     sensor.papermerge_release_notes:
       friendly_name: Papermerge
+
+    #-------------------------------------------
+    #  Laundry
+    #-------------------------------------------
+    sensor.template_washer_door_lock:
+      icon: mdi:lock
+      friendly_name: Washer Door Lock
+
+    sensor.template_washer_time_display:
+      icon: mdi:camera-timer
+      friendly_name: Washer Time Display
+
+    sensor.template_dryer_time_display:
+      icon: mdi:camera-timer
+      friendly_name: Dryer Time Display
+
+    sensor.template_blank:
+      friendly_name: Blank Sensor
