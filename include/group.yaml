@@ -54,3 +54,6 @@ group:
       - switch.spot_shuffle_switch
       - switch.weston_echo_repeat_switch
       - switch.weston_echo_shuffle_switch
+      - switch.dryer_power_off
+      - switch.washer_power_off
+      - sensor.template_washer_door_lock
