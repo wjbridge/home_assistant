@@ -105,6 +105,31 @@ views:
                   !include popup/sidebar_active_alerts.yaml
                 hold_action:
                   action: none
+                card_mod:
+                  style: |
+                    :host {
+                      --card-mod-icon:
+                      {% if is_state('sensor.template_oakland_alert_1', 'on') %}
+                        {% set alert_event1 = state_attr('sensor.template_oakland_alert_1', 'alert_event') %}
+                        {% set alert_event2 = state_attr('sensor.template_oakland_alert_2', 'alert_event') %}
+
+                        {% if ((alert_event1 is search('warning', ignorecase=True)) or (alert_event2 is search('warning', ignorecase=True))) %}
+                          mdi:weather-lightning;
+                        {% elif ((alert_event1 is search('special', ignorecase=True)) or (alert_event2 is search('special', ignorecase=True))) %}
+                          mdi:weather-cloudy-alert;
+                        {% elif ((alert_event1 is search('watch', ignorecase=True)) or (alert_event2 is search('watch', ignorecase=True))) %}
+                          mdi:weather-cloudy-alert;
+                        {% else %}
+                          mdi:check-bold;
+                        {% endif %}
+                      {% else %}
+                        {% if (states('sensor.template_unavailable_entities') | int > 0) and not is_state('timer.startup_missing_delay', 'active') %}
+                          mdi:alert-rhombus;
+                        {% else %}
+                          mdi:check-bold;
+                        {% endif %}
+                      {% endif %}
+                    }
 
               - type: button
                 icon: mdi:arrow-up-bold-circle-outline

@@ -62,7 +62,7 @@ browser_mod:
               `;
             } else {
               return `
-                <font color=#9da0a2><ha-icon icon="mdi:check"></ha-icon></font> <span class="title">Weather Events #1</span><br>
+                <font color=#9da0a2><ha-icon icon="mdi:check-bold"></ha-icon></font> <span class="title">Weather Events #1</span><br>
                 <p class="subtitle">No Active Weather Events</p>
               `;
             }
@@ -96,7 +96,7 @@ browser_mod:
               `;
             } else {
               return `
-                <font color=#9da0a2><ha-icon icon="mdi:check"></ha-icon></font> <span class="title">Weather Events #2</span><br>
+                <font color=#9da0a2><ha-icon icon="mdi:check-bold"></ha-icon></font> <span class="title">Weather Events #2</span><br>
                 <p class="subtitle">No Active Weather Events</p>
               `;
             }
@@ -127,7 +127,7 @@ browser_mod:
               `;
             } else {
               return `
-                <font color=#9da0a2><ha-icon icon="mdi:check"></ha-icon></font> <span class="title">Missing Entities</span><br>
+                <font color=#9da0a2><ha-icon icon="mdi:check-bold"></ha-icon></font> <span class="title">Missing Entities</span><br>
                 <p class="subtitle">No Missing Entities</p>
               `;
             }
