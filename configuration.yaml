@@ -198,27 +198,6 @@ monitor_docker:
       - network_speed_down
 
 #-------------------------------------------
-# Device Tracker
-# https://www.home-assistant.io/integrations/netgear/
-#-------------------------------------------
-device_tracker:
-  - platform: netgear
-    host: !secret orbi_host
-    port: !secret orbi_port
-    username: !secret orbi_username
-    password: !secret orbi_pwd
-    accesspoints:
-     - !secret orbi_router
-     - !secret orbi_satellite
-    devices:
-     - !secret orbi_weston_phone_mac
-     - !secret orbi_ana_phone_mac
-    new_device_defaults:
-      track_new_devices: false
-    interval_seconds: 60
-    consider_home: 300
-
-#-------------------------------------------
 # Weather
 # https://www.home-assistant.io/components/weather.darksky/
 #-------------------------------------------
@@ -228,22 +207,6 @@ weather:
     units: auto
     name: Dark Sky
     mode: daily
-
-#-------------------------------------------
-# TP Link
-# https://www.home-assistant.io/components/tplink/
-#
-# NOT ENABLED
-#  strip:
-#    - host: !secret tplink_outdoor
-#    - host: !secret tplink_plug_2
-#-------------------------------------------
-tplink:
-  discovery: false
-  switch:
-    - host: !secret tplink_plug_1
-    - host: !secret tplink_garage_lights_outdoor
-    - host: !secret tplink_front_lights_outdoor
 
 #-------------------------------------------
 # Browser Mod

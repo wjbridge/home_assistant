@@ -147,7 +147,7 @@ browser_mod:
 
             style: &style_bat |
               :host {
-                --paper-item-icon-color: {{ '#9c2525' if states(config.entity) | float < 50 else '#24ce14' }};
+                --paper-item-icon-color: {{ '#9c2525' if states(config.entity) | float(default=0) < 50 else '#24ce14' }};
                 }
 
           - entity: sensor.office_window_battery
