@@ -30,6 +30,7 @@
       - sensor.photoprism_release_notes
       - sensor.adguardhome_release_notes
       - sensor.homeassistant_desktop_release_notes
+      - sensor.homer_release_notes
 
   condition:
     - condition: template

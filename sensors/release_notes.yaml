@@ -107,6 +107,21 @@
   scan_interval: 21600
   headers: *rest_header
 
+- platform: rest
+  name: homer_release_notes
+  authentication: basic
+  username: !secret github_username 
+  password: !secret github_token
+  resource: https://api.github.com/repos/bastienwirtz/homer/releases/latest
+  value_template: >
+    {{ value_json.name }}
+  json_attributes:
+    - body
+    - html_url
+    - tag_name
+  scan_interval: 21600
+  headers: *rest_header
+
 #-------------------------------------------
 #  Plex Server
 #-------------------------------------------
