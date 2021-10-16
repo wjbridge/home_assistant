@@ -3,26 +3,18 @@
 # https://www.home-assistant.io/integrations/camera/
 #-------------------------------------------
 camera:
-  - platform: generic
-    name: Backyard
-    still_image_url: !secret shinobi_backyard
-    content_type: image/jpeg
-    framerate: 2
+  - platform: ffmpeg
+    name: Masterbedroom
+    input: !secret rtsp_proxy_masterbedroom
 
-  - platform: generic
+  - platform: ffmpeg
     name: Garage
-    still_image_url: !secret shinobi_garage
-    content_type: image/jpeg
-    framerate: 2
+    input: !secret rtsp_proxy_garage
 
-  - platform: generic
-    name: Master Bedroom
-    still_image_url: !secret shinobi_master_bedroom
-    content_type: image/jpeg
-    framerate: 2
+  - platform: ffmpeg
+    name: Olibedroom
+    input: !secret rtsp_proxy_olibedroom
 
-  - platform: generic
-    name: Oli Bedroom
-    still_image_url: !secret shinobi_oli_bedroom
-    content_type: image/jpeg
-    framerate: 2
+  - platform: ffmpeg
+    name: Backyard
+    input: !secret rtsp_proxy_backyard

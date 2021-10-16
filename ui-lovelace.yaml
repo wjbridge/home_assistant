@@ -354,7 +354,6 @@ views:
               roundLengths: true
               effect: coverflow
               speed: 650
-              spaceBetween: 20
               threshold: 7
               coverflowEffect:
                 rotate: 80
@@ -363,37 +362,29 @@ views:
               - type: grid
                 columns: 1
                 cards:
-                  - type: picture-entity
-                    entity: camera.master_bedroom
-                    camera_view: live
-              
-              - type: grid
-                columns: 1
-                cards:
-                  - type: picture-entity
-                    entity: camera.oli_bedroom
-                    camera_view: live
+                  - type: 'custom:webrtc-camera'
+                    entity: camera.masterbedroom
+                    poster: https://home-assistant.io/images/cast/splash.png
+                    muted: true
+                    background: true
 
               - type: grid
                 columns: 1
                 cards:
-                  - type: picture-entity
+                  - type: 'custom:webrtc-camera'
+                    entity: camera.olibedroom
+                    poster: https://home-assistant.io/images/cast/splash.png
+                    muted: true
+                    background: true
+
+              - type: grid
+                columns: 1
+                cards:
+                  - type: 'custom:webrtc-camera'
                     entity: camera.garage
-                    camera_view: live
-
-              - type: grid
-                columns: 1
-                cards:
-                  - type: picture-entity
-                    entity: camera.backyard
-                    camera_view: live
-
-              - type: grid
-                columns: 1
-                cards:
-                  - type: picture-entity
-                    entity: camera.doorbell_last_event
-                    camera_view: live
+                    poster: https://home-assistant.io/images/cast/splash.png
+                    muted: true
+                    background: true
 
       #################################################
       #                                               #
