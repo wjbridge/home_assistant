@@ -45,6 +45,8 @@ browser_mod:
           - entity: sensor.garage_temp_humidity
             name: Humidity
 
-      - type: picture-entity
+      - type: 'custom:webrtc-camera'
         entity: camera.garage
-        camera_view: live
+        poster: https://home-assistant.io/images/cast/splash.png
+        muted: true
+        background: true
