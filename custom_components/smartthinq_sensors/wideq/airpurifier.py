@@ -56,12 +56,8 @@ class AirPurifierDevice(Device):
         keys = self._get_cmd_keys(CMD_STATE_OPERATION)
         op_value = self.model_info.enum_value(keys[2], op.value)
         self.set(keys[0], keys[1], key=keys[2], value=op_value)
-
-    def set(self, ctrl_key, command, *, key=None, value=None, data=None):
-        """Set a device's control for `key` to `value`."""
-        super().set(ctrl_key, command, key=key, value=value, data=data)
         if self._status:
-            self._status.update_status(key, value)
+            self._status.update_status(keys[2], op_value)
 
     def reset_status(self):
         self._status = AirPurifierStatus(self, None)
@@ -116,10 +112,10 @@ class AirPurifierStatus(DeviceStatus):
         return self.lookup_range(AIR_PURIFIER_STATE_PM10)
 
     def _get_lower_filter_life(self):
-        max_time = self.int_or_none(
+        max_time = self.to_int_or_none(
             self.lookup_enum(AIR_PURIFIER_STATE_FILTERMNG_MAX_TIME, True)
         )
-        use_time = self.int_or_none(
+        use_time = self.to_int_or_none(
             self.lookup_range(AIR_PURIFIER_STATE_FILTERMNG_USE_TIME)
         )
         if max_time is None or use_time is None:
@@ -130,10 +126,10 @@ class AirPurifierStatus(DeviceStatus):
             return None
 
     def _get_upper_filter_life(self):
-        max_time = self.int_or_none(
+        max_time = self.to_int_or_none(
             self.lookup_enum(AIR_PURIFIER_STATE_FILTERMNG_MAX_TIME_TOP, True)
         )
-        use_time = self.int_or_none(
+        use_time = self.to_int_or_none(
             self.lookup_range(AIR_PURIFIER_STATE_FILTERMNG_USE_TIME_TOP)
         )
         if max_time is None or use_time is None:
