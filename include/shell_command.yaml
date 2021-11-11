@@ -7,8 +7,3 @@ shell_command:
   ####################################################
 
   ha_purge_logs: truncate -s 0 /config/home-assistant.log
-
-  #-------------------------------------------
-  # Oli Night Light
-  #-------------------------------------------
-  set_brightness_oli_light: 'PYTHONWARNINGS="ignore" python3 -m flux_led 192.168.1.115 -c 35,0,255'

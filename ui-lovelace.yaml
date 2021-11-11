@@ -283,7 +283,7 @@ views:
         cards:
 
           - type: custom:button-card
-            entity: switch.oli_night_light
+            entity: light.oli_night_light
             name: Oli Night
             template:
               - base

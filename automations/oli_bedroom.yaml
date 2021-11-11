@@ -47,11 +47,11 @@
             - choose:
                 - conditions:
                     - condition: state
-                      entity_id: switch.oli_night_light
+                      entity_id: light.oli_night_light
                       state: 'on'
                   sequence:
-                    - service: switch.turn_off
-                      entity_id: switch.oli_night_light
+                    - service: light.turn_off
+                      entity_id: light.oli_night_light
 
     #-------------------------------------------
     # Evening
@@ -97,11 +97,11 @@
             - choose:
                 - conditions:
                     - condition: state
-                      entity_id: switch.oli_night_light
+                      entity_id: light.oli_night_light
                       state: 'off'
                     - condition: state
                       entity_id: input_boolean.oli_night_light_en
                       state: 'on'
                   sequence:
-                    - service: switch.turn_on
+                    - service: light.turn_on
                       entity_id: switch.oli_night_light

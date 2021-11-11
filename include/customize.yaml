@@ -9,7 +9,7 @@ homeassistant:
     #-------------------------------------------
     #  template
     #-------------------------------------------
-    switch.oli_night_light:
+    light.oli_night_light:
       friendly_name: Oli Night Light
 
     #-------------------------------------------
