@@ -9,43 +9,84 @@
     - platform: time
       at:
         - "08:00:00"
-        - "20:15:00"
-
-  condition:
-    - condition: state
-      entity_id: media_player.spot
-      attribute: available
-      state: true
+        - "20:10:00"
 
   action:
+    #-------------------------------------------
+    # Morning
+    #-------------------------------------------
     - choose:
-        # IF morning
         - conditions:
             - condition: template
               value_template: "{{ now().hour == 8 }}"
           sequence:
-            - service: fan.turn_off
-              entity_id: fan.master_bedroom
-            - delay:
-                seconds: 3
-            - service: script.alexa_fan_sounds
-              data:
-                alexa_device: media_player.spot
-                bool_fan: false
-              
+            # IF Morning: Master Bedroom Fan
+            - choose:
+                - conditions:
+                    - condition: state
+                      entity_id: fan.master_bedroom
+                      state: 'on'
+                  sequence:
+                    - service: fan.turn_off
+                      entity_id: fan.master_bedroom
+                    - delay:
+                        seconds: 3
 
-        # ELIF night
+            # IF Morning: Fan Sounds Alexa
+            - choose:
+                - conditions:
+                    - condition: state
+                      entity_id: media_player.spot
+                      attribute: available
+                      state: true
+                  sequence:
+                    - service: script.alexa_fan_sounds
+                      data:
+                        alexa_device: media_player.spot
+                        bool_fan: false
+                    - delay:
+                        seconds: 3
+
+    #-------------------------------------------
+    # Evening
+    #-------------------------------------------
+    - choose:
         - conditions:
             - condition: template
               value_template: "{{ now().hour == 20 }}"
           sequence:
-            - service: fan.turn_on
-              entity_id: fan.master_bedroom
-              data:
-                percentage: 75
-            - delay:
-                seconds: 3
-            - service: script.alexa_fan_sounds
-              data:
-                alexa_device: media_player.spot
-                bool_fan: true
+            # IF Evening: Master Bedroom Fan
+            - choose:
+                - conditions:
+                    - condition: state
+                      entity_id: fan.master_bedroom
+                      state: 'off'
+                    - condition: state
+                      entity_id: input_boolean.master_bedroom_fan_en
+                      state: 'on'
+                    - condition: numeric_state
+                      entity_id: sensor.master_bedroom_temperature
+                      above: 74.0
+                  sequence:
+                    - service: fan.turn_on
+                      entity_id: fan.master_bedroom
+                      data:
+                        percentage: 75
+                    - delay:
+                        seconds: 3
+
+            # IF Evening: Fan Sounds Alexa
+            - choose:
+                - conditions:
+                    - condition: state
+                      entity_id: media_player.spot
+                      attribute: available
+                      state: true
+                    - condition: state
+                      entity_id: input_boolean.master_bedroom_echo_en
+                      state: 'on'
+                  sequence:
+                    - service: script.alexa_fan_sounds
+                      data:
+                        alexa_device: media_player.spot
+                        bool_fan: true
