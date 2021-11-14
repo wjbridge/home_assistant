@@ -123,8 +123,12 @@ views:
                           mdi:check-bold;
                         {% endif %}
                       {% else %}
-                        {% if (states('sensor.template_unavailable_entities') | int > 0) and not is_state('timer.startup_missing_delay', 'active') %}
-                          mdi:alert-rhombus;
+                        {% if not is_state('sensor.template_unavailable_entities', 'unknown') %}
+                          {% if (states('sensor.template_unavailable_entities') | int(default=0) > 0) and not is_state('timer.startup_missing_delay', 'active') %}
+                            mdi:alert-rhombus;
+                          {% else %}
+                            mdi:check-bold;
+                          {% endif %}
                         {% else %}
                           mdi:check-bold;
                         {% endif %}

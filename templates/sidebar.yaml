@@ -69,7 +69,7 @@
 
     - unique_id: warning_icon_color
       state: >
-        {% if is_state('sensor.template_oakland_alert_1', 'on') or ((states('sensor.template_unavailable_entities') | int > 0) and not is_state('timer.startup_missing_delay', 'active')) %}
+        {% if is_state('sensor.template_oakland_alert_1', 'on') or ((states('sensor.template_unavailable_entities') | int(default=0) > 0) and not is_state('timer.startup_missing_delay', 'active')) %}
           True
         {% else %}
           False
@@ -90,8 +90,12 @@
               rgb(157, 160, 162) !important;
             {% endif %}
           {% else %}
-            {% if (states('sensor.template_unavailable_entities') | int > 0) and not is_state('timer.startup_missing_delay', 'active') %}
-              rgb(49, 130, 183) !important;
+            {% if not is_state('sensor.template_unavailable_entities', 'unknown') %}
+              {% if (states('sensor.template_unavailable_entities') | int(default=0) > 0) and not is_state('timer.startup_missing_delay', 'active') %}
+                rgb(49, 130, 183) !important;
+              {% else %}
+                rgb(157, 160, 162) !important;
+              {% endif %}
             {% else %}
               rgb(157, 160, 162) !important;
             {% endif %}
