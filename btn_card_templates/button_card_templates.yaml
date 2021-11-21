@@ -13,16 +13,7 @@
       timeout: >
         [[[ return entity === undefined || Date.now() - Date.parse(entity.last_changed); ]]]
       consider_on: >
-        [[[
-          var state = entity === undefined || entity.state;
-          return (
-            state == 'on' ||
-            state == 'home' ||
-            state == 'cool' ||
-            state == 'fan_only' ||
-            state == 'playing'
-          );
-        ]]]
+        [[[ return ['on', 'home', 'cool', 'fan_only', 'playing'].indexOf(entity === undefined || entity.state) !== -1; ]]]
     aspect_ratio: 1/1
     show_state: true
     show_icon: false
@@ -31,12 +22,12 @@
     tap_action:
       animation_card: |
         [[[
-          const animation_speed_ms = 900;
-          const animation = `card_bounce ${animation_speed_ms}ms cubic-bezier(0.22, 1, 0.36, 1)`;
-          this.shadowRoot.getElementById("card").style.animation = animation;
-          window.setTimeout(() => {
-            this.shadowRoot.getElementById("card").style.animation = "none";
-          }, animation_speed_ms)
+          let time = 900;
+          this.shadowRoot.getElementById('card').style.animation =
+            `card_bounce ${time}ms cubic-bezier(0.22, 1, 0.36, 1)`,
+            window.setTimeout(() => {
+              this.shadowRoot.getElementById('card').style.animation = 'none'
+            }, time);
         ]]]
       action: toggle
       haptic: medium
@@ -90,7 +81,9 @@
               : 'var(--state-icon-color);'
             }
           }
-
+          #container {
+            text-align: left !important;
+          }
           #name, #state {
             font-size: 1.34vw;
             letter-spacing: 0.05vw;
@@ -143,11 +136,10 @@
     name: |
       [[[
         if (entity) {
-          let attributes = '';
-          for (const [key, value] of Object.entries(entity.attributes)) {
-            value != false ? attributes += `<p>${value}</p>` : null;
-          }
-          return attributes;
+          let attr = [];
+          for (let [k, value] of Object.entries(entity.attributes))
+            value != false && (attr += `<p>${value}</p>`);
+          return attr;
         }
       ]]]
     extra_styles: |
@@ -299,9 +291,9 @@
       circle: >
         [[[
           if (variables.state === 'on') {
-            const input = variables.circle_input;
-            const radius = 20.5;
-            const circumference = radius * 2 * Math.PI;
+            let input = variables.circle_input,
+              radius = 20.5,
+              circumference = radius * 2 * Math.PI;
             return `
               <svg viewBox="0 0 50 50">
                 <style>
@@ -344,17 +336,15 @@
     tap_action:
       loader: >
         [[[
-          if (entity !== undefined) {
-            let elt = this.shadowRoot;
-            const loader = (id, style, timeout) => {
-              if (elt.getElementById(id)) {
-                elt.getElementById(id).style.display = style;
-                window.setTimeout(() => {
-                  elt.getElementById(id).style.display = timeout;
-                }, 20000)
-              }
-            };
-            loader('circle', 'none', 'initial');
+          if (entity) {
+            let elt = this.shadowRoot,
+              loader = (id, style, timeout) => {
+                elt.getElementById(id) && (elt.getElementById(id).style.display = style,
+                  window.setTimeout(() => {
+                    elt.getElementById(id).style.display = timeout
+                  }, 20000))
+              };
+            loader('circle', 'none', 'initial'),
             loader('loader', 'initial', 'none');
           }
         ]]]
@@ -380,15 +370,10 @@
     custom_fields:
       circle: >
         [[[
-          const input = variables.circle_input == null ? ' ' : `${parseInt(variables.circle_input)}<tspan font-size="10">°F</tspan>`;
-          const stroke_color = variables.state === 'cool' || variables.state === 'heat' || variables.state === 'fan_only' ? '#b2b2b2' : 'none';
-          const fill_color = variables.state === 'off' ? 'rgba(255,255,255,0.04)' : 'none';
-          
-          // adsdasd
-
-          if (variables.state === 'off') {
-            return ``;;
-          } else {
+          if (entity && entity.attributes.temperature && entity.attributes.current_temperature) {
+            let input = variables.circle_input == null ? ' ' : `${parseInt(variables.circle_input)}<tspan font-size="10">°F</tspan>`,
+              stroke_color = variables.state === 'cool' || variables.state === 'fan_only' ? '#b2b2b2' : 'none',
+              fill_color = variables.state === 'off' ? 'rgba(255,255,255,0.04)' : 'none';
             return `
               <svg viewBox="0 0 50 50">
                 <circle cx="25" cy="25" r="20.5" stroke="${stroke_color}" stroke-width="1.5" fill="${fill_color}" />
@@ -493,30 +478,23 @@
         [[[ return entity === undefined ? null : `<img src="${states[entity.entity_id].attributes.entity_picture}" width="100%">`; ]]]
       circle: >
         [[[
-          const time = c => {
-            const s = (c / 1000);
-            const m = (c / (1000 * 60));
-            const h = (c / (1000 * 60 * 60));
-            const d = (c / (1000 * 60 * 60 * 24));
-            if (s < 60) {
-              return parseInt(s) + 's';
-            } else if (m < 60) {
-              return parseInt(m) + 'm';
-            } else if (h < 24) {
-              return parseInt(h) + 'h';
-            } else {
-              return parseInt(d) + 'd';
-            }
-          };
-          let last_changed = entity === undefined  ? ' ' : (time(Date.now() - Date.parse(states[entity.entity_id].last_changed)));
-          const stroke_color = variables.state === 'home' ? '#b2b2b2' : 'none';
-          const fill_color = variables.state === 'not_home' ? 'rgba(255,255,255,0.04)' : 'none';
-          return `
-            <svg viewBox="0 0 50 50">
-              <circle cx="25" cy="25" r="20.5" stroke="${stroke_color}" stroke-width="1.5" fill="${fill_color}" />
-              <text x="50%" y="54%" fill="#8d8e90" font-size="14" text-anchor="middle" alignment-baseline="middle" dominant-baseline="middle">${last_changed}</text>
-            </svg>
-          `;
+          if (entity) {
+            let time = c => {
+              let s = (c/1e3), m = (c/6e4), h = (c/36e5), d = (c/864e5);
+              return s < 60 ? parseInt(s) + 's' : m < 60 ? parseInt(m) + 'm' : h < 24 ? parseInt(h) + 'h' : parseInt(d) + 'd';
+            };
+            let last_changed = states[variables.retain] == null || states[variables.retain].state == 'unavailable'
+                ? time(Date.now() - Date.parse(states[entity.entity_id].last_changed))
+                : time(Date.now() - Date.parse(states[variables.retain].state)),
+              stroke = variables.state === 'home' ? '#b2b2b2' : 'none',
+              fill = variables.state === 'not_home' ? 'rgba(255,255,255,0.04)' : 'none';
+            return `
+              <svg viewBox="0 0 50 50">
+                <circle cx="25" cy="25" r="20.5" stroke="${stroke}" stroke-width="1.5" fill="${fill}" />
+                <text x="50%" y="54%" fill="#8d8e90" font-size="14" text-anchor="middle" alignment-baseline="middle" dominant-baseline="middle">${last_changed}</text>
+              </svg>
+            `;
+          }
         ]]]
 
   #################################################
@@ -546,7 +524,7 @@
       card:
         - color: >
             [[[
-              var entity_picture = entity === undefined || entity.attributes.entity_picture;
+              let entity_picture = entity === undefined || entity.attributes.entity_picture;
               if (variables.state === 'off' || variables.state === 'idle' || variables.state === 'standby' ||
                 variables.state === 'unknown' || variables.state === 'unavailable' || entity === undefined) {
                 return 'rgba(255, 255, 255, 0.3)';
@@ -576,7 +554,7 @@
           - fill: '#9da0a2'
           - opacity: >
               [[[
-                const entity_picture = entity === undefined ? null : entity.attributes.entity_picture;
+                let entity_picture = entity === undefined ? null : entity.attributes.entity_picture;
                 return entity_picture == null ? 1 : 0;
               ]]]
       card:
@@ -584,7 +562,7 @@
         - background-size: cover
         - background-image: >
             [[[
-              const entity_picture = entity === undefined || entity.attributes.entity_picture;
+              let entity_picture = entity === undefined || entity.attributes.entity_picture;
               if (variables.state === 'off' || variables.state === 'idle' || variables.state === 'standby' ||
                 variables.state === 'unknown' || variables.state === 'unavailable' || entity === undefined) {
                 return 'linear-gradient(0deg, rgba(115, 115, 115, 0.2) 0%, rgba(115, 115, 115, 0.2) 100%)';
@@ -761,8 +739,8 @@
         const num = variables.download_index;
 
         if (entity != undefined && ((entity.attributes.data.length - 1) >= num)) {
-          const data = states[entity.entity_id].attributes.data;
-          const number = data[num].number == undefined ? '(' + data[1].aired.split('-')[0] + ')' : data[num].number;
+          let data = states[entity.entity_id].attributes.data,
+            number = data[num].number == undefined ? '(' + data[1].aired.split('-')[0] + ')' : data[num].number;
           return `${data[num].title} ${number}`;
         }
         return 'Nothing Recently Added';
@@ -776,7 +754,7 @@
           - background-position: center center
           - background-image: >
               [[[
-                const num = variables.download_index;
+                let num = variables.download_index;
 
                 if ((entity.attributes.data.length - 1) >= num) {
                   return entity === undefined || `url(${states[entity.entity_id].attributes.data[num].fanart})`;
@@ -812,23 +790,20 @@
               elt.getElementById("lock").classList.remove("locked");
             }, 1100);
           } else {
-            // duplicate of "loader" template
-            const loader = (id, style, timeout) => {
-              if (elt.getElementById(id)) {
-                elt.getElementById(id).style.display = style;
-                window.setTimeout(() => {
-                  elt.getElementById(id).style.display = timeout;
-                }, 20000);
-              }
+            let loader = (id, style, timeout) => {
+                elt.getElementById(id) && (elt.getElementById(id).style.display = style,
+                  window.setTimeout(() => {
+                    elt.getElementById(id).style.display = timeout
+                  }, 20000))
             };
-            loader("circle", "none", "initial");
-            loader("loader", "initial", "none");
+            loader('circle', 'none', 'initial'),
+            loader('loader', 'initial', 'none');
           }
         ]]]
     custom_fields:
       circle: >
         [[[
-          const state = null;
+          let state = null;
           if (states['lock.front_door']) {
             if (states['lock.front_door'].state === 'locked') {
               return `
@@ -868,9 +843,10 @@
         circle:
           - width: 45%
           - fill: var(--state-icon-color)
-          - margin: 0 2% 0 0
+          - margin: 1% 2% 0 0
           - justify-self: end
           - opacity: 1
+          - display: grid
 
   #################################################
   #                                               #
@@ -969,7 +945,7 @@
     custom_fields:
       icon: >
         [[[
-          const state = (variables.state === 'on' && variables.timeout < 2000) ? 'on' : null;
+          let state = variables.state === 'on' && variables.timeout < 2000 ? 'on' : null;
           return `
             <svg viewBox="0 0 50 50">
               <style>
@@ -1014,7 +990,7 @@
     custom_fields:
       icon: >
         [[[
-          const state = (variables.state === 'on' && variables.timeout < 2000) ? 'on' : null;
+          let state = variables.state === 'on' && variables.timeout < 2000 ? 'on' : null;
           return `
             <svg viewBox="0 0 50 50">
               <style>
@@ -1092,17 +1068,17 @@
                 animation-fill-mode: forwards;
               }
             </style>
-          `;
-          const path = `
-            <path d="M46 9.2v27.5H4.1V9.2H46m2.4-2.4H1.6v32.3h46.7c.1 0 .1-32.3.1-32.3zM11.9 43.2h26.3c.6 0 1.1-.4 1.1-1v-.3c0-.6-.4-1.1-1-1.1H11.9c-.6 0-1.1.4-1.1 1v.3a1.11 1.11 0 0 0 1.1 1.1z"/>
-          `;
-          const gradient = `
-            <linearGradient id="A" gradientUnits="userSpaceOnUse" x1="5.401" y1="34.714" x2="43.817" y2="11.74">
-              <stop offset="0" stop-color="#64acb7"/>
-              <stop offset="1" stop-color="#7fdbe9"/>
-            </linearGradient>
-          `;
-          if (variables.state === 'on' || variables.state === 'playing' && variables.timeout < 2000) {
+          `,
+            path = `
+              <path d="M46 9.2v27.5H4.1V9.2H46m2.4-2.4H1.6v32.3h46.7c.1 0 .1-32.3.1-32.3zM11.9 43.2h26.3c.6 0 1.1-.4 1.1-1v-.3c0-.6-.4-1.1-1-1.1H11.9c-.6 0-1.1.4-1.1 1v.3a1.11 1.11 0 0 0 1.1 1.1z"/>
+            `,
+            gradient = `
+              <linearGradient id="A" gradientUnits="userSpaceOnUse" x1="5.401" y1="34.714" x2="43.817" y2="11.74">
+                <stop offset="0" stop-color="#64acb7"/>
+                <stop offset="1" stop-color="#7fdbe9"/>
+              </linearGradient>
+            `;
+          if (variables.state === 'on' && variables.timeout > 2000 || variables.state === 'playing' && variables.timeout > 2000) {
             return `
               <svg viewBox="0 0 50 50"> ${style} ${gradient} 
                 <path d="M2.9,8h44.3v29.9H2.9V8z" fill="#20262890"/>
@@ -1110,7 +1086,7 @@
               </svg>
             `;
           }
-          if (variables.state === 'on' || variables.state === 'playing' && variables.timeout > 2000) {
+          if (variables.state === 'on' && variables.timeout > 2000 || variables.state === 'playing' && variables.timeout > 2000) {
             return `
               <svg viewBox="0 0 50 50"> ${gradient} 
                 <path d="M2.9,8h44.3v29.9H2.9V8z" fill="#20262890"/>
@@ -1267,68 +1243,68 @@
     custom_fields:
       icon: >
         [[[
-          const style = `
-          <style>
-            @keyframes cone {
-              35% {
-                transform: scale(0.8);
-                animation-timing-function: cubic-bezier(0, 0.55, 0.45, 1);
+          let style = `
+            <style>
+              @keyframes cone {
+                35% {
+                  transform: scale(0.8);
+                  animation-timing-function: cubic-bezier(0, 0.55, 0.45, 1);
+                }
+                36% {
+                  transform: translateY(0%);
+                }
+                49% {
+                  transform: scale(1.25);
+                }
+                63% {
+                  transform: scale(0.85);
+                  animation-timing-function: cubic-bezier(0, 0.55, 0.45, 1);
+                }
+                77% {
+                  transform: scale(1.15);
+                  animation-timing-function: cubic-bezier(0, 0.55, 0.45, 1);
+                }
+                95% {
+                  transform: scale(1);
+                }
               }
-              36% {
-                transform: translateY(0%);
+              .cone {
+                animation: cone 1.2s;
+                transform-origin: center;
               }
-              49% {
-                transform: scale(1.25);
+              @keyframes speaker {
+                0% {
+                  transform: scale(1);
+                }
+                40% {
+                  transform: scale(1);
+                }
+                49% {
+                  transform: scale(0.95);
+                }
+                63% {
+                  transform: scale(1);
+                }
+                77% {
+                  transform: scale(0.95);
+                }
+                100% {
+                  transform: scale(1);
+                }
               }
-              63% {
-                transform: scale(0.85);
-                animation-timing-function: cubic-bezier(0, 0.55, 0.45, 1);
+              .speaker {
+                animation: speaker 1.3s;
+                transform-origin: center;
               }
-              77% {
-                transform: scale(1.15);
-                animation-timing-function: cubic-bezier(0, 0.55, 0.45, 1);
-              }
-              95% {
-                transform: scale(1);
-              }
-            }
-            .cone {
-              animation: cone 1.2s;
-              transform-origin: center;
-            }
-            @keyframes speaker {
-              0% {
-                transform: scale(1);
-              }
-              40% {
-                transform: scale(1);
-              }
-              49% {
-                transform: scale(0.95);
-              }
-              63% {
-                transform: scale(1);
-              }
-              77% {
-                transform: scale(0.95);
-              }
-              100% {
-                transform: scale(1);
-              }
-            }
-            .speaker {
-              animation: speaker 1.3s;
-              transform-origin: center;
-            }
-          </style>
-          `;
-          const paths = `
-          <g class="speaker">
-            <path fill="#686868" d="M35.8 46.9H14.2c-1.1 0-2-1-2-2.3V6.7c0-1.3.9-2.3 2-2.3h21.5c1.1 0 2 1 2 2.3v37.9c0 1.2-.9 2.3-1.9 2.3z"/>
-            <path fill="#2a2a2a" d="M39.2 1H10.8C9.4 1 8.3 2.1 8.2 3.5v42.9a2.65 2.65 0 0 0 2.6 2.6h28.3c1.4 0 2.5-1.2 2.6-2.6V3.5c0-1.4-1.1-2.5-2.5-2.5zM25 7c1.3 0 2.4 1.1 2.4 2.4s-1.1 2.4-2.4 2.4-2.4-1.1-2.4-2.4C22.5 8 23.6 7 25 7zm10.2 35.5l-.4 1.9s-.2.6-.6.6H15.8c-.4 0-.6-.6-.6-.6s-.1-1.1-.4-1.9.6-.9.6-.9h19.3c0-.1.8-.1.5.9z"/>
-          </g>
-          <path class="cone" fill="#e5dd00" d="M25 15.7c-6.2 0-11.3 5.1-11.3 11.3S18.8 38.3 25 38.3 36.3 33.2 36.3 27c-.1-6.3-5.1-11.3-11.3-11.3zm0 14.5a3.33 3.33 0 0 1-3.3-3.3 3.33 3.33 0 0 1 3.3-3.3 3.33 3.33 0 0 1 3.3 3.3c-.1 1.9-1.5 3.3-3.3 3.3z"/>
-          `;
+            </style>
+          `,
+            paths = `
+              <g class="speaker">
+                <path fill="#686868" d="M35.8 46.9H14.2c-1.1 0-2-1-2-2.3V6.7c0-1.3.9-2.3 2-2.3h21.5c1.1 0 2 1 2 2.3v37.9c0 1.2-.9 2.3-1.9 2.3z"/>
+                <path fill="#2a2a2a" d="M39.2 1H10.8C9.4 1 8.3 2.1 8.2 3.5v42.9a2.65 2.65 0 0 0 2.6 2.6h28.3c1.4 0 2.5-1.2 2.6-2.6V3.5c0-1.4-1.1-2.5-2.5-2.5zM25 7c1.3 0 2.4 1.1 2.4 2.4s-1.1 2.4-2.4 2.4-2.4-1.1-2.4-2.4C22.5 8 23.6 7 25 7zm10.2 35.5l-.4 1.9s-.2.6-.6.6H15.8c-.4 0-.6-.6-.6-.6s-.1-1.1-.4-1.9.6-.9.6-.9h19.3c0-.1.8-.1.5.9z"/>
+              </g>
+              <path class="cone" fill="#e5dd00" d="M25 15.7c-6.2 0-11.3 5.1-11.3 11.3S18.8 38.3 25 38.3 36.3 33.2 36.3 27c-.1-6.3-5.1-11.3-11.3-11.3zm0 14.5a3.33 3.33 0 0 1-3.3-3.3 3.33 3.33 0 0 1 3.3-3.3 3.33 3.33 0 0 1 3.3 3.3c-.1 1.9-1.5 3.3-3.3 3.3z"/>
+            `;
           if (variables.state === 'on' && variables.timeout < 2000) {
           return `
             <svg viewBox="0 0 50 50">
@@ -1337,7 +1313,6 @@
             </svg>
           `;
           }
-
           return variables.state === 'on' && variables.timeout > 2000 ? `
             <svg viewBox="0 0 50 50">
               ${paths}
@@ -1358,7 +1333,7 @@
     custom_fields:
       icon: >
         [[[
-          const state = (variables.state === 'on' && variables.timeout < 2000) ? 'on' : null;
+          let state = variables.state === 'on' && variables.timeout < 2000 ? 'on' : null;
           return `
             <svg viewBox="0 0 50 50">
               <style>
@@ -1475,11 +1450,11 @@
     custom_fields:
       icon: >
         [[[
-          const path = `
+          let path = `
             <circle cx="25" cy="25" r="6.6"/>
             <path d="M31.9 30.4c-.5.6-1.1 1.1-1.7 1.5-1.4 1.1-3.2 1.7-5.2 1.7-2.3 0-4.5-.9-6-2.4-.9 1.1-1.6 2.3-2.3 3.2l-4.9 5.4c-1.8 2.7.3 5.6 2.5 7 3.9 2.4 9.8 3.1 14.1 1.9 4.6-1.3 7.9-4.7 7.4-9.7-.2-3.4-1.9-6-3.9-8.6zM17 28.3c-.4-1-.6-2.1-.6-3.3a8.7 8.7 0 0 1 6.4-8.4l-1.6-3.5L19 6.2c-1.5-2.8-5-2.5-7.3-1.2-4 2.2-7.5 6.9-8.7 11.3-1.2 4.6.2 9.2 4.7 11.3 3.1 1.3 6.1 1.2 9.3.7zm26.9-17.6c-3.3-3.4-8-4.6-12.1-1.8-2.8 1.8-4.2 4.6-5.5 7.5 4.2.6 7.4 4.2 7.4 8.6 0 .9-.1 1.7-.4 2.5 1.3.2 2.8.3 3.8.4 2.3.4 4.7 1.3 7.1 1.7 3.2.3 4.7-3 4.8-5.6.3-4.6-1.9-10.1-5.1-13.3z"/>
-          `;
-          const style = `
+          `,
+          style = `
             <svg viewBox="0 0 50 50">
               <style>
                 @keyframes rotate {
@@ -1657,8 +1632,8 @@
     custom_fields:
       icon: >
         [[[
-          const room = 'd="M11.4,1.4h27.2v43.1H11.4V1.4z" fill="#bcbcbc"';
-          const door = 'd="M11.4 1.4v43.1h27.2V1.4H11.4zm23 23.4c0 1.1-.9 1.9-1.9 1.9h0c-1.1 0-1.9-.9-1.9-1.9V21c0-1.1.9-1.9 1.9-1.9h0c1.1 0 1.9.9 1.9 1.9v3.8z"';
+          let room = `d="M11.4,1.4h27.2v43.1H11.4V1.4z" fill="#bcbcbc"`,
+            door = `d="M11.4 1.4v43.1h27.2V1.4H11.4zm23 23.4c0 1.1-.9 1.9-1.9 1.9h0c-1.1 0-1.9-.9-1.9-1.9V21c0-1.1.9-1.9 1.9-1.9h0c1.1 0 1.9.9 1.9 1.9v3.8z"`;
 
           if (variables.state === 'on' && variables.timeout < 2000) {
             return `
@@ -1769,7 +1744,7 @@
     custom_fields:
       icon: >
         [[[
-          const state = variables.state === 'on' ? 'on' : null;
+          let state = variables.state === 'on' ? 'on' : null;
           return `
             <svg viewBox="0 0 50 50">
               <style>
@@ -1818,7 +1793,7 @@
     custom_fields:
       icon: >
         [[[
-          const state = variables.state === 'on' ? 'on' : null;
+          let state = variables.state === 'on' ? 'on' : null;
           return `
             <svg viewBox="0 0 50 50">
               <style>

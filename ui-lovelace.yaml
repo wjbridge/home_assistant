@@ -38,7 +38,7 @@ views:
       mediaquery:
         #phone
         "(max-width: 800px)":
-          grid-gap: calc(var(--custom-layout-card-padding) * 1.5)
+          grid-gap: calc(var(--custom-layout-card-padding) * 1.7)
           grid-template-columns: 0 repeat(2, 1fr) 0
           grid-template-rows: 0 repeat(6, fit-content(100%)) 0fr
           grid-template-areas: |
@@ -64,8 +64,11 @@ views:
             "sidebar  footer      footer      ."
             "sidebar  .           .           ."
     cards:
-
-      - type: custom:button-card #extra_styles fix
+      #extra_styles fix
+      - type: custom:button-card
+        styles:
+          card:
+            - display: none
 
       #################################################
       #                                               #
@@ -453,19 +456,27 @@ views:
           - type: custom:button-card
             entity: person.weston
             name: Weston
+            triggers_update:
+              - sensor.weston_last_changed
             tap_action:
               !include popup/home_weston.yaml
             hold_action:
               action: none
+            variables:
+              retain: sensor.weston_last_changed
             template: person
 
           - type: custom:button-card
             entity: person.ana
             name: Ana
+            triggers_update:
+              - sensor.ana_last_changed
             tap_action:
               !include popup/home_ana.yaml
             hold_action:
               action: none
+            variables:
+              retain: sensor.ana_last_changed
             template: person
 
           - type: custom:button-card
