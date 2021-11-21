@@ -1,0 +1,36 @@
+###############################################################################
+# Person Home Persistence
+###############################################################################
+- id: person_home_persistence
+  alias: 'Person Home Persistence'
+  trace:
+      stored_traces: 10
+  trigger:
+    - platform: state
+      entity_id:
+        - person.ana
+        - person.weston
+      from:
+        - home
+        - not_home
+      to:
+        - home
+        - not_home
+  action:
+    - choose:
+      - conditions: >
+          {{ trigger.entity_id == 'person.matte' }}
+        sequence:
+          - service: mqtt.publish
+            data:
+              topic: homeassistant/persistence/weston
+              payload_template: >
+                {{ now() }}
+              retain: true
+      default:
+        - service: mqtt.publish
+          data:
+            topic: homeassistant/persistence/ana
+            payload_template: >
+              {{ now() }}
+            retain: true

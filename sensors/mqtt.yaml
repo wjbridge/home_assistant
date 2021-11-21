@@ -1,0 +1,16 @@
+#-------------------------------------------
+#  MQTT Sensors
+#  https://www.home-assistant.io/integrations/sensor.mqtt/
+#-------------------------------------------
+
+- platform: mqtt
+  name: weston_last_changed
+  state_topic: homeassistant/persistence/weston
+  value_template: >
+    {{ value | replace(' ', 'T') }}
+
+- platform: mqtt
+  name: ana_last_changed
+  state_topic: homeassistant/persistence/ana
+  value_template: >
+    {{ value | replace(' ', 'T') }}
