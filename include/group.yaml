@@ -62,3 +62,8 @@ group:
       - switch.dryer_power_off
       - switch.washer_power_off
       - sensor.template_washer_door_lock
+      - sensor.family_room_battery
+      - sensor.master_bedroom_battery
+      - sensor.olivia_room_battery
+      - sensor.weston_last_changed
+      - sensor.ana_last_changed
