@@ -19,7 +19,7 @@
   action:
     - choose:
       - conditions: >
-          {{ trigger.entity_id == 'person.matte' }}
+          {{ trigger.entity_id == 'person.weston' }}
         sequence:
           - service: mqtt.publish
             data:
