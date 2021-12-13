@@ -26,6 +26,9 @@
                     - condition: state
                       entity_id: switch.plug_1
                       state: 'on'
+                    - condition: state
+                      entity_id: input_boolean.oli_bedroom_fan_en
+                      state: 'on'
                   sequence:
                     - service: switch.turn_off
                       entity_id: switch.plug_1

@@ -1,5 +1,5 @@
 #-------------------------------------------
-#  Template for HA Docker Memory
+#  Template for FAN
 #-------------------------------------------
 fan:
   - platform: template

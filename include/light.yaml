@@ -1,0 +1,19 @@
+#-------------------------------------------
+#  Template for LIGHT
+#-------------------------------------------
+light:
+  - platform: switch
+    name: Banister Lights
+    entity_id: switch.plug_1
+
+  - platform: switch
+    name: Fireplace Lights
+    entity_id: switch.plug_2
+
+  - platform: switch
+    name: Outside Tree Lights
+    entity_id: switch.outdoor_plug_1
+
+  - platform: switch
+    name: Outside Candy Cane Lights
+    entity_id: switch.outdoor_plug_2

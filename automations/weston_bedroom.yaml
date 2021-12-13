@@ -24,6 +24,9 @@
             - choose:
                 - conditions:
                     - condition: state
+                      entity_id: input_boolean.weston_bedroom_fan_en
+                      state: 'on'
+                    - condition: state
                       entity_id: fan.pure_cool_link
                       state: 'on'
                   sequence:
@@ -57,11 +60,11 @@
             - choose:
                 - conditions:
                     - condition: state
-                      entity_id: fan.pure_cool_link
-                      state: 'off'
-                    - condition: state
                       entity_id: input_boolean.weston_bedroom_fan_en
                       state: 'on'
+                    - condition: state
+                      entity_id: fan.pure_cool_link
+                      state: 'off'
                   sequence:
                     - service: fan.turn_on
                       entity_id: fan.pure_cool_link

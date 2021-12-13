@@ -283,64 +283,62 @@ views:
       #################################################
 
       - type: grid
-        title: Bedrooms
+        title: Christmas
         view_layout:
           grid-area: bedroom
         columns: 2
         cards:
 
           - type: custom:button-card
-            entity: light.oli_night_light
-            name: Oli Night
+            entity: light.banister_lights
+            name: Banister
             template:
               - base
               - icon_hue
               - loader
 
           - type: custom:button-card
-            entity: fan.oli_fan
-            name: Olivia
+            entity: light.fireplace_lights
+            name: Fireplacejou
             template:
               - base
-              - icon_fan2
+              - icon_hue
               - loader
 
           - type: custom:button-card
-            entity: fan.pure_cool_link
-            name: Guest
-            hold_action:
-              !include popup/dyson_fan.yaml
+            entity: light.outside_candy_cane_lights
+            name: Canes
             template:
               - base
-              - icon_fan2
-              - circle
+              - icon_hue
               - loader
-            variables:
-              circle_input: >
-                [[[
-                  return entity === undefined ?
-                    null :
-                    parseInt(entity.attributes.percentage);
-                ]]]
+
+          - type: custom:button-card
+            entity: light.outside_tree_lights
+            name: Tree
+            template:
+              - base
+              - icon_hue
+              - loader
 
           # https://github.com/tuya/tuya-home-assistant/pull/387
-          - type: custom:button-card
-            entity: fan.master_bedroom
-            name: Master
-            hold_action:
-              !include popup/master_fan.yaml
-            template:
-              - base
-              - icon_fan2
-              - circle
-              - loader
-            variables:
-              circle_input: >
-                [[[
-                  return entity === undefined ?
-                    null :
-                    parseInt(entity.attributes.percentage);
-                ]]]
+          #- type: custom:button-card
+          #  entity: fan.master_bedroom
+          #  name: Master
+          #  hold_action:
+          #    !include popup/master_fan.yaml
+          #  template:
+          #    - base
+          #    - icon_fan2
+          #    - circle
+          #    - loader
+          #  variables:
+          #    circle_input: >
+          #      [[[
+          #        return entity === undefined ?
+          #          null :
+          #          parseInt(entity.attributes.percentage);
+          #      ]]]
 
       #################################################
       #                                               #
@@ -664,6 +662,14 @@ views:
                     null :
                     entity.attributes.remain_time;
                 ]]]
+
+          - type: custom:button-card
+            entity: light.oli_night_light
+            name: Oli Night
+            template:
+              - base
+              - icon_hue
+              - loader
 
       #################################################
       #                                               #

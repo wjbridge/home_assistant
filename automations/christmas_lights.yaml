@@ -1,0 +1,50 @@
+###############################################################################
+# Schedule Christmas Lights
+###############################################################################
+- id: christmas_lights_indoor_schedule
+  alias: "Christmas Lights Indoor Schedule"
+  trace:
+      stored_traces: 5
+  trigger:
+    - platform: time
+      at:
+        - "09:00:00"
+        - "21:30:00"
+
+  condition:
+    - condition: not
+      conditions:
+        - condition: state
+          entity_id: light.banister_lights
+          state: 'unavailable'
+        - condition: state
+          entity_id: light.fireplace_lights
+          state: 'unavailable'
+
+  action:
+    - choose:
+        # IF morning
+        - conditions:
+            - condition: state
+              entity_id: light.banister_lights
+              state: 'off'
+            - condition: template
+              value_template: "{{ now().hour == 9 }}"
+          sequence:
+            - service: light.turn_on
+              entity_id:
+                - light.banister_lights
+                - light.fireplace_lights
+
+        # ELIF night
+        - conditions:
+            - condition: template
+              value_template: "{{ now().hour == 21 }}"
+            - condition: state
+              entity_id: light.banister_lights
+              state: 'on'
+          sequence:
+            - service: light.turn_off
+              entity_id:
+                - light.banister_lights
+                - light.fireplace_lights
