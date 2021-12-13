@@ -67,3 +67,6 @@ group:
       - sensor.olivia_room_battery
       - sensor.weston_last_changed
       - sensor.ana_last_changed
+      - sensor.weston_s_fire_next_alarm
+      - sensor.weston_s_fire_next_reminder
+      - sensor.weston_s_fire_next_timer
