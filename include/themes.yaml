@@ -2,7 +2,6 @@ frontend:
   extra_module_url:
     - /hacsfiles/lovelace-card-mod/card-mod.js
 
-
   themes:
     tablet:
 
