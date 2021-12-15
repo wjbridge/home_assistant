@@ -37,6 +37,7 @@ lovelace:
     [ { url: /hacsfiles/bar-card/bar-card.js,                                       type: module },
       { url: /hacsfiles/button-card/button-card.js,                                 type: module },
       { url: /hacsfiles/kiosk-mode/kiosk-mode.js,                                   type: module },
+      { url: /hacsfiles/lovelace-hui-element/hui-element.js,                        type: module },
       { url: /hacsfiles/lovelace-layout-card/layout-card.js,                        type: module },
       { url: /hacsfiles/lovelace-slider-entity-row/slider-entity-row.js,            type: module },
       { url: /hacsfiles/mini-graph-card/mini-graph-card-bundle.js,                  type: module },
