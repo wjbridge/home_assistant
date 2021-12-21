@@ -182,6 +182,7 @@ monitor_docker:
       - youtubedl
       - nzbhydra
       - plex
+      - speedtest_vpn
     rename:
       homeassistant: HomeAssistant
       nzbget: Nzbget

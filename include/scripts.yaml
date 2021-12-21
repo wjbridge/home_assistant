@@ -44,7 +44,7 @@ script:
         data:
           name: 'vpn'
       - delay:
-          seconds: 5
+          seconds: 10
       - service: monitor_docker.restart
         data:
           name: 'nzbget'
@@ -53,6 +53,11 @@ script:
       - service: monitor_docker.restart
         data:
           name: 'nzbhydra'
+      - delay:
+          seconds: 2
+      - service: monitor_docker.restart
+        data:
+          name: 'speedtest_vpn'
       - delay:
           seconds: 2
       - service: monitor_docker.restart
