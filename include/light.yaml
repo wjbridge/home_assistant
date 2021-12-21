@@ -17,3 +17,7 @@ light:
   - platform: switch
     name: Outside Candy Cane Lights
     entity_id: switch.outdoor_plug_2
+
+  - platform: switch
+    name: Outside Front Door Light
+    entity_id: switch.outdoor_front_light

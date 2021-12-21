@@ -18,7 +18,7 @@
     - condition: not
       conditions:
         - condition: state
-          entity_id: switch.outdoor_front_light
+          entity_id: light.outside_front_door_light
           state: 'unavailable'
 
   action:
@@ -26,13 +26,13 @@
         # IF morning
         - conditions:
             - condition: state
-              entity_id: switch.outdoor_front_light
+              entity_id: light.outside_front_door_light
               state: 'on'
             - condition: template
               value_template: "{{ trigger.event == 'sunrise' }}"
           sequence:
-            - service: switch.turn_off
-              entity_id: switch.outdoor_front_light
+            - service: light.turn_off
+              entity_id: light.outside_front_door_light
 
             - service: light.turn_off
               entity_id:
@@ -44,11 +44,11 @@
             - condition: template
               value_template: "{{ trigger.event == 'sunset' }}"
             - condition: state
-              entity_id: switch.outdoor_front_light
+              entity_id: light.outside_front_door_light
               state: 'off'
           sequence:
-            - service: switch.turn_on
-              entity_id: switch.outdoor_front_light
+            - service: light.turn_on
+              entity_id: light.outside_front_door_light
 
             - service: light.turn_on
               entity_id:
