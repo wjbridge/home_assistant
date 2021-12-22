@@ -290,8 +290,8 @@ views:
         cards:
 
           - type: custom:button-card
-            entity: light.banister_lights
-            name: Banister
+            entity: light.tree
+            name: Tree
             template:
               - base
               - icon_hue
@@ -390,6 +390,16 @@ views:
                     poster: https://home-assistant.io/images/cast/splash.png
                     muted: true
                     background: true
+
+              - type: grid
+                columns: 1
+                cards:
+                  - type: 'custom:webrtc-camera'
+                    entity: camera.floating
+                    poster: https://home-assistant.io/images/cast/splash.png
+                    muted: true
+                    background: true
+
 
       #################################################
       #                                               #

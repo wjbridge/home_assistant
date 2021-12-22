@@ -3,7 +3,7 @@
 #-------------------------------------------
 light:
   - platform: switch
-    name: Banister Lights
+    name: Tree Lights
     entity_id: switch.plug_1
 
   - platform: switch

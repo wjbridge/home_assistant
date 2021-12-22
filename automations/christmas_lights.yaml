@@ -15,7 +15,7 @@
     - condition: not
       conditions:
         - condition: state
-          entity_id: light.banister_lights
+          entity_id: light.tree
           state: 'unavailable'
         - condition: state
           entity_id: light.fireplace_lights
@@ -26,14 +26,14 @@
         # IF morning
         - conditions:
             - condition: state
-              entity_id: light.banister_lights
+              entity_id: light.tree
               state: 'off'
             - condition: template
               value_template: "{{ now().hour == 9 }}"
           sequence:
             - service: light.turn_on
               entity_id:
-                - light.banister_lights
+                - light.tree
                 - light.fireplace_lights
 
         # ELIF night
@@ -41,10 +41,10 @@
             - condition: template
               value_template: "{{ now().hour == 21 }}"
             - condition: state
-              entity_id: light.banister_lights
+              entity_id: light.tree
               state: 'on'
           sequence:
             - service: light.turn_off
               entity_id:
-                - light.banister_lights
+                - light.tree
                 - light.fireplace_lights
