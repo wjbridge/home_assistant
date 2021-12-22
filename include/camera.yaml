@@ -16,5 +16,5 @@ camera:
     input: !secret rtsp_proxy_olibedroom
 
   - platform: ffmpeg
-    name: Backyard
+    name: Floating
     input: !secret rtsp_proxy_backyard
