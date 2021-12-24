@@ -321,7 +321,7 @@ browser_mod:
           - entity: sensor.garage_temp_temperature
             name: Garage
             secondary_info: >
-              Humidity: {{ states('sensor.garage_temp_humidity') | round(1) }} %
+              Humidity: {{ states('sensor.garage_temp_humidity') | default | round(1) }} %
           - type: custom:mini-graph-card
             entities:
               - color: var(--primary-graph-mini-color)
