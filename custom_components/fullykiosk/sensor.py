@@ -29,6 +29,8 @@ STORAGE_SENSORS = [
     "ramTotalMemory",
 ]
 
+DIAGNOSTIC_ENTITIES = ["wifiSignalLevel"]
+
 
 async def async_setup_entry(hass, config_entry, async_add_entities):
     """Set up the Fully Kiosk Browser sensor."""
@@ -51,6 +53,9 @@ class FullySensor(CoordinatorEntity, Entity):
         self._sensor = sensor
         self.coordinator = coordinator
         self._unique_id = f"{coordinator.data['deviceID']}-{sensor}"
+
+        if self._sensor in STORAGE_SENSORS or self._sensor in DIAGNOSTIC_ENTITIES:
+            self._attr_entity_category = "diagnostic"
 
     @property
     def name(self):
@@ -96,6 +101,7 @@ class FullySensor(CoordinatorEntity, Entity):
             "manufacturer": self.coordinator.data["deviceManufacturer"],
             "model": self.coordinator.data["deviceModel"],
             "sw_version": self.coordinator.data["appVersionName"],
+            "configuration_url": f"http://{self.coordinator.data['ip4']}:2323",
         }
 
     @property
