@@ -260,6 +260,7 @@
         - letter-spacing: 0.05vw
         - white-space: nowrap
         - opacity: 0.6
+        - width: 100%
       card:
         - background: none
         - padding: 0
@@ -271,11 +272,16 @@
         opacity: 0.4;
         width: 1.2vw;
       }
-
+      #footer_container {
+        display: flex;
+        justify-content: space-between;
+      }
+      span {
+        color: #2f3436;
+      }
       .ellipsis {
         color: #6a7377;
       }
-
       /* phone */
       @media screen and (max-width: 800px) {
         #state {
