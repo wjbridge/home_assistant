@@ -518,111 +518,54 @@ views:
       #################################################
 
       - type: grid
-        title: Enviroment
+        title: Environment
         view_layout:
           grid-area: temps
         columns: 2
         cards:
-
           - type: custom:button-card
             entity: sensor.garage_temp_temperature
             name: Garage
-            tap_action:
-              action: none
-            hold_action:
-              action: none
+            custom_fields:
+              graph:
+                card:
+                  entities:
+                    - sensor.garage_temp_temperature
             template:
-              - temp
-              - icon_temperature
-            variables:
-              value_1: >
-                [[[ return entity === undefined || Math.round(entity.attributes.humidity) + '%'; ]]]
-              value_2: >
-                [[[ return entity === undefined || Math.round((Math.abs(entity.attributes.pressure) > 999 ? Math.sign(entity.attributes.pressure)*((Math.abs(entity.attributes.pressure)/1000).toFixed(1)) + 'k' : Math.sign(entity.attributes.pressure)*Math.abs(entity.attributes.pressure))) + ' hPa'; ]]]
+             - temp
 
           - type: custom:button-card
             entity: sensor.thermostat_current_temperature
             name: Office
-            tap_action:
-              action: none
-            hold_action:
-              action: none
+            custom_fields:
+              graph:
+                card:
+                  entities:
+                    - sensor.thermostat_current_temperature
             template:
-              - temp
-              - icon_temperature
-            variables:
-              value_1: >
-                [[[ 
-                  if (states["sensor.thermostat_current_humidity"]) {
-                    return Math.round(states["sensor.thermostat_current_humidity"].state) + '%';
-                  } else {
-                    return null;
-                  }
-                ]]]
+             - temp
 
           - type: custom:button-card
             entity: sensor.basement_temperature
             name: Basement
-            tap_action:
-              action: none
-            hold_action:
-              action: none
+            custom_fields:
+              graph:
+                card:
+                  entities:
+                    - sensor.basement_temperature
             template:
-              - temp
-              - icon_temperature
-            variables:
-              value_1: >
-                [[[ 
-                  if (states["sensor.basement_humidity"]) {
-                    return Math.round(states["sensor.basement_humidity"].state) + '%';
-                  } else {
-                    return null;
-                  }
-                ]]]
-              value_2: >
-                [[[ 
-                  if (states["sensor.basement_pressure"]) {
-                    return Math.round((Math.abs(states["sensor.basement_pressure"].state) > 999 ? Math.sign(states["sensor.basement_pressure"].state)*((Math.abs(states["sensor.basement_pressure"].state)/1000).toFixed(1)) + 'k' : Math.sign(states["sensor.basement_pressure"].state)*Math.abs(states["sensor.basement_pressure"].state))) + ' hPa';
-                  } else {
-                    return null;
-                  }
-                ]]]
-              value_3: >
-                [[[ 
-                  if (states["sensor.basement_radon_24hrs"]) {
-                    return states["sensor.basement_radon_24hrs"].state + ' pCi';
-                  } else {
-                    return null;
-                  }
-                ]]]
+             - temp
 
           - type: custom:button-card
             entity: sensor.dark_sky_apparent_temperature
             name: Outside
-            tap_action:
-              action: none
-            hold_action:
-              action: none
+            custom_fields:
+              graph:
+                card:
+                  entities:
+                    - sensor.dark_sky_apparent_temperature
             template:
-              - temp
-              - icon_temperature
-            variables:
-              value_1: >
-                [[[ 
-                  if (states["weather.dark_sky"]) {
-                    return Math.round(states["weather.dark_sky"].attributes.humidity) + '%';
-                  } else {
-                    return null;
-                  }
-                ]]]
-              value_2: >
-                [[[ 
-                  if (states["weather.dark_sky"]) {
-                    return Math.round((Math.abs(states["weather.dark_sky"].attributes.pressure) > 999 ? Math.sign(states["weather.dark_sky"].attributes.pressure)*((Math.abs(states["weather.dark_sky"].attributes.pressure)/1000).toFixed(1)) + 'k' : Math.sign(states["weather.dark_sky"].attributes.pressure)*Math.abs(states["weather.dark_sky"].attributes.pressure))) + ' hPa';
-                  } else {
-                    return null;
-                  }
-                ]]]
+             - temp
 
       #################################################
       #                                               #

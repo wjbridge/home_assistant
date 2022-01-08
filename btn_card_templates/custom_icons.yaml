@@ -13,8 +13,8 @@
         [[[
         if (entity.state != 'unavailable')
         {
-          var temp_color ="'#9da0a2";
-          if (entity.state >= '14' && entity.state < 0) {
+          var temp_color ="#9da0a2";
+          if (entity.state < 32) {
             temp_color = "#0302FC"; 
           } else if(entity.state >= '32' && entity.state < 54) {
             temp_color = "#2A00D5";  
