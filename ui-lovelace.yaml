@@ -283,39 +283,15 @@ views:
       #################################################
 
       - type: grid
-        title: Christmas
+        title: Bedroom
         view_layout:
           grid-area: bedroom
         columns: 2
         cards:
 
           - type: custom:button-card
-            entity: light.tree
-            name: Tree
-            template:
-              - base
-              - icon_hue
-              - loader
-
-          - type: custom:button-card
-            entity: light.fireplace_lights
-            name: Fireplacejou
-            template:
-              - base
-              - icon_hue
-              - loader
-
-          - type: custom:button-card
-            entity: light.outside_candy_cane_lights
-            name: Canes
-            template:
-              - base
-              - icon_hue
-              - loader
-
-          - type: custom:button-card
-            entity: light.outside_tree_lights
-            name: Tree
+            entity: light.oli_night_light
+            name: Oli Night
             template:
               - base
               - icon_hue
@@ -415,7 +391,7 @@ views:
         cards:
 
           - type: custom:button-card
-            entity: switch.outdoor_front_light
+            entity: light.outside_front_door_light
             name: Front
             template:
               - base
@@ -432,7 +408,7 @@ views:
               - loader
 
           - type: custom:button-card
-            entity: switch.outdoor_garage_lights
+            entity: light.outside_garage_lights
             name: Garage
             template:
               - base
@@ -615,14 +591,6 @@ views:
                     null :
                     entity.attributes.remain_time;
                 ]]]
-
-          - type: custom:button-card
-            entity: light.oli_night_light
-            name: Oli Night
-            template:
-              - base
-              - icon_hue
-              - loader
 
       #################################################
       #                                               #
