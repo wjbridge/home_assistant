@@ -122,6 +122,8 @@ views:
                           mdi:weather-cloudy-alert;
                         {% elif ((alert_event1 is search('watch', ignorecase=True)) or (alert_event2 is search('watch', ignorecase=True))) %}
                           mdi:weather-cloudy-alert;
+                        {% elif ((alert_event1 is search('winter', ignorecase=True)) or (alert_event2 is search('winter', ignorecase=True))) %}
+                          mdi:snowflake-alert;
                         {% else %}
                           mdi:check-bold;
                         {% endif %}

@@ -54,9 +54,9 @@
           {%- set apparent = states('sensor.dark_sky_apparent_temperature') | round %}
           {%- set precip = states('sensor.dark_sky_precip_probability') | round %}
           {% if not is_state('sensor.dark_sky_temperature', 'unknown') %}
-            {%- if temperature <= 0.0 -%}
+            {%- if temperature <= 32.0 -%}
               Feels like {{ apparent }}° with {{ precip }}% risk of snow {{'\u2744\uFE0F'}}
-            {%- elif temperature > 0.0 -%} 
+            {%- elif temperature > 32.0 -%} 
               Feels like {{ apparent}}° with {{ precip }}% risk of rain {{ '\u2614\uFE0F' if precip > 30 }}
             {%- endif %}
           {%- else %}
@@ -86,6 +86,8 @@
               rgb(10, 229, 6) !important;
             {% elif ((alert_event1 is search('watch', ignorecase=True)) or (alert_event2 is search('watch', ignorecase=True))) %}
               rgb(237, 255, 4) !important;
+            {% elif ((alert_event1 is search('winter', ignorecase=True)) or (alert_event2 is search('winter', ignorecase=True))) %}
+              rgb(226, 7, 230) !important;
             {% else %}
               rgb(157, 160, 162) !important;
             {% endif %}
