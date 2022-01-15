@@ -122,6 +122,17 @@
               transform: scale(1);
             }
           }
+          .marquee {
+            animation: marquee 15s linear infinite;
+          }
+          @keyframes marquee {
+            from {
+              transform: translateX(0%);
+            }
+            to {
+              transform: translateX(-50%);
+            }
+          }
         `
       ]]]
 
@@ -224,7 +235,7 @@
   #                                               #
   #################################################
 
-  apcupsd:
+  footer:
     show_state: true
     show_name: false
     show_icon: false
@@ -600,10 +611,43 @@
       - base_media
     state_display: >
       [[[
-        if (entity.attributes.media_title === 'Nothing playing' || entity.attributes.media_title === 'No title' && variables.state === 'paused') {
-          return 'Nothing is played';
+        if (entity) {
+          let elt = this.shadowRoot,
+            await = setTimeout(marquee, 0),
+            artist = entity.attributes.media_artist,
+            title = entity.attributes.media_title,
+            output = artist === undefined && title !== undefined ? title :
+            title === undefined && artist !== undefined ? artist :
+            title !== undefined && artist !== undefined ? `${artist} - ${title}` :
+            variables.translate_idle;
+          function marquee() {
+            let state = elt.getElementById("state"),
+              container = elt.getElementById("container");
+            if (state && container) {
+              state.innerHTML = output;
+              let ro = new ResizeObserver(entries => {
+                let spacer = "&nbsp;".repeat(3),
+                  s = entries[0],
+                  c = entries[1],
+                  r = s && s.contentRect &&
+                      c && c.contentRect &&
+                      s.contentRect.width !== 0 &&
+                      c.contentRect.width !== 0;
+                if (r && s.contentRect.width < c.contentRect.width) {
+                  state.classList.remove("marquee");
+                }
+                else if (r && s.contentRect.width >= c.contentRect.width) {
+                  state.innerHTML = `${output} ${spacer} ${output} ${spacer}&nbsp;`;
+                  state.classList.add("marquee");
+                }
+              });
+              ro.observe(state);
+              ro.observe(container);
+            }
+          }
+          return output;
         }
-        return entity.attributes.media_title === 'No title' && variables.state === 'playing' ? 'Nothing is played' : entity.attributes.media_title;
+        return `Unknown`;
       ]]]
     custom_fields:
       blur: >
@@ -618,14 +662,13 @@
         <div></div>
       play_pause: >
         [[[
-          const style = `
+          let style = `
             <style>
               .scale-up {
                 animation: scale-up 1s forwards;
                 cubic-bezier(.05, .5, .3, 1);
                 transform-origin: center center;
               }
-
               @keyframes scale-up {
                 0% {
                   opacity: 0;
@@ -664,9 +707,12 @@
     styles:
       name:
         - z-index: 3
+        - overflow: visible
         - margin-bottom: -1%
       state:
         - z-index: 3
+        - max-width: unset
+        - overflow: visible
       card:
         - background-color: rgba(115, 115, 115, 0.2)
         - padding: 5%
@@ -702,7 +748,7 @@
           - position: absolute
           - background-size: cover
           - background-image: >
-              [[[ 
+              [[[
                 return entity.attributes.entity_picture === undefined ? 'none' : `url(${entity.attributes.entity_picture})`;
               ]]]
         play_pause:
@@ -719,7 +765,7 @@
           - overflow: visible
           - filter: >
               [[[
-                const entity_picture = entity === undefined || entity.attributes.entity_picture;
+                let entity_picture = entity === undefined || entity.attributes.entity_picture;
                 return entity_picture == null ? 'none' : 'drop-shadow(0 0 1.3vw rgba(0,0,0,0.7))';
               ]]]
         icon:
@@ -732,6 +778,7 @@
                   '#9da0a2' : 
                   'rgba(255, 255, 255, 0.8)';
               ]]]
+
 
   #################################################
   #                                               #
@@ -754,12 +801,41 @@
       [[[
         const num = variables.download_index;
 
-        if (entity != undefined && ((entity.attributes.data.length - 1) >= num)) {
-          let data = states[entity.entity_id].attributes.data,
-            number = data[num].number == undefined ? '(' + data[1].aired.split('-')[0] + ')' : data[num].number;
-          return `${data[num].title} ${number}`;
+        if (entity && ((entity.attributes.data.length - 1) >= num)) {
+          let elt = this.shadowRoot,
+            await = setTimeout(marquee,0),
+            data = entity.attributes.data,
+            number = data[num].number === undefined && data[num].aired !== undefined
+              ? `(${data[num].aired.split("-")[0]})`
+              : data[num].number === undefined && data[num].aired === undefined
+              ? ' ' : data[num].number,
+            output =  `${data[num].title} ${number}`;
+          function marquee() {
+            let state = elt.getElementById("state"),
+              container = elt.getElementById("container"),
+              spacer = "&nbsp;".repeat(3);
+            if (state && container) {
+              state.innerHTML = output;
+              let ro = new ResizeObserver(entries => {
+                let s = entries[0], c = entries[1];
+                if (s && s.contentRect && c && c.contentRect
+                && s.contentRect.width < c.contentRect.width) {
+                  state.classList.remove("marquee");
+                }
+                else if (s && s.contentRect && c && c.contentRect
+                && s.contentRect.width >= c.contentRect.width) {
+                  state.innerHTML = `${output} ${spacer} ${output} ${spacer}&nbsp;`;
+                  state.classList.add("marquee");
+                }
+              });
+              ro.observe(state);
+              ro.observe(container);
+            }
+          }
+          return output;
         }
-        return 'Nothing Recently Added';
+        return `Nothing Added`;
+
       ]]]
     custom_fields:
       blur: >
