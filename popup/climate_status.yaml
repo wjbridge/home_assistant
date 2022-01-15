@@ -262,9 +262,21 @@ browser_mod:
             name: Family Room
             secondary_info: last-changed
           - type: custom:mini-graph-card
+            color_thresholds: &graph_colors
+              - color: '#0302FC'
+                value: 0
+              - color: '#2A00D5'
+                value: 32
+              - color: '#63009E'
+                value: 54
+              - color: '#A1015D'
+                value: 72
+              - color: '#D80027'
+                value: 86
+              - color: '#FE0002'
+                value: 95
             entities:
-              - color: var(--primary-graph-mini-color)
-                entity: sensor.family_room_temperature
+              - sensor.family_room_temperature
             line_width: 3
             hour24: true
             group: true
@@ -272,7 +284,7 @@ browser_mod:
             align_state: right
             align_header: left
             hours_to_show: 24
-            show:
+            show: &show_graph
               {fill: fade, icon: false, name: false, state: false, 
               name_adaptive_color: false, labels: hover, legend: false}
             tap_action:
@@ -282,9 +294,9 @@ browser_mod:
             name: Master Bedroom
             secondary_info: last-changed
           - type: custom:mini-graph-card
+            color_thresholds: *graph_colors
             entities:
-              - color: var(--primary-graph-mini-color)
-                entity: sensor.master_bedroom_temperature
+              - sensor.master_bedroom_temperature
             line_width: 3
             hour24: true
             group: true
@@ -292,9 +304,7 @@ browser_mod:
             align_state: right
             align_header: left
             hours_to_show: 24
-            show:
-              {fill: fade, icon: false, name: false, state: false, 
-              name_adaptive_color: false, labels: hover, legend: false}
+            show: *show_graph
             tap_action:
               action: none
 
@@ -302,9 +312,9 @@ browser_mod:
             name: Olivia Bedroom
             secondary_info: last-changed
           - type: custom:mini-graph-card
+            color_thresholds: *graph_colors
             entities:
-              - color: var(--primary-graph-mini-color)
-                entity: sensor.olivia_room_temperature
+              - sensor.olivia_room_temperature
             line_width: 3
             hour24: true
             group: true
@@ -312,9 +322,7 @@ browser_mod:
             align_state: right
             align_header: left
             hours_to_show: 24
-            show:
-              {fill: fade, icon: false, name: false, state: false, 
-              name_adaptive_color: false, labels: hover, legend: false}
+            show: *show_graph
             tap_action:
               action: none
 
@@ -323,9 +331,9 @@ browser_mod:
             secondary_info: >
               Humidity: {{ states('sensor.garage_temp_humidity') | default | round(1) }} %
           - type: custom:mini-graph-card
+            color_thresholds: *graph_colors
             entities:
-              - color: var(--primary-graph-mini-color)
-                entity: sensor.garage_temp_temperature
+              - sensor.garage_temp_temperature
             line_width: 3
             hour24: true
             group: true
@@ -333,9 +341,7 @@ browser_mod:
             align_state: right
             align_header: left
             hours_to_show: 24
-            show:
-              {fill: fade, icon: false, name: false, state: false, 
-              name_adaptive_color: false, labels: hover, legend: false}
+            show: *show_graph
             tap_action:
               action: none
 
@@ -344,9 +350,9 @@ browser_mod:
             secondary_info: >
               Humidity: {{ states('sensor.basement_humidity') }} %
           - type: custom:mini-graph-card
+            color_thresholds: *graph_colors
             entities:
-              - color: var(--primary-graph-mini-color)
-                entity: sensor.basement_temperature
+              - sensor.basement_temperature
             line_width: 3
             hour24: true
             group: true
@@ -354,8 +360,6 @@ browser_mod:
             align_state: right
             align_header: left
             hours_to_show: 24
-            show:
-              {fill: fade, icon: false, name: false, state: false, 
-              name_adaptive_color: false, labels: hover, legend: false}
+            show: *show_graph
             tap_action:
               action: none

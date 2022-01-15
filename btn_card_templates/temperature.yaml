@@ -41,7 +41,6 @@
               value: 86
             - color: '#FE0002'
               value: 95
-          #line_color: blue
           hours_to_show: 24
           line_width: 8
           font_size: 75

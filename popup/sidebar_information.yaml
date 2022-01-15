@@ -44,7 +44,7 @@ browser_mod:
       grid-template-columns: repeat(3, 1fr)
       grid-template-rows: 1fr
       grid-template-areas: |
-        "hass sensor docker"
+        "hass sensor network"
       mediaquery:
         #phone
         "(max-width: 800px)":
@@ -53,7 +53,7 @@ browser_mod:
           grid-template-areas: |
             "hass"
             "sensor"
-            "docker"
+            "network"
     cards:
 
       #################################################
@@ -221,14 +221,14 @@ browser_mod:
 
       #################################################
       #                                               #
-      #                  DOCKER                       #
+      #                  NETWORK                      #
       #                                               #
       #################################################
 
       - type: entities
         view_layout:
-          grid-area: docker
-        title: Docker Status
+          grid-area: network
+        title: Network Status
         show_header_toggle: false
         card_mod:
           class: header
@@ -286,6 +286,9 @@ browser_mod:
             severity: &bar_card_severity
               - color: '#303435'
                 from: 0
+                to: 49
+              - color: '#918e02'
+                from: 50
                 to: 69
               - color: '#6d2525'
                 from: 70
@@ -307,31 +310,37 @@ browser_mod:
                   service_data:
                     entity_id: sensor.docker_memory_percent
 
-          - type: custom:hui-element
-            card_type: horizontal-stack
-            cards:
-              - type: entities
-                entities:
-                  - entity: sensor.docker_vpn_network_speed_down
-                    style: |
-                      :host {
-                        --paper-item-icon-color: green;
-                      }
-              - type: entities
-                entities:
-                  - entity: sensor.docker_vpn_network_speed_up
-                    style: |
-                      :host {
-                        --paper-item-icon-color: #385581;
-                      }
+          - type: custom:bar-card
+            width: 55%
+            height: 2em
+            decimal: 0
+            unit_of_measurement: '%'
+            positions: *bar_card_positions
+            severity: *bar_card_severity
+            entity_row: true
+            entities:
+
+              - entity: sensor.template_udm_cpu
+                tap_action:
+                  action: call-service
+                  service: homeassistant.update_entity
+                  service_data:
+                    entity_id: sensor.template_udm_cpu
+
+              - entity: sensor.template_udm_mem
+                tap_action:
+                  action: call-service
+                  service: homeassistant.template_udm_mem
+                  service_data:
+                    entity_id: sensor.template_udm_cpu
 
         footer:
           type: custom:mini-graph-card
           entities:
-            - entity: sensor.docker_vpn_network_speed_up
+            - entity: sensor.template_udm_cpu
               color: '#385581'
               
-            - entity: sensor.docker_vpn_network_speed_down
+            - entity: sensor.template_udm_mem
               color: green
           align_state: left
           group: false
