@@ -1,0 +1,69 @@
+###############################################################################
+# Ana's Desk Light
+###############################################################################
+- id: anas_desk_light
+  alias: "Ana's Desk Light"
+  trace:
+      stored_traces: 10
+  trigger:
+    - platform: state
+      id: 'light_on'
+      entity_id:  sensor.ana_desk_light_switch_action
+      attribute: action
+      to: 'on'
+
+    - platform: state
+      id: 'light_off'
+      entity_id:  sensor.ana_desk_light_switch_action
+      attribute: action
+      to: 'off'
+
+    - platform: state
+      id: 'light_up'
+      entity_id:  sensor.ana_desk_light_switch_action
+      attribute: action
+      to: 'up'
+
+    - platform: state
+      id: 'light_down'
+      entity_id:  sensor.ana_desk_light_switch_action
+      attribute: action
+      to: 'down'
+
+  action:
+    - choose:
+        # IF pressing "on"
+        - conditions:
+            - condition: trigger
+              id: 'light_on'
+          sequence:
+            - service: light.turn_on
+              entity_id: light.ana_desk_lights
+
+        # IF pressing "off"
+        - conditions:
+            - condition: trigger
+              id: 'light_off'
+          sequence:
+            - service: light.turn_off
+              entity_id: light.ana_desk_lights
+
+        # IF pressing "up"
+        - conditions:
+            - condition: trigger
+              id: 'light_up'
+          sequence:
+            - service: light.turn_on
+              data:
+                entity_id: light.ana_desk_lights
+                brightness_step: 50
+
+        # IF pressing "down"
+        - conditions:
+            - condition: trigger
+              id: 'light_down'
+          sequence:
+            - service: light.turn_on
+              data:
+                entity_id: light.ana_desk_lights
+                brightness_step: -50
