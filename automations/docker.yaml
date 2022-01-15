@@ -1,20 +1,47 @@
 ###############################################################################
-# Monitor Docker VPN
+# Docker Container Health Monitor
 ###############################################################################
-- id: docker_vpn_health
-  alias: "Docker VPN Health"
+- id: docker_container_health_monitor
+  alias: "Docker Container Health Monitor"
   trace:
-      stored_traces: 5
+      stored_traces: 10
   trigger:
     - platform: state
       entity_id: sensor.docker_vpn_health
+      id: 'vpn_unhealthy'
+      to: 'unhealthy'
+      for:
+        minutes: 5
+
+    - platform: state
+      entity_id: sensor.docker_prowlarr_health
+      id: 'prowlarr_unhealthy'
       to: 'unhealthy'
       for:
         minutes: 5
 
   action:
-    - service: notify.groot_automation
-      data_template:
-        title: "<b>Warn</b>: Detected Docker VPN Unhealthy"
-        message: "Restarting Docker VPN Container..."
-    - service: script.docker_vpn_restart
+    - choose:
+        # IF "vpn_unhealthy"
+        - conditions:
+            - condition: trigger
+              id: 'vpn_unhealthy'
+          sequence:
+            - service: notify.groot_automation
+              data_template:
+                title: "<b>Warn</b>: Detected Docker VPN Unhealthy"
+                message: "Restarting Docker VPN Container..."
+            - service: script.docker_vpn_restart
+
+        # IF "prowlarr_unhealthy"
+        - conditions:
+            - condition: trigger
+              id: 'prowlarr_unhealthy'
+          sequence:
+            - service: notify.groot_automation
+              data_template:
+                title: "<b>Warn</b>: Detected Prowlarr Unhealthy"
+                message: "Restarting Prowlarr Container..."
+            - service: monitor_docker.restart
+              data:
+                name: 'prowlarr'

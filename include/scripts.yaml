@@ -52,7 +52,7 @@ script:
           seconds: 2
       - service: monitor_docker.restart
         data:
-          name: 'nzbhydra'
+          name: 'prowlarr'
       - delay:
           seconds: 2
       - service: monitor_docker.restart
