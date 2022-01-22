@@ -28,6 +28,7 @@ group:
       - binary_sensor.updater # always unknown after restart
       - sensor.template_unavailable_entities
       - sensor.docker_youtubedl_health
+      - sensor.docker_nzbhydra_health
       - sensor.docker_speedtest_vpn_health
       - sensor.ecobee_next_alarm
       - sensor.ecobee_next_reminder

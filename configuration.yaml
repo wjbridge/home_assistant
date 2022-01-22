@@ -180,14 +180,14 @@ monitor_docker:
       - homeassistant
       - nzbget
       - youtubedl
-      - prowlarr
+      - nzbhydra
       - plex
       - speedtest_vpn
     rename:
       homeassistant: HomeAssistant
       nzbget: Nzbget
       youtubedl: YoutubeDL
-      prowlarr: Prowlarr
+      nzbhydra: Nzbhydra
       speedtest_vpn: Speedtest VPN
       plex: Plex
     monitored_conditions:

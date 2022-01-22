@@ -14,8 +14,8 @@
         minutes: 5
 
     - platform: state
-      entity_id: sensor.docker_prowlarr_health
-      id: 'prowlarr_unhealthy'
+      entity_id: sensor.docker_nzbhydra_health
+      id: 'nzbhydra_unhealthy'
       to: 'unhealthy'
       for:
         minutes: 5
@@ -33,15 +33,15 @@
                 message: "Restarting Docker VPN Container..."
             - service: script.docker_vpn_restart
 
-        # IF "prowlarr_unhealthy"
+        # IF "nzbhydra_unhealthy"
         - conditions:
             - condition: trigger
-              id: 'prowlarr_unhealthy'
+              id: 'nzbhydra_unhealthy'
           sequence:
             - service: notify.groot_automation
               data_template:
-                title: "<b>Warn</b>: Detected Prowlarr Unhealthy"
-                message: "Restarting Prowlarr Container..."
+                title: "<b>Warn</b>: Detected Nzbhydra Unhealthy"
+                message: "Restarting Nzbhydra Container..."
             - service: monitor_docker.restart
               data:
-                name: 'prowlarr'
+                name: 'nzbhydra'
