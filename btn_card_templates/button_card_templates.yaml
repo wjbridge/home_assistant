@@ -6,6 +6,94 @@
   #                                               #
   #################################################
 
+  widget_calendar:
+    aspect_ratio: 2/1
+    show_icon: false
+    show_name: false
+    show_state: false
+    show_label: false
+    tap_action:
+      action: more-info  
+    styles:
+      grid:
+        - grid-template-areas: |     
+            "day"
+            "numero"
+            "text"
+            "event"
+        - grid-template-columns: 1fr
+        - grid-template-rows: min-content min-content min-content 1fr
+        - gap: 0%
+        - overflow: hidden
+      card:
+        - font-family: Sf Display
+        - border-radius: var(--custom-button-card-border-radius)
+        - -webkit-tap-highlight-color: rgba(0,0,0,0)
+        - -webkit-box-shadow: 0px 0px 9px 3px var(--button-card-light-color)
+        - box-shadow: 0px 0px 9px 3px var(--button-card-light-color)
+        - transition: none
+        - padding: 5%
+        # - height: 80%
+        - color: >
+            [[[
+              if (states['sun.sun'].state == 'below_horizon'){
+                return 'rgba(0, 0, 0, 0.6)';
+              } else
+                return 'rgba(255, 255, 255, 0.8)';
+            ]]]
+        - background-color: >
+            [[[
+              if (states['sun.sun'].state == 'below_horizon'){
+                return '#1c1c1e';
+              } else
+                return 'rgba(255, 255, 255, 0.8)';
+            ]]]
+      custom_fields:
+        day:
+          - place-self: start
+          - color: '#ff3b2f'
+          - text-transform: uppercase
+          - font-weight: 600
+        numero:
+          - place-self: start
+          - color: >
+              [[[
+                if (states['sun.sun'].state == 'below_horizon'){
+                  return 'rgba(255, 255, 255, 0.8)';
+                } else
+                  return 'rgba(0, 0, 0, 0.6)';
+              ]]]             
+          - font-weight: 500
+          - margin-top: -10px
+        text:
+          - place-self: start
+          - text-transform: uppercase 
+          - color: '#8e8e90'         
+        event:
+          - place-self: start
+          - border-left: 3px blue solid
+          - padding-left: 3px
+          - color: >
+              [[[
+                if (states['sun.sun'].state == 'below_horizon'){
+                  return 'rgba(255, 255, 255, 0.8)';
+                } else
+                  return 'rgba(0, 0, 0, 0.6)';
+              ]]]           
+    custom_fields:
+      day: >
+        [[[ return `Sunday` ]]]
+      numero: >
+        [[[ return `22` ]]]
+      text: >
+        [[[
+          if (states['sun.sun'].state == 'below_horizon'){
+            return "Tomorrow";
+          } else
+            return " ";
+        ]]]        
+      event: '[[[ return `EVENT` ]]]'
+
   base:
     variables:
       state: >

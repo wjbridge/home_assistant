@@ -84,15 +84,6 @@ views:
             entity: sensor.template_sidebar
             template: sidebar_template
 
-          - type: conditional
-            conditions:
-              - entity: timer.tablet_oli_time
-                state: 'active'
-            card:
-              type: custom:button-card
-              entity: timer.tablet_oli_time
-              template: tablet
-
           - type: grid
             cards:
               - type: button
@@ -258,25 +249,6 @@ views:
             template:
               - base
               - icon_tv
-
-          - type: custom:button-card
-            entity: switch.oli_tablet_filter
-            name: Filter Tab
-            hold_action:
-              services: >
-                [[[
-                  hass.callService('browser_mod', 'toast', {
-                    message: 'Starting Oli Tablet Timer...'
-                  });
-
-                  hass.callService('timer', 'start', {
-                    entity_id: 'timer.tablet_oli_time'
-                  });
-                ]]]
-            template:
-              - base
-              - icon_toggle
-              - loader
 
       #################################################
       #                                               #
