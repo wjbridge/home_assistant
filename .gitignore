@@ -1,0 +1,41 @@
+#-------------------------------------------
+# Ignore Folders
+#-------------------------------------------
+blueprints
+tts
+__pycache__
+www/Plex_Recently_Added/*
+www/fonts
+scripts/*
+
+#-------------------------------------------
+# Ignore Files Starting with '.'
+#-------------------------------------------
+.*
+!.HA_VERSION
+!.gitignore
+!.gitattributes
+
+#-------------------------------------------
+# Ignore Files
+#-------------------------------------------
+known_devices.yaml
+secrets.yaml
+
+#-------------------------------------------
+# Ignore Logs / Database
+#-------------------------------------------
+home-assistant.log*
+home-assistant_v2.*
+
+#-------------------------------------------
+# Web RTC Camera File
+#-------------------------------------------
+rtsp2webrtc_v5_amd64
+
+#-------------------------------------------
+# Ignore Custom Components & Lovelace
+#-------------------------------------------
+custom_components/*
+www/community/*
+unifi.json
