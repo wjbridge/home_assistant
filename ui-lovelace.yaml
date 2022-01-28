@@ -33,7 +33,7 @@ views:
       grid-template-areas: |
         "sidebar  .           .        .          .        ."
         "sidebar  plex        media    bedroom    temps    ."
-        "sidebar  camera      outside  home       laundry  ."
+        "sidebar  camera      outside  home       misc     ."
         "sidebar  footer      footer   footer     footer   ."
       mediaquery:
         #phone
@@ -47,7 +47,7 @@ views:
             ".  home        bedroom      ."
             ".  media       outside      ."
             ".  camera      plex         ."
-            ".  temps       laundry      ."
+            ".  temps       misc         ."
             ".  footer      footer       ."
             ".  .           .            ."
         #portrait
@@ -60,7 +60,7 @@ views:
             "sidebar  home        bedroom     ."
             "sidebar  media       outside     ."
             "sidebar  camera      plex        ."
-            "sidebar  temps       laundry     ."
+            "sidebar  temps       misc        ."
             "sidebar  footer      footer      ."
             "sidebar  .           .           ."
     cards:
@@ -82,7 +82,7 @@ views:
         cards:
           - type: custom:button-card
             entity: sensor.template_sidebar
-            template: sidebar_template
+            template: sidebar
 
           - type: grid
             cards:
@@ -174,7 +174,7 @@ views:
                   action: none
                 template:
                   - conditional_media
-                  - recently_downloaded
+                  - recently_added
                   - icon_plex
                 variables:
                   download_index: >
@@ -188,7 +188,7 @@ views:
                   action: none
                 template:
                   - conditional_media
-                  - recently_downloaded
+                  - recently_added
                   - icon_plex
                 variables:
                   download_index: >
@@ -202,7 +202,7 @@ views:
                   action: none
                 template:
                   - conditional_media
-                  - recently_downloaded
+                  - recently_added
                   - icon_plex
                 variables:
                   download_index: >
@@ -267,9 +267,8 @@ views:
             entity: light.oli_night_light
             name: Oli Night
             template:
-              - base
-              - icon_hue
-              - loader
+              - light
+              - icon_shade
 
           # https://github.com/tuya/tuya-home-assistant/pull/387
           #- type: custom:button-card
@@ -369,25 +368,31 @@ views:
             name: Front
             template:
               - base
-              - icon_hue
               - loader
+              - icon_hue
 
           - type: custom:button-card
             entity: lock.front_door
             name: Door
             template:
               - base
-              - lock
-              - icon_door
               - loader
+              - lock
+              - icon_closet
+            variables:
+              lock: >
+                [[[
+                  let lock = states['lock.front_door'];
+                  return lock === undefined || lock.state;
+                ]]]
 
           - type: custom:button-card
             entity: light.outside_garage_lights
             name: Garage
             template:
               - base
-              - icon_hue
               - loader
+              - icon_hue
 
           - type: custom:button-card
             entity: binary_sensor.garage_contact
@@ -519,14 +524,14 @@ views:
 
       #################################################
       #                                               #
-      #                  LAUNDRY                      #
+      #                     Misc                      #
       #                                               #
       #################################################
 
       - type: grid
-        title: 'Laundry'
+        title: 'Misc'
         view_layout:
-          grid-area: laundry
+          grid-area: misc
         columns: 2
         cards:
 
@@ -565,6 +570,15 @@ views:
                     null :
                     entity.attributes.remain_time;
                 ]]]
+
+          - type: custom:button-card
+            entity: light.ana_desk_light
+            name: Ana Desk
+            hold_action:
+              action: none
+            template:
+              - light
+              - icon_shade
 
       #################################################
       #                                               #
