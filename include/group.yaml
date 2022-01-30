@@ -26,6 +26,10 @@ group:
     name: Ignored Entities
     entities: 
       - binary_sensor.updater # always unknown after restart
+
+      ##############################
+      # Sensors
+      ##############################
       - sensor.template_unavailable_entities
       - sensor.docker_youtubedl_health
       - sensor.docker_nzbhydra_health
@@ -44,6 +48,19 @@ group:
       - sensor.weston_echo_next_reminder
       - sensor.weston_echo_next_timer
       - sensor.weston_phone_ha_charger_type
+      - sensor.template_washer_door_lock
+      - sensor.family_room_battery
+      - sensor.master_bedroom_battery
+      - sensor.olivia_room_battery
+      - sensor.weston_last_changed
+      - sensor.ana_last_changed
+      - sensor.weston_s_fire_next_alarm
+      - sensor.weston_s_fire_next_reminder
+      - sensor.weston_s_fire_next_timer
+      
+      ##############################
+      # Switches
+      ##############################
       - switch.ecobee_repeat_switch
       - switch.ecobee_shuffle_switch
       - switch.everywhere_repeat_switch
@@ -62,12 +79,8 @@ group:
       - switch.weston_echo_do_not_disturb_switch
       - switch.dryer_power_off
       - switch.washer_power_off
-      - sensor.template_washer_door_lock
-      - sensor.family_room_battery
-      - sensor.master_bedroom_battery
-      - sensor.olivia_room_battery
-      - sensor.weston_last_changed
-      - sensor.ana_last_changed
-      - sensor.weston_s_fire_next_alarm
-      - sensor.weston_s_fire_next_reminder
-      - sensor.weston_s_fire_next_timer
+
+      ##############################
+      # Media Players
+      ##############################
+      - media_player.living_room_tv
