@@ -242,9 +242,9 @@ views:
                 ]]]
 
           - type: custom:button-card
-            entity: media_player.samsung_1080p
+            entity: media_player.living_room_tv
             name: TV
-            tap_action:
+            hold_action:
               !include popup/family_room_tv.yaml
             template:
               - base
