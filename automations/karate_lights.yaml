@@ -1,0 +1,49 @@
+###############################################################################
+# Karate Lights Schedule
+###############################################################################
+- id: karate_lights_schedule
+  alias: "Karate Light Schedule"
+  trace:
+      stored_traces: 5
+  trigger:
+    - platform: sun
+      id: 'karate_sunset'
+      event: sunset
+      offset: "00:30:00"
+
+    - platform: time
+      id: 'karate_home'
+      at:
+        - "18:15:00"
+
+  condition:
+    - condition: not
+      conditions:
+        - condition: state
+          entity_id: light.outside_garage_lights
+          state: 'unavailable'
+
+    - condition: and
+      conditions:
+        - condition: time
+          weekday:
+            - tue
+            - fri
+
+  action:
+    - choose:
+        # IF "karate_sunset"
+        - conditions:
+            - condition: trigger
+              id: 'karate_sunset'
+          sequence:
+            - service: light.turn_on
+              entity_id: light.outside_garage_lights
+
+        # IF "karate_home"
+        - conditions:
+            - condition: trigger
+              id: 'karate_home'
+          sequence:
+            - service: light.turn_off
+              entity_id: light.outside_garage_lights
