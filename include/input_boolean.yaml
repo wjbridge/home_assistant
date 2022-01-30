@@ -22,16 +22,6 @@ input_boolean:
   oli_bedroom_fan_en:
 
   #-------------------------------------------
-  # Enables / Disables Dyson Fan
-  #-------------------------------------------
-  weston_bedroom_fan_en:
-
-  #-------------------------------------------
-  # Enables / Disables Weston Echo
-  #-------------------------------------------
-  weston_bedroom_echo_en:
-
-  #-------------------------------------------
   # Fresh Air Mode
   #-------------------------------------------
   fresh_air_mode_en:

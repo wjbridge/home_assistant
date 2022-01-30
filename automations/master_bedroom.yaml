@@ -7,8 +7,13 @@
       stored_traces: 10
   trigger:
     - platform: time
+      id: master_bedroom_morning
       at:
         - "08:00:00"
+
+    - platform: time
+      id: master_bedroom_evening
+      at:
         - "20:10:00"
 
   action:
@@ -17,8 +22,8 @@
     #-------------------------------------------
     - choose:
         - conditions:
-            - condition: template
-              value_template: "{{ now().hour == 8 }}"
+            - condition: trigger
+              id: 'master_bedroom_morning'
           sequence:
             # IF Morning: Master Bedroom Fan
             - choose:
@@ -36,13 +41,13 @@
             - choose:
                 - conditions:
                     - condition: state
-                      entity_id: media_player.spot
+                      entity_id: media_player.weston_echo
                       attribute: available
                       state: true
                   sequence:
                     - service: script.alexa_fan_sounds
                       data:
-                        alexa_device: media_player.spot
+                        alexa_device: media_player.weston_echo
                         bool_fan: false
                     - delay:
                         seconds: 3
@@ -52,8 +57,8 @@
     #-------------------------------------------
     - choose:
         - conditions:
-            - condition: template
-              value_template: "{{ now().hour == 20 }}"
+            - condition: trigger
+              id: 'master_bedroom_evening'
           sequence:
             # IF Evening: Master Bedroom Fan
             - choose:
@@ -79,7 +84,7 @@
             - choose:
                 - conditions:
                     - condition: state
-                      entity_id: media_player.spot
+                      entity_id: media_player.weston_echo
                       attribute: available
                       state: true
                     - condition: state
@@ -88,5 +93,5 @@
                   sequence:
                     - service: script.alexa_fan_sounds
                       data:
-                        alexa_device: media_player.spot
+                        alexa_device: media_player.weston_echo
                         bool_fan: true

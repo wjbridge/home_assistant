@@ -1,0 +1,52 @@
+###############################################################################
+# Schedule Sam Bedroom
+###############################################################################
+- id: sam_bedroom_schedule
+  alias: "Sam Bedroom Schedule"
+  trace:
+    stored_traces: 10
+  trigger:
+    - platform: time
+      id: sam_bedroom_morning
+      at:
+        - "08:00:00"
+
+    - platform: time
+      id: sam_bedroom_evening
+      at:
+        - "19:30:00"
+
+  action:
+    #-------------------------------------------
+    # Morning
+    #-------------------------------------------
+    - choose:
+        - conditions:
+            - condition: trigger
+              id: 'sam_bedroom_morning'
+            - condition: state
+              entity_id: media_player.spot
+              attribute: available
+              state: true
+          sequence:
+            - service: script.alexa_fan_sounds
+              data:
+                alexa_device: media_player.spot
+                bool_fan: false
+
+    #-------------------------------------------
+    # Evening
+    #-------------------------------------------
+    - choose:
+        - conditions:
+            - condition: trigger
+              id: 'sam_bedroom_morning'
+            - condition: state
+              entity_id: media_player.spot
+              attribute: available
+              state: true
+          sequence:
+            - service: script.alexa_fan_sounds
+              data:
+                alexa_device: media_player.spot
+                bool_fan: true

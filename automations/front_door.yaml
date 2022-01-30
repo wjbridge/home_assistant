@@ -7,10 +7,12 @@
       stored_traces: 5
   trigger:
     - platform: sun
+      id: 'front_door_sunset'
       event: sunset
       offset: "00:30:00"
 
     - platform: sun
+      id: 'front_door_sunrise'
       event: sunrise
       offset: "-00:30:00"
 
@@ -23,34 +25,24 @@
 
   action:
     - choose:
-        # IF morning
+        # IF "front_door_sunrise"
         - conditions:
+            - condition: trigger
+              id: 'front_door_sunrise'
             - condition: state
               entity_id: light.outside_front_door_light
               state: 'on'
-            - condition: template
-              value_template: "{{ trigger.event == 'sunrise' }}"
           sequence:
             - service: light.turn_off
               entity_id: light.outside_front_door_light
 
-            - service: light.turn_off
-              entity_id:
-                  - light.outside_candy_cane_lights
-                  - light.outside_tree_lights
-
-        # ELIF night
+        # IF "front_door_sunset"
         - conditions:
-            - condition: template
-              value_template: "{{ trigger.event == 'sunset' }}"
+            - condition: trigger
+              id: 'front_door_sunset'
             - condition: state
               entity_id: light.outside_front_door_light
               state: 'off'
           sequence:
-            - service: light.turn_on
+            - service: light.turn_off
               entity_id: light.outside_front_door_light
-
-            - service: light.turn_on
-              entity_id:
-                  - light.outside_candy_cane_lights
-                  - light.outside_tree_lights
