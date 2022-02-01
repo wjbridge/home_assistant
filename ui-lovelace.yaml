@@ -108,10 +108,23 @@ views:
                         {% set alert_event2 = state_attr('sensor.template_oakland_alert_2', 'alert_event') %}
 
                         {% if ((alert_event1 is search('warning', ignorecase=True)) or (alert_event2 is search('warning', ignorecase=True))) %}
-                          mdi:weather-lightning;
+
+                          {% if ((alert_event1 is search('winter', ignorecase=True)) or (alert_event2 is search('winter', ignorecase=True))) %}
+                            mdi:weather-snowy-heavy;
+                          {% else %}
+                            mdi:weather-lightning;
+                          {% endif %}
+
                         {% elif ((alert_event1 is search('special', ignorecase=True)) or (alert_event2 is search('special', ignorecase=True))) %}
                           mdi:weather-cloudy-alert;
                         {% elif ((alert_event1 is search('watch', ignorecase=True)) or (alert_event2 is search('watch', ignorecase=True))) %}
+
+                          {% if ((alert_event1 is search('winter', ignorecase=True)) or (alert_event2 is search('winter', ignorecase=True))) %}
+                            mdi:weather-snowy-heavy;
+                          {% else %}
+                            mdi:weather-lightning;
+                          {% endif %}
+
                           mdi:weather-cloudy-alert;
                         {% elif ((alert_event1 is search('winter', ignorecase=True)) or (alert_event2 is search('winter', ignorecase=True))) %}
                           mdi:snowflake-alert;
