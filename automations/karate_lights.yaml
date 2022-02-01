@@ -6,10 +6,10 @@
   trace:
       stored_traces: 5
   trigger:
-    - platform: sun
+    - platform: time
       id: 'karate_sunset'
-      event: sunset
-      offset: "00:30:00"
+      at:
+        - "17:50:00"
 
     - platform: time
       id: 'karate_home'
