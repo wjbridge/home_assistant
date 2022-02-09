@@ -511,12 +511,12 @@
       .subtitle {
         font-family: SF Text, Roboto;
         font-size: 1em;
-        line-height: 0.7em;
         padding-left: 3px;
         padding-bottom: 10px;
         font-weight: 500;
         letter-spacing: 0.5px;
         color: #828383;
+        white-space: normal;
       }
       a {
         color: var(--primary-color);
