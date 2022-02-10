@@ -174,7 +174,7 @@ apcupsd:
 #-------------------------------------------
 monitor_docker:
   - name: Docker
-    scan_interval: 10
+    scan_interval: 120
     containers:
       - vpn
       - homeassistant
@@ -190,15 +190,7 @@ monitor_docker:
       nzbhydra: Nzbhydra
       speedtest_vpn: Speedtest VPN
       plex: Plex
-    monitored_conditions:
-      - version
-      - containers_1cpu_percentage
-      - containers_memory_percentage
-      - health
-      - state
-      - status
-      - network_speed_up
-      - network_speed_down
+    monitored_conditions: [allinone]
 
 #-------------------------------------------
 # Weather
