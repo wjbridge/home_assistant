@@ -1,29 +1,6 @@
 #-------------------------------------------
 #  Template for sidebar
 #-------------------------------------------
-- binary_sensor:
-    - unique_id: sidebar_update_color
-      state: >
-        {% if states('sensor.hass_version_installed') | regex_search('b') %}
-            {% if states('sensor.hass_version_installed') != states('sensor.hass_version_latest_beta') and 
-            not is_state('sensor.hass_version_latest_beta', 'unknown') or 
-            not is_state('sensor.hacs', '0') and 
-            not is_state('sensor.hacs', 'unknown') %}
-              True
-            {% else %}
-              False
-            {% endif %}
-          {% else %}
-            {% if states('sensor.hass_version_installed') != states('sensor.hass_version_latest') and 
-            not is_state('sensor.hass_version_latest', 'unknown') or 
-            not is_state('sensor.hacs', '0') and 
-            not is_state('sensor.hacs', 'unknown') %}
-              True
-            {% else %}
-              False
-            {% endif %}
-        {% endif %}
-
 - sensor:
     - unique_id: sidebar
       state: template
