@@ -1,29 +1,4 @@
 #-------------------------------------------
-# Latest Version
-# https://www.home-assistant.io/components/sensor.version/
-#-------------------------------------------
-- platform: version
-  name: hass_version_latest
-  source: container
-
-#-------------------------------------------
-# Current Version
-# https://www.home-assistant.io/components/sensor.version/
-#-------------------------------------------
-- platform: version
-  name: hass_version_installed
-  source: local
-
-#-------------------------------------------
-# Current Version
-# https://www.home-assistant.io/components/sensor.version/
-#-------------------------------------------
-- platform: version
-  name: hass_version_latest_beta
-  source: container
-  beta: true
-
-#-------------------------------------------
 # Uptime
 # https://www.home-assistant.io/integrations/uptime/
 #-------------------------------------------
