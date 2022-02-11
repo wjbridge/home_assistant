@@ -146,6 +146,7 @@ browser_mod:
                         hass.callService('browser_mod', 'toast', {
                           message: 'Reload theme...'
                         });
+                        hass.callService('homeassistant', 'reload_core_config');
                         hass.callService('frontend', 'reload_themes');
                       ]]]`
                     ]]]
