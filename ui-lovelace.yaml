@@ -623,5 +623,7 @@ views:
                     return upgradable.state === 'on'
                       ? 1
                       : internet.state === 'off';
+                  }
+                  return 0;
                 ]]]
             template: footer
