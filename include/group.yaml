@@ -25,15 +25,19 @@ group:
   ignored_entities:
     name: Ignored Entities
     entities: 
+
+      ##############################
+      # Binary Sensors
+      ##############################
       - binary_sensor.updater # always unknown after restart
+      - binary_sensor.doorbell_doorbell_pressed
+      - binary_sensor.doorbell_motion_detected
+      - binary_sensor.doorbell_person_detected
 
       ##############################
       # Sensors
       ##############################
       - sensor.template_unavailable_entities
-      - sensor.docker_youtubedl_health
-      - sensor.docker_nzbhydra_health
-      - sensor.docker_speedtest_vpn_health
       - sensor.ecobee_next_alarm
       - sensor.ecobee_next_reminder
       - sensor.ecobee_next_timer
