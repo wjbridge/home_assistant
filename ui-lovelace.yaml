@@ -571,7 +571,9 @@ views:
                   let missing = states['sensor.template_unavailable_entities'];
 
                   if (alert1 || alert2) {
-                    return alert1.state === 'on' || alert2.state === 'on';
+                    if (alert1.state === 'on' || alert2.state === 'on') {
+                      return 1;
+                    }
                   }
 
                   if (missing && Number.isInteger(parseInt(missing.state))) {
