@@ -617,9 +617,11 @@ views:
             variables:
               notify: >
                 [[[
-                  let internet = states['binary_sensor.template_udm_internet'];
-                  if (internet) {
-                    return internet.state === 'off';
-                  }
+                  let internet = states['binary_sensor.template_udm_internet'],
+                    upgradable = states['binary_sensor.template_udm_upgradable'];
+                  if (internet && upgradable) {
+                    return upgradable.state === 'on'
+                      ? 1
+                      : internet.state === 'off';
                 ]]]
             template: footer
