@@ -82,73 +82,6 @@ views:
             entity: sensor.template_sidebar
             template: sidebar
 
-          - type: grid
-            cards:
-              - type: button
-                icon: mdi:information-outline
-                tap_action:
-                  !include popup/sidebar_information.yaml
-                hold_action:
-                  action: none
-
-              - type: button
-                icon: mdi:alert-rhombus
-                tap_action:
-                  !include popup/sidebar_active_alerts.yaml
-                hold_action:
-                  action: none
-                card_mod:
-                  style: |
-                    :host {
-                      --card-mod-icon:
-                      {% if is_state('sensor.template_oakland_alert_1', 'on') %}
-                        {% set alert_event1 = state_attr('sensor.template_oakland_alert_1', 'alert_event') %}
-                        {% set alert_event2 = state_attr('sensor.template_oakland_alert_2', 'alert_event') %}
-
-                        {% if ((alert_event1 is search('warning', ignorecase=True)) or (alert_event2 is search('warning', ignorecase=True))) %}
-
-                          {% if ((alert_event1 is search('winter', ignorecase=True)) or (alert_event2 is search('winter', ignorecase=True))) %}
-                            mdi:weather-snowy-heavy;
-                          {% else %}
-                            mdi:weather-lightning;
-                          {% endif %}
-
-                        {% elif ((alert_event1 is search('special', ignorecase=True)) or (alert_event2 is search('special', ignorecase=True))) %}
-                          mdi:weather-cloudy-alert;
-                        {% elif ((alert_event1 is search('watch', ignorecase=True)) or (alert_event2 is search('watch', ignorecase=True))) %}
-
-                          {% if ((alert_event1 is search('winter', ignorecase=True)) or (alert_event2 is search('winter', ignorecase=True))) %}
-                            mdi:weather-snowy-heavy;
-                          {% else %}
-                            mdi:weather-lightning;
-                          {% endif %}
-
-                          mdi:weather-cloudy-alert;
-                        {% elif ((alert_event1 is search('winter', ignorecase=True)) or (alert_event2 is search('winter', ignorecase=True))) %}
-                          mdi:snowflake-alert;
-                        {% else %}
-                          mdi:check-bold;
-                        {% endif %}
-                      {% else %}
-                        {% if not is_state('sensor.template_unavailable_entities', 'unknown') %}
-                          {% if (states('sensor.template_unavailable_entities') | int(default=0) > 0) and not is_state('timer.startup_missing_delay', 'active') %}
-                            mdi:alert-rhombus;
-                          {% else %}
-                            mdi:check-bold;
-                          {% endif %}
-                        {% else %}
-                          mdi:check-bold;
-                        {% endif %}
-                      {% endif %}
-                    }
-
-              - type: button
-                icon: mdi:arrow-up-bold-circle-outline
-                tap_action:
-                  !include popup/sidebar_update.yaml
-                hold_action:
-                  action: none
-
       #################################################
       #                                               #
       #                    PLEX                       #
@@ -492,6 +425,8 @@ views:
           - type: custom:button-card
             entity: sensor.garage_temp_temperature
             name: Garage
+            tap_action:
+              action: none
             custom_fields:
               graph:
                 card:
@@ -503,6 +438,8 @@ views:
           - type: custom:button-card
             entity: sensor.thermostat_current_temperature
             name: Office
+            tap_action:
+              action: none
             custom_fields:
               graph:
                 card:
@@ -514,6 +451,8 @@ views:
           - type: custom:button-card
             entity: sensor.basement_temperature
             name: Basement
+            tap_action:
+              action: none
             custom_fields:
               graph:
                 card:
@@ -525,6 +464,8 @@ views:
           - type: custom:button-card
             entity: sensor.dark_sky_apparent_temperature
             name: Outside
+            tap_action:
+              action: none
             custom_fields:
               graph:
                 card:
@@ -597,7 +538,85 @@ views:
       #                                               #
       #################################################
 
-      - type: custom:button-card
+      - type: horizontal-stack
         view_layout:
           grid-area: footer
-        template: footer
+        cards:
+
+          - type: custom:button-card
+            name: >
+              <ha-icon icon="mdi:docker"></ha-icon> Docker
+            tap_action:
+              !include popup/footer/docker.yaml
+            variables:
+              notify: >
+                [[[
+                  let internet = states['binary_sensor.template_udm_internet'];
+                  if (internet) {
+                    return internet.state === 'off';
+                  }
+                ]]]
+            template: footer
+
+          - type: custom:button-card
+            name: >
+              <ha-icon icon="mdi:heart-box-outline"></ha-icon> Sys Health
+            tap_action:
+              !include popup/footer/alerts.yaml
+            variables:
+              notify: >
+                [[[
+                  let alert1 = states['sensor.template_oakland_alert_1'];
+                  let alert2 = states['sensor.template_oakland_alert_2'];
+                  let missing = states['sensor.template_unavailable_entities'];
+
+                  if (alert1 || alert2) {
+                    return alert1.state === 'on' || alert2.state === 'on';
+                  }
+
+                  if (missing && Number.isInteger(parseInt(missing.state))) {
+                    return parseInt(missing.state);
+                  }
+                  return 0;
+                ]]]
+            template: footer
+
+          - type: custom:button-card
+            name: >
+              <ha-icon icon="mdi:arrow-up-bold-circle-outline"></ha-icon> Updater
+            tap_action:
+              !include popup/footer/updater.yaml
+            variables:
+              notify: >
+                [[[
+                  let hass_installed = hass.config.version,
+                    hass_version_latest = states['sensor.hass_version_latest'],
+                    hass_version_latest_beta = states['sensor.hass_version_latest_beta'],
+                    hacs = states['sensor.hacs'];
+                  if (hass_version_latest && hass_version_latest.state.includes('.')
+                    && hass_version_latest_beta && hass_version_latest_beta.state.includes('.')
+                    && hacs && Number.isInteger(parseInt(hacs.state))) {
+                    let hass_latest = hass_installed.includes('b')
+                        ? hass_version_latest_beta.state
+                        : hass_version_latest.state,
+                      hass_count = hass_installed !== hass_latest ? 1 : 0;
+                    return hass_count + parseInt(hacs.state);
+                  }
+                  return 0;
+                ]]]
+            template: footer
+
+          - type: custom:button-card
+            name: >
+              <ha-icon icon="mdi:router-wireless"></ha-icon> Router
+            tap_action:
+              !include popup/footer/router.yaml
+            variables:
+              notify: >
+                [[[
+                  let internet = states['binary_sensor.template_udm_internet'];
+                  if (internet) {
+                    return internet.state === 'off';
+                  }
+                ]]]
+            template: footer

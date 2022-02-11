@@ -14,6 +14,10 @@
       translate_idle: Inactive
       translate_home: Home
       translate_not_home: Away
+      translate_available: Available
+      translate_no_updates: No Updates
+      translate_update_available: Update Available
+      translate_updates_available: Updates Available
 
   #################################################
   #                                               #
@@ -224,7 +228,9 @@
         if (entity) {
           let attr = [];
           for (let [k, value] of Object.entries(entity.attributes))
-            value !== false && (attr += `<p>${value}</p>`);
+            window.navigator.userAgent.match(/iPhone/i)
+              ? k !== 'time' && k !== 'date' && value !== false && (attr += `<p>${k === 'greet' ? `<span class="iphone">${value}</span>` : `${value}`}</p>`)
+              : value !== false && (attr += `<p>${value}</p>`);
           return attr;
         }
       ]]]
@@ -239,6 +245,10 @@
         padding: 1.8vw 2.5vw 0 var(--custom-layout-card-padding);
         white-space: normal;
         text-align: left;
+      }
+      .iphone {
+        font-size: 1.5em;
+        color: rgba(255, 255, 255, 0.8);
       }
       .time {
         font-family: SF Text, Roboto;
@@ -297,74 +307,131 @@
   #################################################
 
   footer:
-    show_state: true
-    show_name: false
-    show_icon: false
-    tap_action:
-      action: none
-    state_display: >
-      [[[
-        if (states["sensor.ups_status"]) {
-          if (states["sensor.ups_status"].state != 'unknown') {
-            let spacer = '‍ ‍ ‍ ‍ ‍ ‍<font color="#2f3436">|</font> ‍ ‍ ‍ ‍ ';
-            let spacer2 = '‍ ‍ ‍ ‍ ‍ ‍<font color="#2f3436">||</font> ‍ ‍ ‍ ‍ ';
-            let ups_status = states["sensor.ups_status"].state;
-            let ups_battery = states["sensor.ups_battery"].state;
-            let ups_load = states["sensor.ups_load"].state;
-            let ups_time_left = states["sensor.ups_time_left"].state;
-            let unifi_load = states["sensor.template_udm_cpu"].state;
-            let unifi_mem = states["sensor.template_udm_mem"].state;
-            let unifi_temp = states["sensor.template_udm_cpu_temp"].state;
-
-            return `
-              <ha-icon icon="mdi:information-outline"></ha-icon> <b>${ups_status}</b>${spacer}
-              <ha-icon icon="mdi:battery"></ha-icon> <b>${ups_battery} %</b>${spacer}
-              <ha-icon icon="mdi:gauge"></ha-icon> <b>${ups_load} %</b> Load${spacer}
-              <ha-icon icon="mdi:clock-alert"></ha-icon> <b>${ups_time_left}</b> Minutes${spacer2}
-              <ha-icon icon="mdi:chip"></ha-icon> <b>${unifi_load} %</b>${spacer}
-              <ha-icon icon="mdi:memory"></ha-icon> <b>${unifi_mem} %</b>${spacer}
-              <ha-icon icon="mdi:thermometer"></ha-icon> <b>${unifi_temp} F</b>
-            `;
+    variables:
+      notify: >
+        [[[
+          return false;
+        ]]]
+    size: 2vw
+    color: '#9da0a2'
+    custom_fields:
+      notify: >
+        [[[
+          if (Number.isInteger(variables.notify)) {
+            return variables.notify;
+          } else if (variables.notify) {
+            return '!';
           }
-        } else {
-          return `Unknown`;
-        }
-      ]]]
+        ]]]
     styles:
-      state:
-        - place-self: start
+      name:
         - font-family: SF Display, Roboto
-        - font-weight: 400
-        - font-size: 1.26vw
-        - letter-spacing: 0.05vw
-        - white-space: nowrap
-        - opacity: 0.6
-        - width: 100%
+        - font-weight: 500
       card:
-        - background: none
-        - padding: 0
-        - margin-top: -1vw
-        - overflow: hidden
+        - color: rgba(157,160,162, 0.56)
+        - width: fit-content
+        - background: rgba(115, 115, 115, 0.08)
+        - letter-spacing: 0.05vw
+        - opacity: 0.9
+        - transition: none
+        - padding: 0 0 0.05vw 0
+        - overflow: visible
+      custom_fields:
+        notify:
+          - display: >
+              [[[
+                if (Number.isInteger(variables.notify)) {
+                  return variables.notify > 0
+                    ? 'initial'
+                    : 'none';
+                } else if (variables.notify) {
+                  return variables.notify
+                    ? 'initial'
+                    : 'none';
+                }
+              ]]]
+          - position: absolute
+          - top: -0.9vw
+          - right: -1vw
+          - font-family: SF Display, Roboto
+          - font-weight: 700
+          - color: '#d6d6d6'
+          - background: '#8b3333'
+          - border-radius: 50%
+          - text-align: center
+          - text-overflow: unset
+          - z-index: 1
+    hold_action:
+      action: none
+    tap_action:
+      load: none
     extra_styles: |
+      :host {
+        --name-font-size: 1.3vw;
+        --name-icon-size: 1.6vw;
+        --notify-font-size: 0.9vw;
+        --notify-box-size: 1.8vw;
+        --name-padding-v: 0.7vw;
+        --name-padding-h: 1.1vw;
+        --card-border-radius: 0.6vw;
+      }
+      #name {
+        font-size: var(--name-font-size);
+        padding: var(--name-padding-v) var(--name-padding-h);
+        letter-spacing: 0.05vw;
+      }
       ha-icon {
+        width: var(--name-icon-size);
         vertical-align: 5%;
-        opacity: 0.4;
-        width: 1.2vw;
+        padding-right: 0.1vw;
+        filter: brightness(50%);
       }
-      #footer_container {
-        display: flex;
-        justify-content: space-between;
+      #card {
+        border-radius: var(--card-border-radius);
       }
-      span {
-        color: #2f3436;
+      #notify {
+        font-size: var(--notify-font-size);
+        width: var(--notify-box-size);
+        height: var(--notify-box-size);
+        line-height: var(--notify-box-size);
       }
-      .ellipsis {
-        color: #6a7377;
+      /* portrait */
+      @media screen and (max-width: 1200px) {
+        #name {
+          font-size: calc(var(--name-font-size) * 1.6);
+          padding: calc(var(--name-padding-v) * 1.6) calc(var(--name-padding-h) * 1.6);
+        }
+        ha-icon {
+          width: calc(var(--name-icon-size) * 1.6);
+        }
+        #card {
+          border-radius: calc(var(--card-border-radius) * 1.6);
+        }
+        #notify {
+          font-size: calc(var(--notify-font-size) * 1.6);
+          width: calc(var(--notify-box-size) * 1.6);
+          height: calc(var(--notify-box-size) * 1.6);
+          line-height: calc(var(--notify-box-size) * 1.6);
+        }
       }
       /* phone */
       @media screen and (max-width: 800px) {
-        #state {
-          display: none;
+        #name {
+          font-size: calc(var(--name-font-size) * 2.5);
+          padding: calc(var(--name-padding-v) * 2.5) calc(var(--name-padding-h) * 2.5);
+          letter-spacing: 0.12vw;
+        }
+        ha-icon {
+          width: calc(var(--name-icon-size) * 2.5);
+        }
+        #card {
+          border-radius: calc(var(--card-border-radius) * 2.5);
+        }
+        #notify {
+          font-size: calc(var(--notify-font-size) * 2.5);
+          width: calc(var(--notify-box-size) * 2.5);
+          height: calc(var(--notify-box-size) * 2.5);
+          line-height: calc(var(--notify-box-size) * 2.5);
         }
       }
 
@@ -450,7 +517,7 @@
 
   #################################################
   #                                               #
-  #                  CLIMATE                      #
+  #                    CLIMATE                    #
   #                                               #
   #################################################
 
@@ -489,7 +556,7 @@
         - justify-self: left
       card:
         - cursor: default
-        - padding: 0
+        - padding: 0.2em 0 0 0.6em
     tap_action:
       href:
     extra_styles: |
@@ -497,8 +564,8 @@
         display: none;
       }
       ha-icon {
-        width: 1.5em;
-        vertical-align: 18%;
+        width: 1.4em;
+        vertical-align: 12%;
         opacity: 0.5;
         padding-right: 2px;
       }
@@ -506,32 +573,164 @@
         font-family: SF Text, Roboto;
         font-size: 1.3em;
         font-weight: 500;
-        letter-spacing: 0.5px;
       }
       .subtitle {
         font-family: SF Text, Roboto;
-        font-size: 1em;
+        font-size: 0.9em;
+        line-height: 0.7em;
         padding-left: 3px;
         padding-bottom: 10px;
         font-weight: 500;
         letter-spacing: 0.5px;
         color: #828383;
-        white-space: normal;
       }
       a {
         color: var(--primary-color);
       }
       ul {
         margin-top: -0.6em;
-        font-family: SF Display, Roboto;
-        font-size: 0.95em;
+        font-family: SF Text, Roboto;
+        font-size: 0.88em;
         letter-spacing: 0.5px;
-        padding: 0 0 0 2.5em;
         line-height: 1.6em;
       }
       code {
         background-color: var(--secondary-background-color);
       }
+
+  updater_hass:
+    template:
+      - updater
+      - marked.js
+      - settings
+    state_display: |
+      [[[
+        if (entity) {
+          variables.markedjs;
+          let links = new RegExp('<a href="([^"]+)"', "g"),
+            installed = entity.state,
+            hass_version_latest = states['sensor.hass_version_latest'],
+            hass_version_latest_beta = states['sensor.hass_version_latest_beta'],
+            hass_release_notes = states['sensor.hass_release_notes'],
+            hass_release_notes_rc = states['sensor.hass_release_notes_rc'];
+
+          let latest = installed.includes('b')
+            ? hass_version_latest_beta.state
+            : hass_version_latest.state;
+
+          let release_notes = installed.includes('b')
+            ? marked.parse(hass_release_notes.attributes.body)
+            : marked.parse(hass_release_notes_rc.attributes.body);
+
+          let subtitle = installed === latest
+            ? variables.translate_no_updates
+            : `${ !installed.includes('.') || !latest.includes('.')
+                ? variables.translate_no_updates
+                : latest + ' ' + variables.translate_available + ' ' + String.fromCodePoint("0x1f389")
+              }`;
+
+          let output = installed === latest
+            ? '<ul></ul>'
+            : `${ !installed.includes('.') || !latest.includes('.')
+                ? '<ul></ul>'
+                : release_notes.replace(links, '<a href="#" onclick="window.open(\'$1\')"')
+              }`;
+
+          return `
+            <ha-icon icon="mdi:home-assistant"></ha-icon> <span class="title">Home Assistant ${installed}</span><br>
+            <p class="subtitle">${subtitle}</p>
+            ${output}
+          `;
+          }
+      ]]]
+
+  updater_hacs:
+    template:
+      - updater
+      - settings
+    state_display: |
+      [[[
+        if (entity) {
+          let output = '',
+            hacs_version = states['sensor.template_hacs_version'] || undefined;
+          var arr = entity.attributes.repositories === undefined
+            ? []
+            : entity.attributes.repositories;
+          for (var i = 0; i < arr.length; i++) {
+            output += `<li><b><a href="#" onclick="window.open('https://github.com/${arr[i].name}/releases');">
+              ${arr[i].display_name}</a></b> ${arr[i].installed_version} \u279e ${arr[i].available_version}</li>`
+          }
+          let count = arr.length;
+          let subtitle = count == 0
+            ? variables.translate_no_updates
+            : `${count} ${count == 1 ? variables.translate_update_available : variables.translate_updates_available} ${String.fromCodePoint('0x1f389')}`;
+          return `
+            <ha-icon icon="hacs:hacs"></ha-icon> <span class="title">Community Store ${hacs_version === undefined 
+            || hacs_version.state === 'unknown' ? ' ' : hacs_version.state}</span><br>
+            <p class="subtitle">${subtitle}</p>
+            <ul>${output}</ul>
+          `;
+        }
+      ]]]
+
+  updater_other:
+    template:
+      - updater
+      - settings
+    state_display: |
+      [[[
+        if (entity) {
+          let output = '';
+          let attr = Object.fromEntries(
+            Object.entries(entity.attributes).filter(([, value]) => {
+              return value != false;
+            })
+          );
+          let count = Object.keys(attr).length;
+          for (const [, value] of Object.entries(attr)) {
+            output += `<li>${value}</li>`;
+          }
+          let subtitle = count == 0
+            ? variables.translate_no_updates
+            : `${count} ${count == 1 ? variables.translate_update_available : variables.translate_updates_available} ${String.fromCodePoint('0x1f389')}`;
+          return `
+            <ha-icon icon="mdi:update"></ha-icon> <span class="title">Other</span><br>
+            <p class="subtitle">${subtitle}</p>
+            <ul>${output}</ul>
+          `;
+        }
+      ]]]
+
+  hacs_iframe:
+    tap_action:
+      action: fire-dom-event
+      browser_mod:
+        command: popup
+        title: HACS
+        style:
+          div: |
+            .content {
+              padding: 0;
+            }
+          hui-iframe-card$: |
+            ha-card {
+              margin-left: -58px;
+            }
+        large: true
+        card:
+          type: iframe
+          url: >
+            [[[ return `/${hass.panels.hacs.url_path}` ]]]
+    template: icon_name
+
+  hacs_navigate_ios:
+    tap_action:
+      close_popup: >
+        [[[ hass.callService('browser_mod', 'close_popup'); ]]]
+      action: navigate
+      navigation_path: >
+        [[[ return `/${hass.panels.hacs.url_path}` ]]]
+    template: icon_name
 
   #################################################
   #                                               #
@@ -935,7 +1134,7 @@
 
   #################################################
   #                                               #
-  #              RECENTLY DOWNLOADED              #
+  #                RECENTLY ADDED                 #
   #                                               #
   #################################################
 
@@ -1159,6 +1358,27 @@
           <path d="M25,7.1H14.6L25,25L14.6,42.9H25L35.4,25L25,7.1z" fill="#e5a00d"/>
         </svg>
 
+  icon_apple_tv:
+    custom_fields:
+      icon: >
+        <svg viewBox="0 0 50 50">
+          <path d="M25.2 49.7l-13.7-.1c-2.4 0-4.6-.8-6.5-2.2-2-1.6-3.6-3.6-4.3-6.2-.2-1-.2-1.9-.3-3V11.5C.5 7.9 1.9 5 4.8 2.7 6.2 1.6 7.8.8 9.6.5c.5-.1.9-.1 1.4-.1L27.5.3l10.9.1c2.6 0 4.8.8 6.7 2.4 2.1 1.7 3.7 3.9 4.2 6.6l.2 2.4.1 20.5-.1 6.7c-.1 2.2-.9 4.2-2.2 5.9-1.7 2.2-4 3.8-6.8 4.4-.6.1-1.2.2-1.9.2-.1.1-13.4.2-13.4.2zm-4-27.8c-.9-1.2-2.2-1.6-3.7-1.2-.4.1-.8.2-1.2.4-.3.1-.6.1-.8 0-.4-.1-.8-.3-1.2-.4-.3-.1-.7-.1-1-.1-1.5.2-2.4 1.1-3 2.6-.4 1.1-.3 2.2 0 3.5.4 1.5 1 2.9 2.1 4 .5.6 1.2.9 2 .6 1.1-.5 2.2-.5 3.4 0 .8.3 1.5 0 2.1-.6.7-.8 1.1-1.8 1.6-2.8v-.2c-1-.6-1.7-1.4-1.8-2.7-.2-1.4.5-2.4 1.5-3.1zm9.9-1.4c.1.2.1.3.1.4l3.6 9.5c.1.3.3.4.6.4h.7c.6 0 .6 0 .9-.6l3.7-9.4c.1-.1.1-.3.2-.5H39l-2.9 8.3-3.1-8.3-1.9.2zM27.3 18l-1.3.4c-.5.2-.5.2-.6.7v1.4h-1.6l.1 1.4h1.5v5c0 .7.1 1.4.2 2.1.1.5.3 1 .8 1.4.8.6 2.6.7 3.5.2l-.1-1.2h-1.3c-.5 0-.9-.3-1-.8-.1-.3-.2-.6-.2-1v-5.8H30c0-.5.1-1 0-1.4h-2.7V18zm-8.8-.9c-1.9.3-3 2-2.7 3.2 1.4.2 2.9-1.7 2.7-3.2z"/>
+        </svg>
+
+  icon_spotify:
+    custom_fields:
+      icon: >
+        <svg viewBox="0 0 50 50">
+          <path d="M25 .3C11.4.3.3 11.4.3 25S11.4 49.7 25 49.7 49.7 38.6 49.7 25 38.6.3 25 .3zm11.3 35.6c-.4.7-1.4 1-2.1.5-5.8-3.5-13.1-4.3-21.7-2.4-.8.2-1.7-.3-1.8-1.2-.2-.8.3-1.7 1.2-1.8 9.4-2.2 17.5-1.2 24 2.8.6.5.9 1.4.4 2.1zm3.1-6.7c-.6.9-1.7 1.2-2.6.6-6.6-4.1-16.8-5.3-24.6-2.9a1.96 1.96 0 0 1-2.4-1.3 1.96 1.96 0 0 1 1.3-2.4c9-2.7 20.1-1.4 27.7 3.3.8.6 1.1 1.8.6 2.7h0zm.2-7c-8-4.7-21.1-5.2-28.7-2.9-1.2.4-2.5-.3-2.9-1.5s.3-2.5 1.5-2.9c8.7-2.6 23.2-2.1 32.4 3.3 1.1.7 1.5 2.1.8 3.2-.6 1.1-2 1.4-3.1.8h0z"/>
+        </svg>
+
+  icon_nest_mini:
+    custom_fields:
+      icon: >
+        <svg viewBox="0 0 50 50">
+          <path d="M49.7 25c0 13.6-11.1 24.7-24.8 24.7C11.3 49.7.3 38.6.3 25S11.4.3 25 .3 49.7 11.4 49.7 25zm-33.9 0a2.22 2.22 0 0 0-2.2-2.2c-1.2 0-2.3 1-2.3 2.2a2.22 2.22 0 0 0 2.2 2.2c1.3.1 2.3-.9 2.3-2.2h0zm10.8 0c0 1.2.9 2.2 2.2 2.3 1.3 0 2.3-1 2.3-2.2 0-1.3-1-2.3-2.2-2.3-1.3 0-2.3.9-2.3 2.2zm-3.2 0a2.22 2.22 0 0 0-2.2-2.2c-1.2 0-2.3 1-2.3 2.2a2.22 2.22 0 0 0 2.2 2.2c1.3 0 2.3-.9 2.3-2.2h0zm13 2.2a2.22 2.22 0 0 0 2.2-2.2c0-1.2-1-2.3-2.2-2.3a2.22 2.22 0 0 0-2.2 2.2c0 1.3 1 2.3 2.2 2.3z" />
+        </svg>
+
   icon_hue:
     styles:
       custom_fields:
@@ -1169,7 +1389,7 @@
     custom_fields:
       icon: >
         [[[
-          let state = variables.state === 'on' && variables.timeout < 2000 ? 'on' : null;
+          let state = variables.state_on && variables.timeout < 2000 ? 'on' : null;
           return `
             <svg viewBox="0 0 50 50">
               <style>
@@ -1214,7 +1434,7 @@
     custom_fields:
       icon: >
         [[[
-          let state = variables.state === 'on' && variables.timeout < 2000 ? 'on' : null;
+          let state = variables.state_on && variables.timeout < 2000 ? 'on' : null;
           return `
             <svg viewBox="0 0 50 50">
               <style>
@@ -1333,6 +1553,72 @@
           }
         ]]]
 
+  icon_ps5:
+    styles:
+      custom_fields:
+        icon:
+          - width: 88%
+          - margin-left: -1%
+          - margin-top: -7%
+    custom_fields:
+      icon: >
+        [[[
+          if (variables.state_on && variables.timeout < 2000) {
+            return `
+              <svg viewBox="0 0 50 50">
+                <style>
+                @keyframes on {
+                  50% {
+                    transform: translateY(0);
+                  }
+                  100% {
+                    transform: translateY(-45%);
+                  }
+                }
+                .on {
+                  animation: on 2s cubic-bezier(0.550, 0.085, 0.680, 0.530) both;
+                }
+              </style>
+              <g style="clip-path: url(#mask);">
+                <g class="on">
+                  <path fill="#00aa9e" d="M49.2 38.9l-75.6-25.1v7.4l75.6 25.2z"/>
+                  <path fill="#f3c202" d="M49.2 46.4l-75.6-25.2v7.5l75.6 25.1z"/>
+                  <path fill="#326db3" d="M49.2 53.8l-75.6-25.1V51l75.6 25.1zm0-22.3L-26.4 6.4v7.4l75.6 25.1z"/>
+                </g>
+              </g>
+              <defs>
+                <clipPath id="mask">
+                  <path d="M47.5 33.2c-.5-2.2-3.9-3.5-9.1-3.9-3.8-.3-7.5.6-11.1 1.9l-.6.2v-5.7l-5.7.8-4.6 1.6L6 31.9h-.1c-1.9.7-3.8 2.2-3.7 4.2.1 2.1 4.7 2.6 8.2 3.2 3.3.6 6.2.2 8.9-.7l7.3 4.8L33 41l10.7-4h.1c2.8-1 4-2.5 3.7-3.8zm-31.3 2l-3.6 1.3c-2.2.8-4.1-1.1-2.1-1.9l1.7-.6 7.2-2.7v2.8l-3.2 1.1zm22.5-1.1l-1.9.7-10.2 3.7V36l6.5-2.4 3.8-1.3c4-.9 5.6.5 1.8 1.8z"/>
+                </clipPath>
+              </defs>
+              <path fill="#de0029" d="M26.7 14.6v28.7l-7.3-2.5V7.1l9.3 2.6c6 1.7 9.6 5 9.6 10.7-.1 6.7-3 9.4-8.7 7.6V14.9c-.1-1.6-2.9-1.7-2.9-.3h0z"/>
+            </svg>
+          `;
+          }
+
+          return variables.state_on && variables.timeout > 2000 ? `
+            <svg viewBox="0 0 50 50">
+            <g style="clip-path: url(#mask);">
+              <g style="transform: translateY(-45%);">
+                <path fill="#00aa9e" d="M49.2 38.9l-75.6-25.1v7.4l75.6 25.2z"/>
+                <path fill="#f3c202" d="M49.2 46.4l-75.6-25.2v7.5l75.6 25.1z"/>
+                <path fill="#326db3" d="M49.2 53.8l-75.6-25.1V51l75.6 25.1zm0-22.3L-26.4 6.4v7.4l75.6 25.1z"/>
+              </g>
+            </g>
+            <defs>
+              <clipPath id="mask">
+                <path d="M47.5 33.2c-.5-2.2-3.9-3.5-9.1-3.9-3.8-.3-7.5.6-11.1 1.9l-.6.2v-5.7l-5.7.8-4.6 1.6L6 31.9h-.1c-1.9.7-3.8 2.2-3.7 4.2.1 2.1 4.7 2.6 8.2 3.2 3.3.6 6.2.2 8.9-.7l7.3 4.8L33 41l10.7-4h.1c2.8-1 4-2.5 3.7-3.8zm-31.3 2l-3.6 1.3c-2.2.8-4.1-1.1-2.1-1.9l1.7-.6 7.2-2.7v2.8l-3.2 1.1zm22.5-1.1l-1.9.7-10.2 3.7V36l6.5-2.4 3.8-1.3c4-.9 5.6.5 1.8 1.8z"/>
+              </clipPath>
+            </defs>
+            <path fill="#de0029" d="M26.7 14.6v28.7l-7.3-2.5V7.1l9.3 2.6c6 1.7 9.6 5 9.6 10.7-.1 6.7-3 9.4-8.7 7.6V14.9c-.1-1.6-2.9-1.7-2.9-.3h0z"/>
+          </svg>
+          ` : `
+            <svg viewBox="0 0 50 50">
+              <path fill="#9da0a2" d="M43.8 37h-.1l-10.6 4-4.2 1.6v-4.9l8-2.9 1.9-.7c3.8-1.3 2.2-2.7-1.8-1.9l-3.8 1.3-4.3 1.6v-4.5c3.1-1 6.3-1.6 9.5-1.4 5.3.4 8.7 1.6 9.1 3.9.3 1.4-.9 2.9-3.7 3.9zm-26.7-2.1l-.9.3-3.6 1.3c-2.2.8-4.1-1.1-2.1-1.9l1.7-.6 5-1.9v-4.2l-.6.2L6 31.9h-.1c-1.9.7-3.8 2.2-3.7 4.2.1 2.1 4.7 2.6 8.2 3.2 2.4.4 4.6.3 6.7-.1v-4.3zm12.4-20V28c5.7 1.7 8.7-.9 8.7-7.6.1-5.7-3.6-9-9.6-10.7l-9.3-2.6v33.8l7.2 2.5.1.1V14.6c.1-1.4 2.9-1.3 2.9.3z"/>
+            </svg>
+          `;
+        ]]]
+
   icon_spot:
     styles:
       custom_fields:
@@ -1344,13 +1630,13 @@
       icon: >
         [[[
           let state;
-          if (variables.state === 'on' && variables.timeout < 2000) {
+          if (variables.state_on && variables.timeout < 2000) {
             state = 'on';
           } 
           if (variables.state === 'off' && variables.timeout < 2000) {
             state = 'off';
           }
-          if (variables.state === 'on' && variables.timeout > 2000) {
+          if (variables.state_on && variables.timeout > 2000) {
             state = 'on_timeout';
           }
           return `
@@ -1558,7 +1844,7 @@
     custom_fields:
       icon: >
         [[[
-          let state = variables.state === 'on' && variables.timeout < 2000 ? 'on' : null;
+          let state = variables.state_on && variables.timeout < 2000 ? 'on' : null;
           return `
             <svg viewBox="0 0 50 50">
               <style>
@@ -1964,9 +2250,10 @@
           `;
         ]]]
 
-
+  # marked - a markdown parser
   # Copyright (c) 2011-2022, Christopher Jeffrey. (MIT Licensed)
   # https://github.com/markedjs/marked
+
   marked.js:
     variables:
       marked.js: >

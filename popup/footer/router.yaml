@@ -25,7 +25,7 @@ browser_mod:
             secondary_info: last-changed
 
           - entity: sensor.template_udm_cpu_temp
-            name: CPU Temperatur
+            name: CPU Temp
 
           - type: custom:bar-card
             width: 55%

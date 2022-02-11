@@ -41,15 +41,15 @@ frontend:
       #custom variables
       ha-card-background-color: rgba(34,38,39,0.9)
       ha-card-header-background-color: rgba(48,52,52,0.8)
-      custom-layout-card-padding: 2vw
+      custom-layout-card-padding: 3.3vw
       custom-button-card-border-radius: 8%
       sidebar-time-font-size: 5vw
       sidebar-time-line-height: 4vw
       sidebar-font-size: 1.5vw
       sidebar-line-height: 2.1vw
-      card-content-padding: 1.8em 2.2em 1.8em 2em
-      primary-graph-mini-color: '#399b56'
-      graph-mini-color: '#9c3a7e'
+      media-blur-height: 24.5%
+      card-content-padding: 1.4em 2.2em 1.6em 1.5em
+      bar-card-color: '#303435'
 
     ####################################################
     #                                                  #
@@ -72,6 +72,12 @@ frontend:
             min-height: 100vh;
           }
 
+        #################################################
+        #                                               #
+        #              GRID CARD HEADINGS               #
+        #                                               #
+        #################################################
+
         grid-layout$:
           hui-grid-card:
             $: |
@@ -79,7 +85,7 @@ frontend:
               h1 {
                 font-size: 2.4vw !important;
                 line-height: 0 !important;
-                font-family: SF Text !important;
+                font-family: SF Text, Roboto !important;
                 font-weight: 500 !important;
                 color: rgba(255, 255, 255, 0.8) !important;
                 padding: 1vw 0 2vw 0 !important;
@@ -105,16 +111,16 @@ frontend:
         #               SWIPE CARD MARGIN               #
         #                                               #
         #################################################
+
             $swipe-card$:
               .: |
                 div {
                   height: 100%;
                 }
-
               hui-horizontal-stack-card$:
                 .: |
                   hui-conditional-card {
-                    margin: 0 !important;
+                    margin: 1px !important;
                   }
 
         #################################################
@@ -130,23 +136,20 @@ frontend:
             border-right: 0.1vw solid rgba(58, 69, 73, 0.2);
             min-height: 100vh;
           }
-
-          #root > :last-child {
-            margin-top: auto;
-          }
-
           /* phone */
           @media screen and (max-width: 800px) {
             #root {
               background-color: rgba(0,0,0,0);
               border-right: none;
               min-height: 100%;
+              margin-left: -0.8%;
+              margin-bottom: -6%;
             }
           }
 
         #################################################
         #                                               #
-        #             SIDEBAR WEATHER                   #
+        #             SIDEBAR LAUNDRY TIMER             #
         #                                               #
         #################################################
 
@@ -156,149 +159,54 @@ frontend:
               display: flex;
               justify-content: center;
             }
-            hui-conditional-card > button-card {
-              width: 65%;
-            }
-
             /* phone */
             @media screen and (max-width: 800px) {
-              hui-conditional-card {
-                position: absolute;
-                top: 3vw;
-                right: 5.5vw;
-                padding: 19vw 0 0 0;
-              }
               hui-conditional-card > button-card {
+                zoom: 250%;
                 width: 100%;
-                zoom: 200%;
-                filter: contrast(75%)
+                filter: contrast(85%);
               }
             }
 
         #################################################
         #                                               #
-        #             SIDEBAR BOTTOM ICONS              #
+        #                    FOOTER                     #
         #                                               #
         #################################################
 
-        "grid-layout$hui-vertical-stack-card$hui-grid-card":
-          .: |
-            hui-grid-card {
-              display: flex;
-              flex: auto;
-              align-items: flex-end;
-            }
-
-            /* phone */
-            @media screen and (max-width: 800px) {
-              hui-grid-card {
-                position: absolute;
-                right: 4vw;
-              }
-            }
-
+        grid-layout$hui-horizontal-stack-card:
           $: |
             #root {
-              width: 100%;
-              padding: 0 13% 15% 13%;
+              flex-wrap: wrap;
+              justify-content: center;
+              overflow: visible;
+              margin-top: 1vh;
+              padding-bottom: 2.5em;
             }
-
-            /* phone */
-            @media screen and (max-width: 800px) {
+            @media screen and (min-width: 1200px) {
               #root {
-                padding: 0 0 0 55%;
+                flex-wrap: nowrap;
+                justify-content: space-between;
+                margin-top: -1.6vh;
+                padding-bottom: 0;
               }
             }
-
-          #conditional missing entities
-          "$hui-button-card:nth-last-child(2)$": |
-            {% if is_state('sensor.template_warning_icon_color', 'True') %}
-
-              ha-card, ha-icon {
-                color: {{ state_attr('sensor.template_warning_icon_color', 'color') }}
-                opacity: 1 !important;
-                animation: update 1.5s ease-out infinite;
-              }
-
-              ha-card:hover {
-                filter: brightness(130%);
-                animation-play-state: paused;
-              }
-
-            {% endif %}
-
-              @keyframes update {
-                0% {
-                  transform: scale(1);
-                }
-                40% {
-                  transform: scale(1.08);
-                }
-                50% {
-                  transform: scale(0.98);
-                }
-                55% {
-                  transform: scale(1.02);
-                }
-                60% {
-                  transform: scale(0.98);
-                }
-                100% {
-                  transform: scale(1);
-                }
-              }
-
-          #conditional color update
-          "$hui-button-card:last-of-type$": |
-            {% if is_state('binary_sensor.template_sidebar_update_color', 'on') %}
-
-              ha-card, ha-icon {
-                color: rgb(49, 130, 183) !important;
-                opacity: 1 !important;
-                animation: update 1.5s ease-out infinite;
-              }
-
-              ha-card:hover {
-                filter: brightness(130%);
-                animation-play-state: paused;
-              }
-
-            {% endif %}
-
-              @keyframes update {
-                0% {
-                  transform: scale(1);
-                }
-                40% {
-                  transform: scale(1.08);
-                }
-                50% {
-                  transform: scale(0.98);
-                }
-                55% {
-                  transform: scale(1.02);
-                }
-                60% {
-                  transform: scale(0.98);
-                }
-                100% {
-                  transform: scale(1);
-                }
-              }
 
       card-mod-card: |
         .header .card-header {
-          font-family: SF Text;
+          font-family: SF Text, Roboto;
           letter-spacing: 0.005em;
           font-size: 1.6em;
           font-weight: 500;
-          padding: 1em 0 0 1.68em;
+          padding: 1em 0 0 1.38em;
           line-height: initial;
           cursor: default;
         }
 
         .content .card-content {
           padding: var(--card-content-padding);
+          font-family: SF Text, Roboto;
+          letter-spacing: normal;
         }
 
         /* * * * * * * * * * * * * * * * * *
@@ -333,6 +241,8 @@ frontend:
 
         .type-custom-bar-card bar-card-name {
           padding-left: 0.25em;
+          font-family: SF Text, Roboto;
+          letter-spacing: normal;
         }
 
         .type-custom-bar-card bar-card-iconbar {
@@ -353,7 +263,7 @@ frontend:
           background: none;
         }
 
-        .type-custom-bar-card bar-card-background {
+        .type-custom-bar-card bar-card-background  {
           background: radial-gradient(circle, rgba(52, 57, 58, 0.1) 0%, rgba(17, 18, 18, 0.2) 75%);
           box-shadow: inset 0 0 25px #00000045;
           border-radius: 0.3em;
@@ -368,7 +278,7 @@ frontend:
 
           .main-title {
             margin-top: 5px;
-            font-family: SF Text;
+            font-family: SF Text, Roboto;
             letter-spacing: 0.005em;
           }
 
@@ -377,16 +287,16 @@ frontend:
             color: #9e9e9e;
           }
 
-          "mwc-icon-button":
-            $: |
-              button > mwc-ripple {
-                margin-top: 3px;
-              }
+        "mwc-icon-button":
+          $: |
+            button > mwc-ripple {
+              margin-top: 3px;
+            }
 
-          "layout-card$grid-layout$": |
-              #root {
-                margin: 0 !important;
-              }
+        "layout-card$grid-layout$": |
+            #root {
+              margin: 0 !important;
+            }
 
         $: |
           .mdc-dialog__scrim {
@@ -411,4 +321,42 @@ frontend:
 
           .mdc-dialog--closing {
             display: none !important;
+          }
+
+        #################################################
+        #                                               #
+        #            CUSTOM LIGHT POPUP CARD            #
+        #                                               #
+        #################################################
+
+        light-popup-card$: |
+          #popup {
+            margin: -2em 0 2.5em 0;
+            isolation: isolate;
+          }
+
+          input[type=range] {
+            cursor: grab;
+          }
+
+          #brightnessValue {
+            color: rgba(255, 255, 255, 0.8);
+            margin: -10vh 0 0 0;
+            font-size: 2em;
+            font-weight: 400;
+            position: absolute;
+            z-index: 1;
+            font-family: SF Display, Roboto;
+            letter-spacing: 0.02em;
+            pointer-events: none;
+            mix-blend-mode: difference;
+            text-align: center;
+          }
+
+          #popup>div.range-holder>input[type=range] {
+            --slider-thumb-color: #b4b4b4 !important;
+          }
+
+          #popup>div.range-holder>input[type=range]::-webkit-slider-thumb {
+            cursor: grabbing;
           }

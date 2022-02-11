@@ -13,12 +13,6 @@ homeassistant:
       friendly_name: Oli Night Light
 
     #-------------------------------------------
-    #  master_fan.yaml
-    #-------------------------------------------
-    fan.master_bedroom:
-      friendly_name: Master Bedroom Ceiling Fan
-
-    #-------------------------------------------
     #  home_garage.yaml
     #-------------------------------------------
     binary_sensor.garage_contact:
@@ -27,15 +21,6 @@ homeassistant:
     #-------------------------------------------
     #  sidebar_information.yaml
     #-------------------------------------------
-    sensor.docker_vpn_network_speed_down:
-      friendly_name: ' '
-
-    sensor.docker_vpn_network_speed_up:
-      friendly_name: ' '
-
-    sensor.docker_vpn_health:
-      friendly_name: 'Status'
-
     sensor.docker_1cpu:
       friendly_name: Processor
       icon: mdi:chip
@@ -54,10 +39,8 @@ homeassistant:
     sensor.hass_version_latest:
       friendly_name: Version Latest
 
-    sensor.docker_homeassistant_health:
-      friendly_name: Status
-
     sensor.home_assistant_log:
+      icon: mdi:file-document
       friendly_name: Log
 
     sensor.home_assistant_v2_db:
