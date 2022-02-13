@@ -3,7 +3,6 @@
 ###############################################################################
 - id: update_hass_release_notes
   alias: 'Update Hass Release Notes'
-  initial_state: true
   trigger:
     - platform: state
       entity_id:

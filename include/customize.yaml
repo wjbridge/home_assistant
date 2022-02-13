@@ -4,6 +4,10 @@
 #                                                  #
 ####################################################
 homeassistant:
+  customize_domain:
+    automation:
+      initial_state: true
+
   customize:
 
     #-------------------------------------------
