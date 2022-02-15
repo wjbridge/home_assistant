@@ -577,7 +577,6 @@
       .subtitle {
         font-family: SF Text, Roboto;
         font-size: 0.9em;
-        line-height: 0.7em;
         padding-left: 3px;
         padding-bottom: 10px;
         font-weight: 500;

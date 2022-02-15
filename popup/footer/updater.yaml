@@ -130,7 +130,6 @@ browser_mod:
           service: homeassistant.update_entity
           service_data:
             entity_id:
-              - sensor.template_unavailable_entities
               - sensor.plex_version_installed
               - sensor.plex_server_release_notes
               - sensor.adguardhome_release_notes
