@@ -1,0 +1,115 @@
+#-------------------------------------------
+#  REST Sensors
+#-------------------------------------------
+rest:
+  - resource: https://api.github.com/repos/home-assistant/core/releases/latest
+    sensor:
+      - name: hass_release_notes
+        value_template: >
+          {{ value_json.name }}
+        json_attributes:
+          - body
+    scan_interval: 21600
+
+  - resource: https://api.github.com/repos/home-assistant/core/releases?per_page=1
+    sensor:
+      - name: hass_release_notes_rc
+        value_template: >
+          {{ value_json[0].name }}
+        json_attributes:
+          - body
+    scan_interval: 21600
+
+  - resource: https://api.github.com/repos/AdguardTeam/AdGuardHome/releases/latest
+    sensor:
+      - name: adguardhome_release_notes
+        value_template: >
+          {{ value_json.tag_name }}
+        json_attributes:
+          - body
+          - html_url
+    scan_interval: 21600
+
+  - resource: https://api.github.com/repos/photoprism/photoprism/releases/latest
+    sensor:
+      - name: photoprism_release_notes
+        value_template: >
+          {{ value_json.tag_name }}
+        json_attributes:
+          - body
+          - html_url
+    scan_interval: 21600
+
+  - resource: https://api.github.com/repos/firefly-iii/firefly-iii/releases/latest
+    sensor:
+      - name: fireflyIII_release_notes
+        value_template: >
+          {{ value_json.tag_name }}
+        json_attributes:
+          - body
+          - html_url
+    scan_interval: 21600
+
+  - resource: https://api.github.com/repos/jonaswinkler/paperless-ng/releases/latest
+    sensor:
+      - name: paperlessng_release_notes
+        value_template: >
+          {{ value_json.tag_name }}
+        json_attributes:
+          - body
+          - html_url
+    scan_interval: 21600
+
+  - resource: https://api.github.com/repos/bastienwirtz/homer/releases/latest
+    sensor:
+      - name: homer_release_notes
+        value_template: >
+          {{ value_json.tag_name }}
+        json_attributes:
+          - body
+          - html_url
+    scan_interval: 21600
+
+  - resource: https://api.github.com/repos/mrvnklm/homeassistant-desktop/releases/latest
+    sensor:
+      - name: homeassistant_desktop_release_notes
+        value_template: >
+          {{ value_json.tag_name }}
+        json_attributes:
+          - body
+          - html_url
+    scan_interval: 21600
+
+  #-------------------------------------------
+  #  Plex Server
+  #-------------------------------------------
+
+  - resource: !secret tautulli_api_get_pms_update
+    sensor:
+      - name: plex_server_release_notes
+        value_template: "{{ value_json.response.data.version }}"
+        json_attributes_path: "$.response.data"
+        json_attributes:
+          - update_available
+          - platform
+          - release_date
+          - requirements
+          - extra_info
+          - changelog_added
+          - changelog_fixed
+          - label
+          - distro
+          - distro_build
+    scan_interval: 21600
+
+  - resource: !secret tautulli_api_get_server_info
+    sensor:
+      - name: plex_version_installed
+        value_template: >
+          {{ value_json.response.data.pms_version }}
+        json_attributes_path: "$.response.data"
+        json_attributes:
+          - pms_name
+          - pms_platform
+          - pms_plexpass
+    scan_interval: 21600

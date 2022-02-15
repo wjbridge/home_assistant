@@ -1,0 +1,267 @@
+sensor:
+  #---------------------------------------------------------------------------------------
+  #  File Size Sensor
+  #  https://www.home-assistant.io/components/sensor.filesize/
+  #---------------------------------------------------------------------------------------
+  - platform: filesize
+    file_paths:
+      - /config/home-assistant_v2.db
+      - /config/home-assistant.log
+
+  #---------------------------------------------------------------------------------------
+  #  Dark Sky Weather
+  #---------------------------------------------------------------------------------------
+  - platform: darksky
+    api_key: !secret dark_sky_api
+    forecast:
+      - 0
+    hourly_forecast:
+      - 0
+      - 1
+    monitored_conditions:
+      - summary
+      - icon
+      - apparent_temperature
+      - temperature
+      - temperature_high
+      - temperature_low
+      - precip_intensity
+      - precip_probability
+      - cloud_cover
+    scan_interval:
+      days: 0
+      hours: 1
+      minutes: 0
+      seconds: 0
+      milliseconds: 0
+
+  #---------------------------------------------------------------------------------------
+  #  APC Battery Backup
+  #  https://www.home-assistant.io/components/apcupsd/
+  #---------------------------------------------------------------------------------------
+  - platform: apcupsd
+    resources:
+      - status
+      - linev
+      - loadpct
+      - bcharge
+      - timeleft
+      - mbattchg
+      - battv
+
+  #---------------------------------------------------------------------------------------
+  # Plex Recently Added
+  # https://github.com/custom-components/sensor.plex_recently_added
+  # https://support.plex.tv/articles/204059436-finding-an-authentication-token-x-plex-token/
+  #---------------------------------------------------------------------------------------
+  - platform: plex_recently_added
+    token: !secret plex_token
+    host: !secret plex_host
+    port: !secret plex_port
+    max: 5
+    img_dir: /
+    image_resolution: 500
+    exclude_keywords:
+      - Linus
+      - RenoVision
+      - Meld
+      - Lawrence
+      - ShortCircuit
+      - Techquickie
+      - Knorr
+      - Andrei
+      - Steven
+      - Chris
+    section_types:
+      - show
+      - movie
+
+  #---------------------------------------------------------------------------------------
+  #  Weather Alerts
+  #  https://github.com/custom-components/weatheralerts
+  #---------------------------------------------------------------------------------------
+  - platform: weatheralerts
+    state: MI
+    zone: 69
+    county: 125
+    scan_interval: 60
+
+  #---------------------------------------------------------------------------------------
+  # MQTT
+  # https://www.home-assistant.io/components/sensor.rest/
+  #---------------------------------------------------------------------------------------
+  - platform: mqtt
+    name: "Basement Radon 24HRS"
+    state_topic: "waveplus/2930025408/Radon_ST_avg"
+    unit_of_measurement: "pCi/L"
+    expire_after: 7200
+    force_update: true
+    value_template: "{{ (float(value_json) / 37.0) | round(1) }}"
+    icon: mdi:radioactive
+
+  - platform: mqtt
+    name: "Basement Radon Lifetime"
+    state_topic: "waveplus/2930025408/Radon_LT_avg"
+    unit_of_measurement: "pCi/L"
+    expire_after: 7200
+    force_update: true
+    value_template: "{{ (float(value_json) / 37.0) | round(1) }}"
+    icon: mdi:radioactive
+
+  - platform: mqtt
+    name: "Basement Temperature"
+    device_class: temperature
+    state_topic: "waveplus/2930025408/Temperature"
+    unit_of_measurement: "°F"
+    expire_after: 7200
+    force_update: true
+    value_template: "{{ ((float(value_json) * 1.8) + 32.0)  | round(1)}}"
+    icon: mdi:thermometer
+
+  - platform: mqtt
+    name: "Basement Humidity"
+    device_class: humidity
+    state_topic: "waveplus/2930025408/Humidity"
+    unit_of_measurement: "%"
+    value_template: "{{ float(value_json)  | round(1) }}"
+    expire_after: 7200
+    force_update: true
+    icon: mdi:water-percent
+
+  - platform: mqtt
+    name: "Basement Pressure"
+    device_class: pressure
+    state_topic: "waveplus/2930025408/Pressure"
+    unit_of_measurement: "hPa"
+    value_template: "{{ float(value_json) | round(1) }}"
+    expire_after: 7200
+    force_update: true
+    icon: mdi:arrow-collapse
+
+  - platform: mqtt
+    name: "Basement C02 Level"
+    state_topic: "waveplus/2930025408/CO2_level"
+    unit_of_measurement: "ppm"
+    value_template: "{{ float(value_json) | round(1) }}"
+    expire_after: 7200
+    force_update: true
+    icon: mdi:molecule-co2
+
+  - platform: mqtt
+    name: "Basement VOC Level"
+    state_topic: "waveplus/2930025408/VOC_level"
+    icon: mdi:bio
+    unit_of_measurement: "ppb"
+    force_update: true
+    value_template: "{{ float(value_json) | round(1) }}"
+    expire_after: 7200
+
+  #-------------------------------------------
+  #  Persistence Home
+  #-------------------------------------------
+
+  - platform: mqtt
+    name: weston_last_changed
+    state_topic: homeassistant/persistence/weston
+    value_template: >
+      {{ value | replace(' ', 'T') }}
+
+  - platform: mqtt
+    name: ana_last_changed
+    state_topic: homeassistant/persistence/ana
+    value_template: >
+      {{ value | replace(' ', 'T') }}
+
+  #---------------------------------------------------------------------------------------
+  # History Stats
+  # https://www.home-assistant.io/components/history_stats/
+  #---------------------------------------------------------------------------------------
+
+  - platform: history_stats
+    name: Heating Hours Today
+    entity_id: sensor.template_operating_state
+    state: 'heating'
+    type: time
+    start: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
+    end: '{{ now() }}'
+
+  - platform: history_stats
+    name: Heating Hours Yesterday
+    entity_id: sensor.template_operating_state
+    state: 'heating'
+    type: time
+    end: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
+    duration:
+      hours: 24
+
+  - platform: history_stats
+    name: Heating Hours Two Days Ago
+    entity_id: sensor.template_operating_state
+    state: 'heating'
+    type: time
+    end: '{{ as_timestamp( now().replace(hour=0).replace(minute=0).replace(second=0) ) - 86400 }}'
+    duration:
+      hours: 24
+
+  - platform: history_stats
+    name: Cooling Hours Today
+    entity_id: sensor.template_operating_state
+    state: 'cooling'
+    type: time
+    start: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
+    end: '{{ now() }}'
+
+  - platform: history_stats
+    name: Cooling Hours Yesterday
+    entity_id: sensor.template_operating_state
+    state: 'cooling'
+    type: time
+    end: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
+    duration:
+      hours: 24
+
+  - platform: history_stats
+    name: Cooling Hours Two Days Ago
+    entity_id: sensor.template_operating_state
+    state: 'cooling'
+    type: time
+    end: '{{ as_timestamp( now().replace(hour=0).replace(minute=0).replace(second=0) ) - 86400 }}'
+    duration:
+      hours: 24
+
+  #---------------------------------------------------------------------------------------
+  # Command Line
+  # https://www.home-assistant.io/integrations/sensor.command_line/
+  #---------------------------------------------------------------------------------------
+
+  - platform: command_line
+    name: udm_unifios
+    command: !secret udm_unifios
+    value_template: |-
+      {% set json = value_json.data[2] %}
+      {% set json2 = value_json.data[1] %}
+      {{ json.model }}|
+      {{ json["system-stats"].cpu }}|
+      {{ json.temperatures[1].value | round(1) }}|
+      {{ json["system-stats"].mem }}|
+      {{ ((json.storage[1].used / json.storage[1].size) * 100) | round(1) }}|
+      {{ json2.internet }}|
+      {{ json.startup_timestamp | timestamp_local }}|
+      {{ json.displayable_version }}|
+      {{ json.upgradable }}
+    scan_interval: 120
+
+  #---------------------------------------------------------------------------------------
+  # Uptime
+  # https://www.home-assistant.io/integrations/uptime/
+  #---------------------------------------------------------------------------------------
+  - platform: uptime
+
+  #---------------------------------------------------------------------------------------
+  # Time & Date
+  # https://www.home-assistant.io/integrations/time_date/
+  #---------------------------------------------------------------------------------------
+  - platform: time_date
+    display_options:
+      - time
+      - date

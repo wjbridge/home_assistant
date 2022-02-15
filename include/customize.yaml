@@ -93,8 +93,8 @@ homeassistant:
     sensor.fireflyiii_release_notes:
       friendly_name: FireflyIII
 
-    sensor.papermerge_release_notes:
-      friendly_name: Papermerge
+    sensor.paperlessng_release_notes:
+      friendly_name: Paperless NG
 
     #-------------------------------------------
     #  Laundry

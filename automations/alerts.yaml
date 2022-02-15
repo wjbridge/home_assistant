@@ -25,7 +25,7 @@
   trigger:
     platform: state
     entity_id:
-      - sensor.papermerge_release_notes
+      - sensor.paperlessng_release_notes
       - sensor.fireflyiii_release_notes
       - sensor.photoprism_release_notes
       - sensor.adguardhome_release_notes
@@ -44,7 +44,7 @@
     service: notify.groot_automation
     data_template:
       title: "<b>Info</b>: [{{ trigger.from_state.name }}] -> {{ trigger.from_state.state }} to {{ trigger.to_state.state }}"
-      message: "<a href=\"{{state_attr(trigger.entity_id, 'html_url') }}\">{{state_attr(trigger.entity_id, 'tag_name')}}</a> is available!"
+      message: "<a href=\"{{state_attr(trigger.entity_id, 'html_url') }}\">{{trigger.to_state.state}}</a> is available!"
 
 ###############################################################################
 # New Device on Network
