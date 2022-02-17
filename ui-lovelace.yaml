@@ -569,18 +569,23 @@ views:
                   let alert1 = states['sensor.template_oakland_alert_1'];
                   let alert2 = states['sensor.template_oakland_alert_2'];
                   let missing = states['sensor.template_unavailable_entities'];
-                  let tmr_alert = states['timer.startup_missing_delay']
+                  let tmr_alert = states['timer.startup_missing_delay'];
+                  let number_of_events = 0;
 
-                  if (alert1 || alert2) {
-                    if (alert1.state === 'on' || alert2.state === 'on') {
-                      return 1;
-                    }
+                  if (alert1.state === 'on') {
+                    number_of_events += 1;
+                  }
+
+                  if (alert2.state === 'on') {
+                    number_of_events += 1;
                   }
 
                   if (missing && Number.isInteger(parseInt(missing.state)) && tmr_alert.state !== 'active') {
-                    return parseInt(missing.state);
+                    return (parseInt(missing.state) + number_of_events);
                   }
-                  return 0;
+                  else {
+                    return number_of_events;
+                  }
                 ]]]
             template: footer
 
