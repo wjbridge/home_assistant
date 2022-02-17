@@ -345,7 +345,7 @@ views:
               !include popup/home_garage.yaml
             template:
               - base
-              - icon_shutter
+              - icon_garage
 
       #################################################
       #                                               #
