@@ -40,7 +40,7 @@
     - choose:
         - conditions:
             - condition: trigger
-              id: 'sam_bedroom_morning'
+              id: 'sam_bedroom_evening'
             - condition: state
               entity_id: media_player.spot
               attribute: available
