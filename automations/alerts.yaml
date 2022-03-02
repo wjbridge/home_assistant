@@ -8,8 +8,11 @@
     entity_id: sensor.hass_version_latest
 
   condition:
-    - condition: template
-      value_template: "{{ states('sensor.hass_version_latest') != 'unavailable' }}"
+    - condition: not
+      conditions:
+        - condition: state
+          entity_id: sensor.hass_version_latest
+          state: 'unavailable'
 
   action:
     service: notify.groot_automation
