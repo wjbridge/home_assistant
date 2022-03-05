@@ -17,13 +17,12 @@ browser_mod:
             $: |
               .card-content {
                 padding: var(--card-content-padding);
-                padding-bottom: 1.2em;
+                padding-bottom: 0.8em;
               }
               ha-card {
                 border-right: 1.5px solid rgba(0, 0, 0, 0.2);
                 border-radius: 0;
                 transition: none;
-                font-family: SF Text, Roboto;
                 letter-spacing: normal;
               }
               /* portrait */
