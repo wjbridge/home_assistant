@@ -96,20 +96,12 @@ views:
         cards:
 
           - type: custom:swipe-card
-            start_card: 1
             parameters:
-              roundLengths: true
-              effect: coverflow
-              speed: 650
-              spaceBetween: 20
-              freeModeMomentum: true
-              threshold: 7
+              speed: 550
+              spaceBetween: 40
+              threshold: 5
               autoplay:
                 delay: 20000
-              coverflowEffect:
-                rotate: 80
-                depth: 300
-                slideShadows: true
             cards:
 
               - type: custom:button-card
@@ -249,13 +241,9 @@ views:
           - type: custom:swipe-card
             start_card: 1
             parameters:
-              roundLengths: true
-              effect: coverflow
-              speed: 650
-              threshold: 7
-              coverflowEffect:
-                rotate: 80
-                depth: 300
+              speed: 550
+              spaceBetween: 40
+              threshold: 5
             cards:
               - type: grid
                 columns: 1
