@@ -5,8 +5,7 @@ browser_mod:
   style:
     .: |
       :host .content {
-        padding: var(--card-content-padding);
-        width: 98%;
+        width: 100%;
       }
     hui-grid-card:
       $: |
@@ -18,7 +17,8 @@ browser_mod:
           margin: 0.6em 0 0.5em 0.8em;
         }
         #root {
-          grid-gap: 0 !important;
+          padding: var(--card-content-padding);
+          width: max-content;
         }
   card:
     type: grid
