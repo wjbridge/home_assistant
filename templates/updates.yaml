@@ -13,7 +13,7 @@
 
           {% if update_available and installed != 'unavailable' and latest != 'unavailable' %}
             {% if installed != latest and update_available %}
-              <b><a href="#" onclick="window.open('{{ url }}');">plex</a></b> {{ installed + ' \u279e ' + latest }}
+              <b><a href="#" onclick="window.open('{{ url }}');">plex</a></b> {{ installed + ' <b>&rarr;</b> ' + latest }}
             {% endif %}
           {% endif %}
 
