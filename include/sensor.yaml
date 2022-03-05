@@ -60,7 +60,7 @@ sensor:
     port: !secret plex_port
     max: 5
     img_dir: /
-    image_resolution: 500
+    image_resolution: 900
     exclude_keywords:
       - Linus
       - RenoVision
