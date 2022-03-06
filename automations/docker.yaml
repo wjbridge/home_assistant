@@ -7,15 +7,17 @@
       stored_traces: 10
   trigger:
     - platform: state
-      entity_id: sensor.docker_vpn_health
       id: 'vpn_unhealthy'
+      entity_id: sensor.docker_vpn
+      attribute: health
       to: 'unhealthy'
       for:
         minutes: 5
 
     - platform: state
-      entity_id: sensor.docker_nzbhydra_health
       id: 'nzbhydra_unhealthy'
+      entity_id: sensor.docker_nzbhydra
+      attribute: health
       to: 'unhealthy'
       for:
         minutes: 5
