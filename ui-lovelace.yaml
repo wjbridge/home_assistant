@@ -110,10 +110,9 @@ views:
                   action: none
                 template:
                   - conditional_media
-                  - recently_added
                   - icon_plex
                 variables:
-                  download_index: >
+                  i: >
                     [[[
                       return parseInt('1');
                     ]]]
@@ -124,10 +123,9 @@ views:
                   action: none
                 template:
                   - conditional_media
-                  - recently_added
                   - icon_plex
                 variables:
-                  download_index: >
+                  i: >
                     [[[
                       return parseInt('2');
                     ]]]
@@ -138,10 +136,9 @@ views:
                   action: none
                 template:
                   - conditional_media
-                  - recently_added
                   - icon_plex
                 variables:
-                  download_index: >
+                  i: >
                     [[[
                       return parseInt('3');
                     ]]]
@@ -435,17 +432,17 @@ views:
                             - sensor.basement_temperature
                     template: temp
 
-                  - type: custom:button-card
-                    entity: sensor.dark_sky_apparent_temperature
-                    name: Outside
-                    tap_action:
-                      action: none
-                    custom_fields:
-                      graph:
-                        card:
-                          entities:
-                            - sensor.dark_sky_apparent_temperature
-                    template: temp
+                  #- type: custom:button-card
+                  #  entity: sensor.dark_sky_apparent_temperature
+                  #  name: Outside
+                  #  tap_action:
+                  #    action: none
+                  #  custom_fields:
+                  #    graph:
+                  #      card:
+                  #        entities:
+                  #          - sensor.dark_sky_apparent_temperature
+                  #  template: temp
 
               - type: grid
                 columns: 1
