@@ -48,6 +48,7 @@ lovelace:
       { url: /hacsfiles/webrtc/www/webrtc-camera.js,                                type: module },
 
       { url: '/local/custom_icons.js?v=28082021',                                   type: module },
+      { url: '/local/marked.min.js?v=4.0.12',                                       type: module },
       { url: '/local/font.css',                                                     type: css    },
       { url: '/local/7segment.css',                                                 type: css    } ]
 
