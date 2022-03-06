@@ -107,12 +107,6 @@ ffmpeg:
 homekit_controller:
 
 #-------------------------------------------
-# Find Updates
-# https://www.home-assistant.io/components/updater/
-#-------------------------------------------
-updater:
-
-#-------------------------------------------
 # Sun
 # https://www.home-assistant.io/integrations/sun/
 #-------------------------------------------
@@ -135,16 +129,6 @@ sensor: !include_dir_merge_list sensors
 recorder:
   auto_purge: true
   purge_keep_days: 30
-
-#-------------------------------------------
-# MQTT
-# https://www.home-assistant.io/docs/mqtt/broker#run-your-own
-#-------------------------------------------
-mqtt:
-  discovery: true
-  discovery_prefix: homeassistant
-  broker: !secret server_ip
-  port: !secret mqtt_port
 
 #-------------------------------------------
 # Telegram
