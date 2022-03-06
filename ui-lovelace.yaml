@@ -206,25 +206,6 @@ views:
               - light
               - icon_shade
 
-          # https://github.com/tuya/tuya-home-assistant/pull/387
-          #- type: custom:button-card
-          #  entity: fan.master_bedroom
-          #  name: Master
-          #  hold_action:
-          #    !include popup/master_fan.yaml
-          #  template:
-          #    - base
-          #    - icon_fan2
-          #    - circle
-          #    - loader
-          #  variables:
-          #    circle_input: >
-          #      [[[
-          #        return entity === undefined ?
-          #          null :
-          #          parseInt(entity.attributes.percentage);
-          #      ]]]
-
       #################################################
       #                                               #
       #                   CAMERAS                     #

@@ -25,18 +25,6 @@
             - condition: trigger
               id: 'master_bedroom_morning'
           sequence:
-            # IF Morning: Master Bedroom Fan
-            - choose:
-                - conditions:
-                    - condition: state
-                      entity_id: fan.master_bedroom
-                      state: 'on'
-                  sequence:
-                    - service: fan.turn_off
-                      entity_id: fan.master_bedroom
-                    - delay:
-                        seconds: 3
-
             # IF Morning: Fan Sounds Alexa
             - choose:
                 - conditions:
@@ -60,26 +48,6 @@
             - condition: trigger
               id: 'master_bedroom_evening'
           sequence:
-            # IF Evening: Master Bedroom Fan
-            - choose:
-                - conditions:
-                    - condition: state
-                      entity_id: fan.master_bedroom
-                      state: 'off'
-                    - condition: state
-                      entity_id: input_boolean.master_bedroom_fan_en
-                      state: 'on'
-                    - condition: numeric_state
-                      entity_id: sensor.master_bedroom_temperature
-                      above: 74.0
-                  sequence:
-                    - service: fan.turn_on
-                      entity_id: fan.master_bedroom
-                      data:
-                        percentage: 75
-                    - delay:
-                        seconds: 3
-
             # IF Evening: Fan Sounds Alexa
             - choose:
                 - conditions:
