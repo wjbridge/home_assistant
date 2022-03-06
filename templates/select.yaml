@@ -7,7 +7,7 @@
         {% set recently_added = 'Last Added' %}
         {% set paused_timeout_minutes = 15 %}
         {% set media_players = [
-          states.media_player.living_room_tv,
+          states.media_player.nvidia_shield_living_room,
           states.media_player.yamaha_receiver_family_room ] %}
         {% macro media(state) %}
         {% set state = media_players | selectattr('state','eq',state) | list %}
@@ -30,7 +30,7 @@
       options: >
         {% set recently_added = ['Last Added'] %}
         {% set media_players = [
-          states.media_player.living_room_tv,
+          states.media_player.nvidia_shield_living_room,
           states.media_player.yamaha_receiver_family_room ] %}
         {{ recently_added + media_players | map(attribute='name') | list }}
       select_option:
