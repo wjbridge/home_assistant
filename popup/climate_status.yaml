@@ -329,7 +329,7 @@ browser_mod:
           - entity: sensor.garage_temp_temperature
             name: Garage
             secondary_info: >
-              Humidity: {{ states('sensor.garage_temp_humidity') | float | round(1) }} %
+              Humidity: {{ states('sensor.garage_temp_humidity') | float(default=0.0) | round(1) }} %
           - type: custom:mini-graph-card
             color_thresholds: *graph_colors
             entities:
@@ -348,7 +348,7 @@ browser_mod:
           - entity: sensor.basement_temperature
             name: Basement
             secondary_info: >
-              Humidity: {{ states('sensor.basement_humidity') | float | round(1) }} %
+              Humidity: {{ states('sensor.basement_humidity') | float(default=0.0) | round(1) }} %
           - type: custom:mini-graph-card
             color_thresholds: *graph_colors
             entities:

@@ -7,7 +7,7 @@
 
     - unique_id: equipment_resume
       state: >
-        {% set new_temp = states('sensor.dark_sky_overnight_low_temperature_0d') | float %}
+        {% set new_temp = states('sensor.dark_sky_overnight_low_temperature_0d') | float(default=0.0) %}
         {% if new_temp < 50 -%}
           heat
         {%- else -%}
