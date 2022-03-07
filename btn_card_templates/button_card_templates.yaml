@@ -1082,7 +1082,8 @@
             await = setTimeout(marquee,0),
             data = entity.attributes.data,
             artist = entity.attributes.media_artist,
-            title = entity.attributes.media_title;
+            title = entity.attributes.media_title,
+            app_name = entity.attributes.app_name;
             if (data !== undefined) {
               var number = data[variables.i].number === undefined && data[variables.i].aired !== undefined
                 ? `(${data[variables.i].aired.split("-")[0]})`
@@ -1097,7 +1098,9 @@
                   ? artist
                   : title !== undefined && artist !== undefined
                     ? `${artist} - ${title}`
-                    : variables.translate_idle;
+                      : title === undefined && artist === undefined
+                        ? app_name
+                        : variables.translate_idle;
             }
           function marquee() {
             let state = elt.getElementById("state"),

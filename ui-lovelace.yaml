@@ -32,7 +32,7 @@ views:
       grid-template-rows: 0 repeat(3, fit-content(100%)) 0fr
       grid-template-areas: |
         "sidebar  .           .        .          .        ."
-        "sidebar  plex        media    bedroom    temps    ."
+        "sidebar  media       fans     lights     temps    ."
         "sidebar  camera      outside  home       misc     ."
         "sidebar  footer      footer   footer     footer   ."
       mediaquery:
@@ -44,9 +44,9 @@ views:
           grid-template-areas: |
             ".  .           .            ."
             ".  sidebar     sidebar      ."
-            ".  home        bedroom      ."
+            ".  home        lights       ."
             ".  media       outside      ."
-            ".  camera      plex         ."
+            ".  camera      fans         ."
             ".  temps       misc         ."
             ".  footer      footer       ."
             ".  .           .            ."
@@ -57,9 +57,9 @@ views:
           grid-template-rows: 0 repeat(4, fit-content(100%)) 0fr
           grid-template-areas: |
             "sidebar  .           .           ."
-            "sidebar  home        bedroom     ."
+            "sidebar  home        lights      ."
             "sidebar  media       outside     ."
-            "sidebar  camera      plex        ."
+            "sidebar  camera      fans        ."
             "sidebar  temps       misc        ."
             "sidebar  footer      footer      ."
             "sidebar  .           .           ."
@@ -84,14 +84,14 @@ views:
 
       #################################################
       #                                               #
-      #                    PLEX                       #
+      #                    MEDIA                      #
       #                                               #
       #################################################
 
       - type: grid
-        title: Plex
+        title: Media
         view_layout:
-          grid-area: plex
+          grid-area: media
         columns: 1
         cards:
 
@@ -103,56 +103,122 @@ views:
               autoplay:
                 delay: 20000
             cards:
+              - type: conditional
+                conditions:
+                  - entity: select.conditional_media
+                    state_not: Living Room Shield
+                card:
+                  type: custom:button-card
+                  entity: sensor.plex_recently_added
+                  name: Last Downloaded
+                  tap_action:
+                    action: none
+                  template:
+                    - conditional_media
+                    - icon_plex
+                  variables:
+                    i: >
+                      [[[
+                        return parseInt('1');
+                      ]]]
 
-              - type: custom:button-card
-                entity: sensor.plex_recently_added
-                tap_action:
-                  action: none
-                template:
-                  - conditional_media
-                  - icon_plex
-                variables:
-                  i: >
-                    [[[
-                      return parseInt('1');
-                    ]]]
+              - type: conditional
+                conditions:
+                  - entity: select.conditional_media
+                    state_not: Living Room Shield
+                card:
+                  type: custom:button-card
+                  entity: sensor.plex_recently_added
+                  name: Last Downloaded
+                  tap_action:
+                    action: none
+                  template:
+                    - conditional_media
+                    - icon_plex
+                  variables:
+                    i: >
+                      [[[
+                        return parseInt('2');
+                      ]]]
 
-              - type: custom:button-card
-                entity: sensor.plex_recently_added
-                tap_action:
-                  action: none
-                template:
-                  - conditional_media
-                  - icon_plex
-                variables:
-                  i: >
-                    [[[
-                      return parseInt('2');
-                    ]]]
+              - type: conditional
+                conditions:
+                  - entity: select.conditional_media
+                    state_not: Living Room Shield
+                card:
+                  type: custom:button-card
+                  entity: sensor.plex_recently_added
+                  name: Last Downloaded
+                  tap_action:
+                    action: none
+                  template:
+                    - conditional_media
+                    - icon_plex
+                  variables:
+                    i: >
+                      [[[
+                        return parseInt('3');
+                      ]]]
 
-              - type: custom:button-card
-                entity: sensor.plex_recently_added
-                tap_action:
-                  action: none
-                template:
-                  - conditional_media
-                  - icon_plex
-                variables:
-                  i: >
-                    [[[
-                      return parseInt('3');
-                    ]]]
+              - type: conditional
+                conditions:
+                  - entity: select.conditional_media
+                    state: Living Room Shield
+                card:
+                  type: horizontal-stack
+                  cards:
+                    - type: custom:button-card
+                      entity: media_player.living_room_shield
+                      template:
+                        - conditional_media
+                        - icon_nvidia
+
+              - type: grid
+                columns: 2
+                cards:
+                  - type: custom:button-card
+                    entity: media_player.yamaha_receiver_family_room
+                    name: Yamaha
+                    template:
+                      - base
+                      - icon_monitors
+                      - circle
+                      - loader
+                    hold_action:
+                      !include popup/media_yamaha.yaml
+                    variables:
+                      circle_input: >
+                        [[[
+                          return entity === undefined ?
+                            null :
+                            parseInt(entity.attributes.volume_level * 100);
+                        ]]]
+
+                  - type: custom:button-card
+                    entity: media_player.living_room_tv
+                    name: TV
+                    hold_action:
+                      !include popup/family_room_tv.yaml
+                    template:
+                      - base
+                      - icon_tv
+
+                  - type: custom:button-card
+                    entity: media_player.living_room_shield
+                    template:
+                      - media
+                      - icon_nvidia
 
       #################################################
       #                                               #
-      #                    MEDIA                      #
+      #                    FANS                       #
       #                                               #
       #################################################
 
       - type: grid
-        title: Media
+        title: Fans
         view_layout:
-          grid-area: media
+          grid-area: fans
         columns: 2
         cards:
 
@@ -174,31 +240,31 @@ views:
                     parseInt(entity.attributes.volume_level * 100);
                 ]]]
 
-          - type: custom:button-card
-            entity: media_player.living_room_tv
-            name: TV
-            hold_action:
-              !include popup/family_room_tv.yaml
-            template:
-              - base
-              - icon_tv
-
       #################################################
       #                                               #
-      #                   BEDROOM                     #
+      #                    LIGHTS                     #
       #                                               #
       #################################################
 
       - type: grid
-        title: Bedroom
+        title: Lights
         view_layout:
-          grid-area: bedroom
+          grid-area: lights
         columns: 2
         cards:
 
           - type: custom:button-card
             entity: light.oli_night_light
             name: Oli Night
+            template:
+              - light
+              - icon_shade
+
+          - type: custom:button-card
+            entity: light.ana_desk_light
+            name: Ana Desk
+            hold_action:
+              action: none
             template:
               - light
               - icon_shade
@@ -710,15 +776,6 @@ views:
                     null :
                     entity.attributes.remain_time;
                 ]]]
-
-          - type: custom:button-card
-            entity: light.ana_desk_light
-            name: Ana Desk
-            hold_action:
-              action: none
-            template:
-              - light
-              - icon_shade
 
       #################################################
       #                                               #
