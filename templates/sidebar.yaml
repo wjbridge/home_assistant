@@ -27,7 +27,7 @@
           </b></font>
 
         weather: |
-          {%- set temperature = states('sensor.dark_sky_temperature') (default=0.0) %}
+          {%- set temperature = states('sensor.dark_sky_temperature') | float(default=0.0) %}
           {%- set apparent = states('sensor.dark_sky_apparent_temperature') | float(default=0.0) | round(1) %}
           {%- set precip = states('sensor.dark_sky_precip_probability') | float(default=0.0) | round(1) %}
           {% if not is_state('sensor.dark_sky_temperature', 'unknown') %}
