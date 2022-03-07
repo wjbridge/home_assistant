@@ -140,8 +140,7 @@ browser_mod:
               class: header
             entities:
               - type: divider
-              - entity: sensor.dark_sky_temperature
-              - entity: sensor.dark_sky_daytime_high_temperature_0d
+              - entity: sensor.openweathermap_temperature
 
               - type: divider
 

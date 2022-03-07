@@ -54,11 +54,8 @@ homeassistant:
     #-------------------------------------------
     #  climate_status.yaml
     #-------------------------------------------
-    sensor.dark_sky_apparent_temperature_0h:
+    sensor.openweathermap_temperature:
       friendly_name: Outside Temp
-
-    sensor.dark_sky_daytime_high_temperature_0d:
-      friendly_name: High Temp
 
     #-------------------------------------------
     #  Batteries

@@ -75,8 +75,8 @@
       at: '21:00:00'
 
     - platform: numeric_state
-      id: 'dark_sky_rain_coming'
-      entity_id: sensor.dark_sky_precip_probability_1h
+      id: 'rain_coming_prob'
+      entity_id: sensor.openweathermap_forecast_precipitation_probability
       above: 60
 
     - platform: state
@@ -128,7 +128,7 @@
           # ELIF rain is coming
           - conditions:
               - condition: trigger
-                id: 'dark_sky_rain_coming'
+                id: 'rain_coming_prob'
             sequence:
               - service: notify.groot_automation
                 data_template:
@@ -137,9 +137,9 @@
                   message: >
                     {% set open_windows = states | selectattr('entity_id', 'in', state_attr('group.contact_sensors','entity_id')) | selectattr('state','in',['on','open']) | map(attribute='name') | list %}
                     {% if open_windows | length == 1 %}
-                      The {{ open_windows[0] }} is open! Precipitation probability is at {{ states('sensor.dark_sky_precip_probability_1h') }}.
+                      The {{ open_windows[0] }} is open! Precipitation probability is at {{ states('sensor.openweathermap_forecast_precipitation_probability') }}.
                     {% else %}
-                      The {{ open_windows[:-1] | join(' door, ') }}{{' door,' if open_windows | length > 2 else ' door'}} and {{ open_windows[-1]}} are open. Precipitation probability is at {{ states('sensor.dark_sky_precip_probability_1h') }}.
+                      The {{ open_windows[:-1] | join(' door, ') }}{{' door,' if open_windows | length > 2 else ' door'}} and {{ open_windows[-1]}} are open. Precipitation probability is at {{ states('sensor.openweathermap_forecast_precipitation_probability') }}.
                     {% endif %}
             
           # ELIF house locked up for night

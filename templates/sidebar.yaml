@@ -27,10 +27,10 @@
           </b></font>
 
         weather: |
-          {%- set temperature = states('sensor.dark_sky_temperature') | float(default=0.0) %}
-          {%- set apparent = states('sensor.dark_sky_apparent_temperature') | float(default=0.0) | round(1) %}
-          {%- set precip = states('sensor.dark_sky_precip_probability') | float(default=0.0) | round(1) %}
-          {% if not is_state('sensor.dark_sky_temperature', 'unknown') %}
+          {%- set temperature = states('sensor.openweathermap_temperature') | float(default=0.0) | round(1) %}
+          {%- set apparent = states('sensor.openweathermap_feels_like_temperature') | float(default=0.0) | round(1) %}
+          {%- set precip = states('sensor.openweathermap_forecast_precipitation_probability') | float(default=0.0) | round(1) %}
+          {% if not is_state('', 'unknown') %}
             {%- if temperature <= 32.0 -%}
               Feels like {{ apparent }}° with {{ precip }}% risk of snow {{'\u2744\uFE0F'}}
             {%- elif temperature > 32.0 -%} 

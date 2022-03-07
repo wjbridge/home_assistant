@@ -179,17 +179,6 @@ monitor_docker:
     monitored_conditions: [allinone]
 
 #-------------------------------------------
-# Weather
-# https://www.home-assistant.io/components/weather.darksky/
-#-------------------------------------------
-weather:
-  - platform: darksky
-    api_key: !secret dark_sky_api
-    units: auto
-    name: Dark Sky
-    mode: daily
-
-#-------------------------------------------
 # Browser Mod
 # https://github.com/thomasloven/hass-browser_mod
 #-------------------------------------------
