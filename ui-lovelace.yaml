@@ -227,6 +227,24 @@ views:
               - light
               - icon_shade
 
+          - type: custom:button-card
+            entity: light.family_room
+            name: Family
+            hold_action:
+              action: none
+            template:
+              - light
+              - icon_spot
+
+          - type: custom:button-card
+            entity: light.fireplace
+            name: Fireplace
+            hold_action:
+              action: none
+            template:
+              - light
+              - icon_spot
+
       #################################################
       #                                               #
       #                   CAMERAS                     #

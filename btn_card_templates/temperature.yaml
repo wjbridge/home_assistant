@@ -94,9 +94,9 @@
                   : '°';
 
         return `
-            <ha-icon icon="${mdi_icon_one}" style="width: 0.9em; height: 1.3em; margin-right: -0.09em;"></ha-icon>
+            <ha-icon icon="${mdi_icon_one}" style="width: 1.3em; height: 1.3em; margin-right: -0.09em;"></ha-icon>
             <span> ${Math.round(states[variables.attribute_one].state)}${suffix_icon_one}</span>
-            <ha-icon icon="${mdi_icon_two}" style="width: 0.9em; height: 1.3em; margin-right: -0.09em;"></ha-icon>
+            <ha-icon icon="${mdi_icon_two}" style="width: 1.3em; height: 1.3em; margin-right: -0.09em;"></ha-icon>
             <span> ${Math.round(states[variables.attribute_two].state)}${suffix_icon_two}</span>
           `
       ]]]
