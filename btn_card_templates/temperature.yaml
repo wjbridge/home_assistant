@@ -1,109 +1,218 @@
   # !toggle word-wrap
 
-  battery_base:
-    aspect_ratio: 1
-    show_icon: false
-    show_state: true
-    show_name: true
-    tap_action:
-      animation_card: |
-        [[[
-          const animation_speed_ms = 900;
-          const animation = `card_bounce ${animation_speed_ms}ms cubic-bezier(0.22, 1, 0.36, 1)`;
-          this.shadowRoot.getElementById("card").style.animation = animation;
-          window.setTimeout(() => {
-            this.shadowRoot.getElementById("card").style.animation = "none";
-          }, animation_speed_ms)
-        ]]]
-    styles:
-      card:
-        - background-color: rgba(0,0,0,0.4)
-        - font-color: rgb(255,255,255,0.9)
-        - text-shadow: 0px 0px 1px black
-        - letter-spacing: 0.05vw
-      name:
-        - color: rgb(255,255,255,0.6)
-    extra_styles: |
-      @keyframes card_bounce {
-        0% {
-          transform: scale(1);
-        }
-        15% {
-          transform: scale(0.9);
-        }
-        25% {
-          transform: scale(1);
-        }
-        30% {
-          transform: scale(0.98);
-        }
-        100% {
-          transform: scale(1);
-        }
-      }
-
   #################################################
   #                                               #
   #                     TEMP                      #
   #                                               #
   #################################################
 
-  temp:
+  temperature:
+    variables:
+      attribute_one: ''
+      attribute_two: ''
+    aspect_ratio: 1/1
+    show_icon: false
+    show_entity_picture: true
+    show_name: true
     show_state: false
-    show_icon: true
-    custom_fields:
-      #icon: >
-      #    <ha-icon icon="mdi:garage" style="color:var(--state-icon-color);"></ha-icon>
-      circle: >
-        [[[
-          if (entity && entity.state) {
-            let input = entity.state == null ? ' ' : `${parseInt(entity.state)}<tspan font-size="10">°F</tspan>`,
-              fill_color = variables.state === 'off' ? 'rgba(255,255,255,0.04)' : 'none';
-            return `
-              <svg viewBox="0 0 50 50">
-                <circle cx="25" cy="25" r="20.5" fill="${fill_color}" stroke="#b2b2b2" stroke-width="1.5" />
-                <text x="50%" y="54%" fill="#8d8e90" font-size="14" text-anchor="middle" alignment-baseline="middle" dominant-baseline="middle">${input}</text>
-              </svg>
-            `;
-          }
-        ]]]
-      graph:
-        card:
-          type: 'custom:mini-graph-card'
-          color_thresholds:
-            - color: '#0302FC'
-              value: 0
-            - color: '#2A00D5'
-              value: 32
-            - color: '#63009E'
-              value: 54
-            - color: '#A1015D'
-              value: 72
-            - color: '#D80027'
-              value: 86
-            - color: '#FE0002'
-              value: 95
-          hours_to_show: 24
-          line_width: 8
-          font_size: 75
-          show:
-            name: false
-            icon: false
-            state: false
+    show_label: true
+    tap_action:
+      action: more-info
     styles:
-      name: [top: 55%, left: 5%, width: 100%, position: absolute]
+      grid:
+        - grid-template-areas: |
+            "n"
+            "temp"
+            "i"
+            "s"
+            "l"
+        - grid-template-columns: 1fr
+        - grid-template-rows: min-content repeat(2, 1fr) repeat(2, min-content)
+        - gap: 0%
+      card:
+        - color: > #rgba(157, 160, 162, 1) #rgba(84, 85, 85, 1) #rgba(85, 86, 86, 1)
+            [[[
+              if (states['sun.sun'].state == 'below_horizon'){
+                return 'rgba(157, 160, 162, 1)';
+              } else
+                return 'rgba(84, 85, 85, 1)';
+            ]]]  
+        - background: > # else linear-gradient(to top, rgba(123,168,197,0.8) 0%, rgba(61,132,176,0.8) 100%)
+            [[[
+              if (states['sun.sun'].state == 'below_horizon'){
+                return 'linear-gradient(to top, rgba(53,59,83,0.8) 0%, rgba(10,14,34,0.8) 100%)';
+              } else
+                return 'linear-gradient(to top, rgb(123 168 197) 0%, #b0c5d3 100%)';
+            ]]]
+          # return 'linear-gradient(to top, rgb(123 168 197) 0%, #b0c5d3 100%)'; --- rgb(213, 215, 216)
+      name:
+        - place-self: start
+        - text-transform: uppercase
+        - font-weight: 400
+      img_cell:
+        - justify-content: start
+      icon:
+        - width: 37%
+      label:
+        - place-self: start
+        - margin-left: -5px
       custom_fields:
-        graph: [bottom: 0%, left: 0%, width: 100%, position: absolute]
-        circle:
-          - display: initial
-          - width: 90%
-          - letter-spacing: 0.03vw
-          - margin: -6% -6% 0 0
-          - justify-self: end
-          - opacity: 1
-        #icon:
-        #  - width: 67%
-        #  - fill: "var(--state-icon-color)"
-    template:
-      - base
-      - icon_temperature
+        temp:
+          - place-self: start
+    label: >
+      [[[
+            let device_type_attribute_one = states[variables.attribute_one].attributes.device_class;
+
+            var mdi_icon_one = device_type_attribute_one === 'humidity'
+              ? 'mdi:water'
+              : device_type_attribute_one === 'battery'
+                ? 'mdi:battery-80'
+                : 'mdi:arrow-up-thin';
+
+            var suffix_icon_one = device_type_attribute_one === 'humidity'
+              ? '%'
+              : device_type_attribute_one === 'battery'
+                ? '%'
+                : '°';
+
+          let device_type_attribute_two = states[variables.attribute_two].attributes.device_class;
+
+          var mdi_icon_two = device_type_attribute_two === 'humidity'
+              ? 'mdi:water'
+              : device_type_attribute_two === 'battery'
+                ? 'mdi:battery-80'
+                : device_type_attribute_two === 'pressure'
+                  ? 'mdi:arrow-collapse'
+                  : 'mdi:arrow-down-thin';
+
+          let suffix_icon_two = device_type_attribute_two === 'humidity'
+              ? '%'
+              : device_type_attribute_two === 'battery'
+                ? '%'
+                : device_type_attribute_two === 'pressure'
+                  ? ''
+                  : '°';
+
+        return `
+            <ha-icon icon="${mdi_icon_one}" style="width: 0.9em; height: 1.3em; margin-right: -0.09em;"></ha-icon>
+            <span> ${Math.round(states[variables.attribute_one].state)}${suffix_icon_one}</span>
+            <ha-icon icon="${mdi_icon_two}" style="width: 0.9em; height: 1.3em; margin-right: -0.09em;"></ha-icon>
+            <span> ${Math.round(states[variables.attribute_two].state)}${suffix_icon_two}</span>
+          `
+      ]]]
+    custom_fields:
+      temp: >
+        [[[
+            var temp = entity.attributes.device_class;
+            if (temp) {
+              return Math.round(entity.state) + "°";
+            } else {
+              return Math.round(entity.attributes.temperature) + "°";
+            }
+        ]]]
+    entity_picture: |
+      [[[
+        var temp = entity.attributes.temperature;
+
+        if (temp) {
+          if ((entity.state == 'sunny') && (states['sun.sun'].state == 'above_horizon')) {
+            return "/local/weather-icons/clear-day.svg";
+          }
+
+          if ((entity.state == 'sunny') || (entity.state == 'clear-night') && (states['sun.sun'].state == 'below_horizon')) {
+            return "/local/weather-icons/clear-night.svg";
+          }
+
+          if ((entity.state == 'partlycloudy') && (states['sun.sun'].state == 'above_horizon')) {
+            return "/local/weather-icons/cloudy-day.svg";
+          }
+
+          if ((entity.state == 'partlycloudy') && (states['sun.sun'].state == 'above_horizon')) {
+            return "/local/weather-icons/cloudy-day.svg";
+          }
+
+          if ((entity.state == 'partlycloudy') && (states['sun.sun'].state == 'below_horizon')) {
+            return "/local/weather-icons/cloudy-night.svg";
+          }
+
+          if (entity.state == 'rainy') {
+            return "/local/weather-icons/rain.svg";
+          }
+
+          if (entity.state == 'sleet') {
+            return "/local/weather-icons/sleet.svg";
+          }
+
+          if (entity.state == 'snow') {
+            return "/local/weather-icons/snowy.svg";
+          }
+
+          if (entity.state == 'cloudy') {
+            return "/local/weather-icons/cloudy.svg";
+          }
+        }
+      ]]]
+    extra_styles: |
+      [[[
+        return `
+          #name {
+            font-size: 0.8vw;
+          }
+          #temp {
+            font-size: 1.8vw;
+          }
+          #state {
+            font-size: 0.8vw;
+          }  
+          #label {
+            font-size: 0.8vw;
+          }                    
+          /* portrait */
+          @media screen and (max-width: 2000px) {
+            #name {
+              font-size: 0.7vw !important;
+            }
+            #temp {
+              font-size: 1.8vw !important;
+            }
+            #state {
+              font-size: 0.7vw !important;
+            }  
+            #label {
+              font-size: 0.7vw !important;
+            }
+          }
+          /* phone */
+          @media screen and (max-width: 800px) {
+            #name {
+              font-size: 2vw !important;
+            }
+            #temp {
+              font-size: 4.5vw !important;
+            }    
+            #state {
+              font-size: 2vw !important;
+            }   
+            #label {
+              font-size: 2vw !important;
+            }
+          }
+          @keyframes card_bounce {
+            0% {
+              transform: scale(1);
+            }
+            15% {
+              transform: scale(0.9);
+            }
+            25% {
+              transform: scale(1);
+            }
+            30% {
+              transform: scale(0.98);
+            }
+            100% {
+              transform: scale(1);
+            }
+          }
+        `
+      ]]]

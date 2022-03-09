@@ -27,6 +27,7 @@ views:
     path: 0
     layout:
       #default
+      margin: 0
       grid-gap: var(--custom-layout-card-padding)
       grid-template-columns: repeat(5, 1fr) 0
       grid-template-rows: 0 repeat(3, fit-content(100%)) 0fr
@@ -116,49 +117,6 @@ views:
                   template:
                     - conditional_media
                     - icon_plex
-                  variables:
-                    i: >
-                      [[[
-                        return parseInt('1');
-                      ]]]
-
-              - type: conditional
-                conditions:
-                  - entity: select.conditional_media
-                    state_not: Living Room Shield
-                card:
-                  type: custom:button-card
-                  entity: sensor.plex_recently_added
-                  name: Last Downloaded
-                  tap_action:
-                    action: none
-                  template:
-                    - conditional_media
-                    - icon_plex
-                  variables:
-                    i: >
-                      [[[
-                        return parseInt('2');
-                      ]]]
-
-              - type: conditional
-                conditions:
-                  - entity: select.conditional_media
-                    state_not: Living Room Shield
-                card:
-                  type: custom:button-card
-                  entity: sensor.plex_recently_added
-                  name: Last Downloaded
-                  tap_action:
-                    action: none
-                  template:
-                    - conditional_media
-                    - icon_plex
-                  variables:
-                    i: >
-                      [[[
-                        return parseInt('3');
-                      ]]]
 
               - type: conditional
                 conditions:
@@ -453,280 +411,56 @@ views:
           grid-area: temps
         columns: 1
         cards:
-          - type: custom:swipe-card
-            parameters:
-              speed: 550
-              spaceBetween: 40
-              threshold: 5
+          - type: grid
+            columns: 2
             cards:
-              - type: grid
-                columns: 2
-                cards:
-                  - type: custom:button-card
-                    entity: sensor.garage_temp_temperature
-                    name: Garage
-                    tap_action:
-                      action: none
-                    custom_fields:
-                      graph:
-                        card:
-                          entities:
-                            - sensor.garage_temp_temperature
-                    template: temp
+              - type: custom:button-card
+                entity: weather.homedev
+                name: Outside
+                tap_action:
+                  action: none
+                template:
+                  - base
+                  - temperature
+                variables:
+                  attribute_one: sensor.openweathermap_forecast_temperature_low
+                  attribute_two: sensor.openweathermap_forecast_temperature
 
-                  - type: custom:button-card
-                    entity: sensor.thermostat_current_temperature
-                    name: Office
-                    tap_action:
-                      action: none
-                    custom_fields:
-                      graph:
-                        card:
-                          entities:
-                            - sensor.thermostat_current_temperature
-                    template: temp
+              - type: custom:button-card
+                entity: sensor.garage_temp_temperature
+                name: Garage
+                tap_action:
+                  action: none
+                template:
+                  - base
+                  - temperature
+                variables:
+                  attribute_one: sensor.garage_temp_humidity
+                  attribute_two: sensor.garage_temp_battery
 
-                  - type: custom:button-card
-                    entity: sensor.basement_temperature
-                    name: Basement
-                    tap_action:
-                      action: none
-                    custom_fields:
-                      graph:
-                        card:
-                          entities:
-                            - sensor.basement_temperature
-                    template: temp
+              - type: custom:button-card
+                entity: sensor.thermostat_current_temperature
+                name: Office
+                tap_action:
+                  action: none
+                template:
+                  - base
+                  - temperature
+                variables:
+                  attribute_one: sensor.thermostat_current_humidity
+                  attribute_two: climate.thermostat
 
-                  #- type: custom:button-card
-                  #  entity: sensor.dark_sky_apparent_temperature
-                  #  name: Outside
-                  #  tap_action:
-                  #    action: none
-                  #  custom_fields:
-                  #    graph:
-                  #      card:
-                  #        entities:
-                  #          - sensor.dark_sky_apparent_temperature
-                  #  template: temp
-
-              - type: grid
-                columns: 1
-                cards:
-                  - type: custom:button-card
-                    template:
-                      - battery_base
-                    styles:
-                      name:
-                        - font-size: 14px
-                        - font-weight: bold
-                        - top: 20px
-                        - left: 20px
-                        - position: absolute
-                      custom_fields:
-                        frontdoor:
-                          - top: 40px
-                          - left: '-5px'
-                          - width: 110%
-                          - border-top: 1px solid rgb(255,255,255,0.1)
-                          - border-bottom: 1px solid rgb(255,255,255,0.1)
-                          - padding: 10px
-                          - position: absolute
-                          - font-size: 16px
-                          - text-shadow: 0px 0px 1px black
-                        frontdoorbattery:
-                          - top: 60px
-                          - right: 15px
-                          - position: absolute
-                          - font-size: 14px
-                        officewindow:
-                          - top: 100px
-                          - left: '-5px'
-                          - width: 110%
-                          - border-bottom: 1px solid rgb(255,255,255,0.1)
-                          - padding: 10px
-                          - position: absolute
-                          - font-size: 16px
-                          - text-shadow: 0px 0px 1px black
-                        officewindowbattery:
-                          - top: 120px
-                          - right: 15px
-                          - position: absolute
-                          - font-size: 14px
-                        diningroomwindow:
-                          - top: 160px
-                          - left: '-5px'
-                          - width: 110%
-                          - border-bottom: 1px solid rgb(255,255,255,0.1)
-                          - padding: 10px
-                          - position: absolute
-                          - font-size: 16px
-                          - text-shadow: 0px 0px 1px black
-                        diningroomwindowbattery:
-                          - top: 180px
-                          - right: 15px
-                          - position: absolute
-                          - font-size: 14px
-                        masterbedroomwindow:
-                          - top: 220px
-                          - left: '-5px'
-                          - width: 110%
-                          - border-bottom: 1px solid rgb(255,255,255,0.1)
-                          - padding: 10px
-                          - position: absolute
-                          - font-size: 16px
-                          - text-shadow: 0px 0px 1px black
-                        masterbedroombattery:
-                          - top: 240px
-                          - right: 15px
-                          - position: absolute
-                          - font-size: 14px
-                        garagesensor:
-                          - top: 280px
-                          - left: '-5px'
-                          - width: 110%
-                          - border-bottom: 1px solid rgb(255,255,255,0.1)
-                          - padding: 10px
-                          - position: absolute
-                          - font-size: 16px
-                          - text-shadow: 0px 0px 1px black
-                        garagesensorbattery:
-                          - top: 300px
-                          - right: 15px
-                          - position: absolute
-                          - font-size: 14px
-
-                    custom_fields:
-                      frontdoor: |
-                        [[[
-                          return `<div align="left"> <ha-icon
-                            icon="mdi:lock-outline"
-                            style="width: 20px; height: 20px; color:grey; padding: 10px;">
-                            </ha-icon>Front Door</div>`;
-                        ]]]
-                      frontdoorbattery: |
-                        [[[
-                          let entity_level = parseInt(states["sensor.front_door_battery"].state),
-                            input = entity_level / 3,
-                            color = 'red';
-
-                          if (entity_level > 40) {
-                            color = '#08ff4e';
-                          } else if (entity_level > 15) {
-                            color = 'orange';
-                          }
-
-                          return `
-                            <svg width="86" height="24">
-                              <rect x="45" y="1" rx="5" ry="5" width="40" height="18" stroke="gray" fill="transparent" stroke-width="2"/>
-                              <rect x="48" y="4" rx="3" ry="3" width="${input}" height="12" fill="${color}" stroke-width="0"/>
-                              <text x="5" y="15" fill="grey">${entity_level}%</text>
-                          `;
-                        ]]]
-                      officewindow: |
-                        [[[
-                          return `<div align="left"> <ha-icon
-                              icon="mdi:window-closed-variant"
-                              style="width: 20px; height: 20px; color:grey; padding: 10px;">
-                              </ha-icon>Office Window</div>`;
-                        ]]]
-                      officewindowbattery: |
-                        [[[
-                          let entity_level = parseInt(states["sensor.office_window_battery"].state),
-                            input = entity_level / 3,
-                            color = 'red';
-
-                          if (entity_level > 40) {
-                            color = '#08ff4e';
-                          } else if (entity_level > 15) {
-                            color = 'orange';
-                          }
-
-                          return `
-                            <svg width="86" height="24">
-                              <rect x="45" y="1" rx="5" ry="5" width="40" height="18" stroke="gray" fill="transparent" stroke-width="2"/>
-                              <rect x="48" y="4" rx="3" ry="3" width="${input}" height="12" fill="${color}" stroke-width="0"/>
-                              <text x="5" y="15" fill="grey">${entity_level}%</text>
-                          `;
-                        ]]]
-                      diningroomwindow: |
-                        [[[
-                          return `<div align="left"> <ha-icon
-                              icon="mdi:window-closed-variant"
-                              style="width: 20px; height: 20px; color:grey; padding: 10px;">
-                              </ha-icon>Dining Room Window</div>`;
-                        ]]]
-                      diningroomwindowbattery: |
-                        [[[
-                          let entity_level = parseInt(states["sensor.dining_room_window_battery"].state),
-                            input = entity_level / 3,
-                            color = 'red';
-
-                          if (entity_level > 40) {
-                            color = '#08ff4e';
-                          } else if (entity_level > 15) {
-                            color = 'orange';
-                          }
-
-                          return `
-                            <svg width="86" height="24">
-                              <rect x="45" y="1" rx="5" ry="5" width="40" height="18" stroke="gray" fill="transparent" stroke-width="2"/>
-                              <rect x="48" y="4" rx="3" ry="3" width="${input}" height="12" fill="${color}" stroke-width="0"/>
-                              <text x="5" y="15" fill="grey">${entity_level}%</text>
-                          `;
-                        ]]]
-                      masterbedroomwindow: |
-                        [[[
-                          return `<div align="left"> <ha-icon
-                              icon="mdi:window-closed-variant"
-                              style="width: 20px; height: 20px; color:grey; padding: 10px;">
-                              </ha-icon>Master Bedroom Window</div>`;
-                        ]]]
-                      masterbedroombattery: |
-                        [[[
-                          let entity_level = parseInt(states["sensor.master_bedroom_window_battery"].state),
-                            input = entity_level / 3,
-                            color = 'red';
-
-                          if (entity_level > 40) {
-                            color = '#08ff4e';
-                          } else if (entity_level > 15) {
-                            color = 'orange';
-                          }
-
-                          return `
-                            <svg width="86" height="24">
-                              <rect x="45" y="1" rx="5" ry="5" width="40" height="18" stroke="gray" fill="transparent" stroke-width="2"/>
-                              <rect x="48" y="4" rx="3" ry="3" width="${input}" height="12" fill="${color}" stroke-width="0"/>
-                              <text x="5" y="15" fill="grey">${entity_level}%</text>
-                          `;
-                        ]]]
-                      garagesensor: |
-                        [[[
-                          return `<div align="left"> <ha-icon
-                              icon="mdi:garage"
-                              style="width: 20px; height: 20px; color:grey; padding: 10px;">
-                              </ha-icon>Garage</div>`;
-                        ]]]
-                      garagesensorbattery: |
-                        [[[
-                          let entity_level = parseInt(states["sensor.garage_temp_battery"].state),
-                            input = entity_level / 3,
-                            color = 'red';
-
-                          if (entity_level > 40) {
-                            color = '#08ff4e';
-                          } else if (entity_level > 15) {
-                            color = 'orange';
-                          }
-
-                          return `
-                            <svg width="86" height="24">
-                              <rect x="45" y="1" rx="5" ry="5" width="40" height="18" stroke="gray" fill="transparent" stroke-width="2"/>
-                              <rect x="48" y="4" rx="3" ry="3" width="${input}" height="12" fill="${color}" stroke-width="0"/>
-                              <text x="5" y="15" fill="grey">${entity_level}%</text>
-                          `;
-                        ]]]
+              - type: custom:button-card
+                entity: sensor.basement_temperature
+                name: Basement
+                tap_action:
+                  action: none
+                template:
+                  - base
+                  - temperature
+                variables:
+                  attribute_one: sensor.basement_humidity
+                  attribute_two: sensor.basement_pressure
 
       #################################################
       #                                               #

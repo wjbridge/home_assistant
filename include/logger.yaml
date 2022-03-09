@@ -20,11 +20,11 @@ logger:
     alexapy.alexaapi: info
 
     homeassistant.components.samsungtv: info
-    custom_components.androidtv: debug
+    custom_components.androidtv: info
 
     homeassistant.components.homekit_controller: info
-    samsungtvws: debug
-    samsungctl: debug
+    samsungtvws: info
+    samsungctl: info
 
   filters:
     homeassistant.components.yamaha.media_player:
