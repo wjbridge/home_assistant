@@ -38,6 +38,7 @@ group:
       # Sensors
       ##############################
       - sensor.template_unavailable_entities
+      - sensor.openweathermap_forecast_temperature_low
       - sensor.ecobee_next_alarm
       - sensor.ecobee_next_reminder
       - sensor.ecobee_next_timer

@@ -423,8 +423,8 @@ views:
                   - base
                   - temperature
                 variables:
-                  attribute_one: sensor.openweathermap_forecast_temperature_low
-                  attribute_two: sensor.openweathermap_forecast_temperature
+                  attribute_one: sensor.openweathermap_forecast_temperature
+                  attribute_two: sensor.template_weather_low_temp
 
               - type: custom:button-card
                 entity: sensor.garage_temp_temperature

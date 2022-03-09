@@ -5,6 +5,9 @@
     - unique_id: operating_state
       state: "{{ state_attr('climate.thermostat', 'hvac_action') }}"
 
+    - unique_id: weather_low_temp
+      state: "{{ state_attr('weather.homedev', 'forecast')[0]['templow'] }}"
+
     - unique_id: equipment_resume
       state: >
         {% set new_temp = states('sensor.openweathermap_forecast_temperature_low') | float(default=0.0) %}
