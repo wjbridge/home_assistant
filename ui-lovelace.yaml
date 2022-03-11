@@ -220,12 +220,12 @@ views:
 
           - type: custom:button-card
             entity: light.ana_desk_light
-            name: Ana Desk
+            name: Desk
             hold_action:
               action: none
             template:
               - light
-              - icon_shade
+              - icon_desk_lamp
 
           - type: custom:button-card
             entity: light.family_room
@@ -424,7 +424,7 @@ views:
       #################################################
 
       - type: grid
-        title: Sensors
+        title: Temps
         view_layout:
           grid-area: temps
         columns: 1
@@ -528,6 +528,17 @@ views:
                     null :
                     entity.attributes.remain_time;
                 ]]]
+          
+          - type: custom:button-card
+            entity: sensor.basement_radon_24hrs
+            name: Radon
+            tap_action:
+              action: none
+            hold_action:
+              action: none
+            template:
+              - base
+              - icon_gas
 
       #################################################
       #                                               #
