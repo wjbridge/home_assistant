@@ -65,6 +65,12 @@ config:
 mobile_app:
 
 #-------------------------------------------
+# System Health
+# https://www.home-assistant.io/integrations/system_health/
+#-------------------------------------------
+system_health:
+
+#-------------------------------------------
 # Http Config
 # https://www.home-assistant.io/integrations/http#use_x_forwarded_for
 #-------------------------------------------
