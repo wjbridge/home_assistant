@@ -221,8 +221,6 @@ views:
           - type: custom:button-card
             entity: light.ana_desk_light
             name: Desk
-            hold_action:
-              action: none
             template:
               - light
               - icon_desk_lamp
@@ -230,8 +228,6 @@ views:
           - type: custom:button-card
             entity: light.family_room
             name: Family
-            hold_action:
-              action: none
             template:
               - light
               - icon_spot
@@ -239,8 +235,6 @@ views:
           - type: custom:button-card
             entity: light.fireplace
             name: Fireplace
-            hold_action:
-              action: none
             template:
               - light
               - icon_spot

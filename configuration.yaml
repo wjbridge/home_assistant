@@ -45,6 +45,8 @@ lovelace:
       { url: /hacsfiles/lovelace-canary/canary.js,                                  type: module },
       { url: /hacsfiles/simple-thermostat/simple-thermostat.js,                     type: module },
       { url: /hacsfiles/lovelace-more-info-card/more-info-card.js,                  type: module },
+      { url: /hacsfiles/light-popup-card/light-popup-card.js,                       type: module },
+      { url: /hacsfiles/light-entity-card/light-entity-card.js,                     type: module },
       { url: /hacsfiles/webrtc/www/webrtc-camera.js,                                type: module },
 
       { url: '/local/custom_icons.js?v=28082021',                                   type: module },
