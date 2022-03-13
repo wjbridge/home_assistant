@@ -116,7 +116,7 @@
 
         if (temp) {
           if ((entity.state == 'sunny') && (states['sun.sun'].state == 'above_horizon')) {
-            return "/local/weather-icons/clear-day.svg";
+            return "/local/weather-icons/sunny.svg";
           }
 
           if ((entity.state == 'sunny') || (entity.state == 'clear-night') && (states['sun.sun'].state == 'below_horizon')) {
