@@ -39,9 +39,6 @@ browser_mod:
           - entity: sensor.garage_temp_temperature
             name: Temperature
 
-          - entity: sensor.garage_linkquality
-            name: Link Quality
-
           - entity: sensor.garage_temp_humidity
             name: Humidity
 
