@@ -23,3 +23,11 @@
           {% if is_state('binary_sensor.template_udm_upgradable', 'on') %}
             <b><a href="#" onclick="window.open('{{ url }}');">UniFi Dream Machine SE ({{ installed }})</a></b> Update Available
           {% endif %}
+
+        unifi_ualr6v2: >
+          {% set installed = states('sensor.template_udm_ualr6v2_version') %}
+          {% set latest = states('sensor.template_udm_ualr6v2_upgradable_version') %}
+          {% set url = 'https://community.ui.com/releases?q=uap' %}
+          {% if is_state('binary_sensor.template_udm_ualr6v2_upgradable', 'on') %}
+            <b><a href="#" onclick="window.open('{{ url }}');">UniFi U6-LR</a></b> {{ installed + ' <b>&rarr;</b> ' + latest }}
+          {% endif %}

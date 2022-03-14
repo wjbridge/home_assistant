@@ -18,6 +18,13 @@
       attributes:
         friendly_name: Update
 
+    - unique_id: udm_ualr6v2_upgradable
+      icon: mdi:update
+      state: >
+        {{ states('sensor.udm_unifios').split('|\n')[9] | default }}
+      attributes:
+        friendly_name: UALR6v2 Upgradable
+
 - sensor:
     - unique_id: udm_cpu
       icon: mdi:chip
@@ -64,3 +71,17 @@
         {{ states('sensor.udm_unifios').split('|\n')[7] | default }}
       attributes:
         friendly_name: Version
+
+    - unique_id: udm_ualr6v2_version
+      icon: mdi:router-wireless
+      state: >
+        {{ states('sensor.udm_unifios').split('|\n')[10] | default }}
+      attributes:
+        friendly_name: Version
+
+    - unique_id: udm_ualr6v2_upgradable_version
+      icon: mdi:router-wireless
+      state: >
+        {{ states('sensor.udm_unifios').split('|\n')[11] | default }}
+      attributes:
+        friendly_name: UALR6v2 Upgradable Version

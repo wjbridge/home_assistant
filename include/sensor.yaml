@@ -221,7 +221,10 @@ sensor:
       {{ json2.internet }}|
       {{ json.startup_timestamp | timestamp_local }}|
       {{ json.displayable_version }}|
-      {{ json.upgradable }}
+      {{ json.upgradable }}|
+      {{ json2.upgradable }}|
+      {{ json2.version }}|
+      {{ json2.upgrade_to_firmware }}
     scan_interval: 120
 
   #---------------------------------------------------------------------------------------
