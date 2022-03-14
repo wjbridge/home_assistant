@@ -62,7 +62,10 @@ group:
       - sensor.weston_s_fire_next_alarm
       - sensor.weston_s_fire_next_reminder
       - sensor.weston_s_fire_next_timer
-      
+      - sensor.openweathermap_dew_point
+      - sensor.openweathermap_forecast_temperature_low
+      - sensor.openweathermap_uv_index
+
       ##############################
       # Switches
       ##############################
@@ -89,3 +92,4 @@ group:
       # Media Players
       ##############################
       - media_player.living_room_tv
+      - media_player.living_room_shield
