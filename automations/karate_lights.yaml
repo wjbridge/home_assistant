@@ -36,6 +36,9 @@
         - conditions:
             - condition: trigger
               id: 'karate_sunset'
+            - condition: state
+              entity_id: sun.sun
+              state: 'below_horizon'
           sequence:
             - service: light.turn_on
               entity_id: light.outside_garage_lights
