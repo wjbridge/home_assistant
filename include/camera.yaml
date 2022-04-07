@@ -1,20 +1,20 @@
 #-------------------------------------------
 # Camera
-# https://www.home-assistant.io/integrations/camera/
+# https://www.home-assistant.io/integrations/generic/
 #-------------------------------------------
 camera:
-  - platform: ffmpeg
-    name: Masterbedroom
-    input: !secret rtsp_proxy_masterbedroom
+  - platform: generic
+    name: Sambedroom
+    stream_source: !secret rtsp_web_proxy_sambedroom
 
-  - platform: ffmpeg
+  - platform: generic
     name: Garage
-    input: !secret rtsp_proxy_garage
+    stream_source: !secret rtsp_web_proxy_garage
 
-  - platform: ffmpeg
+  - platform: generic
     name: Olibedroom
-    input: !secret rtsp_proxy_olibedroom
+    stream_source: !secret rtsp_web_proxy_olibedroom
 
-  - platform: ffmpeg
-    name: Floating
-    input: !secret rtsp_proxy_backyard
+  - platform: generic
+    name: Basement
+    stream_source: !secret rtsp_web_proxy_basement

@@ -263,8 +263,8 @@ views:
                 columns: 1
                 cards:
                   - type: 'custom:webrtc-camera'
-                    entity: camera.masterbedroom
-                    poster: https://home-assistant.io/images/cast/splash.png
+                    entity: camera.sambedroom
+                    poster: /local/stream_loading.gif
                     muted: true
                     background: true
 
@@ -273,7 +273,7 @@ views:
                 cards:
                   - type: 'custom:webrtc-camera'
                     entity: camera.olibedroom
-                    poster: https://home-assistant.io/images/cast/splash.png
+                    poster: /local/stream_loading.gif
                     muted: true
                     background: true
 
@@ -282,7 +282,7 @@ views:
                 cards:
                   - type: 'custom:webrtc-camera'
                     entity: camera.garage
-                    poster: https://home-assistant.io/images/cast/splash.png
+                    poster: /local/stream_loading.gif
                     muted: true
                     background: true
 
@@ -290,8 +290,8 @@ views:
                 columns: 1
                 cards:
                   - type: 'custom:webrtc-camera'
-                    entity: camera.floating
-                    poster: https://home-assistant.io/images/cast/splash.png
+                    entity: camera.basement
+                    poster: /local/stream_loading.gif
                     muted: true
                     background: true
 
@@ -634,3 +634,35 @@ views:
                   return 0;
                 ]]]
             template: footer
+
+          - type: conditional
+            conditions:
+              - entity: sensor.template_batteries
+                state_not: '0'
+            card:
+              type: custom:button-card
+              name: >
+                <ha-icon icon="mdi:battery-heart-outline"></ha-icon>
+              tap_action:
+                !include popup/footer/battery.yaml
+              variables:
+                notify: >
+                  [[[
+                    let nbrbat = states['sensor.template_batteries'];
+                    if (nbrbat) {
+                      return parseInt(nbrbat.state);
+                    }
+                  ]]]
+              styles:
+                name:
+                  - color: red
+                  - animation: my-blink 1s linear infinite
+                  - align: center
+              style: |
+                @keyframes my-blink {
+                  from {opacity: 0;}
+                  to {opacity: 100;}
+                  from {opacity: 100;}
+                  to {opacity: 0;}
+                }
+              template: footer
