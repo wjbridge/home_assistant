@@ -159,7 +159,6 @@
                       The {{ open_windows[:-1] | join(' door, ') }}{{' door,' if open_windows | length > 2 else ' door'}} and {{ open_windows[-1]}} are open at night.
                     {% endif %}
 
-
 ###############################################################################
 # Battery Low
 ###############################################################################
@@ -179,3 +178,20 @@
       data_template:
         title: '<b>Alert</b>: Low Battery'
         message: "Battery Report: {{ trigger.to_state.state }} \n The battery for {{ trigger.to_state.name }} is below 20 percent"
+
+###############################################################################
+# New Plex Version
+###############################################################################
+- id: plex_version
+  alias: 'Plex Version'
+  trigger:
+    platform: event
+    event_type: feedreader
+
+  action:
+    - service: notify.groot_automation
+      data_template:
+        title: '<b>Plex Update</b>'
+        message: "{{ trigger.event.data }}"
+        data:
+          parse_mode: 'html'

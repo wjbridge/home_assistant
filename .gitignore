@@ -16,6 +16,7 @@ www/weather-icons/*
 !.HA_VERSION
 !.gitignore
 !.gitattributes
+*.pickle
 
 #-------------------------------------------
 # Ignore Files
