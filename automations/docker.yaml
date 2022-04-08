@@ -30,7 +30,7 @@
               id: 'vpn_unhealthy'
           sequence:
             - service: notify.groot_automation
-              data_template:
+              data:
                 title: "<b>Warn</b>: Detected Docker VPN Unhealthy"
                 message: "Restarting Docker VPN Container..."
             - service: script.docker_vpn_restart
@@ -41,7 +41,7 @@
               id: 'nzbhydra_unhealthy'
           sequence:
             - service: notify.groot_automation
-              data_template:
+              data:
                 title: "<b>Warn</b>: Detected Nzbhydra Unhealthy"
                 message: "Restarting Nzbhydra Container..."
             - service: monitor_docker.restart

@@ -16,7 +16,7 @@ script:
         description: "Turn Fan On/Off"
     sequence:
       - service: media_player.play_media
-        data_template:
+        data:
           entity_id: '{{ alexa_device }}'
           media_content_id: >
             {% if bool_fan == true %}

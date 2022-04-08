@@ -47,7 +47,7 @@
                 state: 'off'
             sequence:
               - service: notify.groot_automation
-                data_template:
+                data:
                   title: "<b>Info</b>: Detected Open Contact Sensors"
                   message: >
                     {% set open_windows = states | selectattr('entity_id', 'in', state_attr('group.contact_sensors','entity_id')) | selectattr('state','in',['on','open']) | map(attribute='name') | list %}
@@ -74,12 +74,12 @@
               - service: input_boolean.turn_off
                 entity_id: input_boolean.fresh_air_mode_en
               - service: notify.groot_automation
-                data_template:
+                data:
                   title: "<b>Info</b>: Detected All Closed Contact Sensors"
                   message: "Resuming normal thermostat operations"
               - service: climate.set_hvac_mode
                 entity_id: climate.thermostat
-                data_template:
+                data:
                   hvac_mode: "{{ states('sensor.template_equipment_resume') }}"
 
 ###############################################################################
