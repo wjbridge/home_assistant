@@ -181,6 +181,7 @@
 
 ###############################################################################
 # New Plex Version
+# https://codebeautify.org/python-formatter-beautifier
 ###############################################################################
 - id: plex_version
   alias: 'Plex Version'
@@ -191,7 +192,7 @@
   action:
     - service: notify.groot_automation
       data_template:
-        title: '<b>Plex Update</b>'
-        message: "{{ trigger.event.data }}"
+        title: '{{ trigger.event.data.summary }}'
+        message: '{{ trigger.event.data.summary_detail.value }}'
         data:
           parse_mode: 'html'

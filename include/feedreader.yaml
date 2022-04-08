@@ -7,5 +7,5 @@ feedreader:
     - https://forums.plex.tv/t/plex-media-server/30447.rss
     - https://forums.plex.tv/t/plex-web/20528.rss
   scan_interval:
-    minutes: 720
+    minutes: 60
   max_entries: 5
