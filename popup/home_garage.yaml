@@ -44,6 +44,6 @@ browser_mod:
 
       - type: 'custom:webrtc-camera'
         entity: camera.garage
-        poster: https://home-assistant.io/images/cast/splash.png
+        poster: /local/stream_loading.gif
         muted: true
         background: true
