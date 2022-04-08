@@ -1,0 +1,69 @@
+###############################################################################
+# Home from School
+###############################################################################
+- id: home_from_school
+  alias: "Home From School"
+  trace:
+      stored_traces: 10
+  trigger:
+    - platform: time
+      id: prep_home_from_school
+      at: !secret unlock_time
+
+    - platform: time
+      id: after_home_from_school
+      at: !secret lock_time
+
+  condition:
+    - condition: not
+      conditions:
+        - condition: state
+          entity_id: lock.front_door
+          state: 'unavailable'
+
+    - condition: and
+      conditions:
+        - condition: time
+          weekday:
+            - mon
+            - tue
+            - wed
+            - thu
+            - fri
+
+  action:
+    #-------------------------------------------
+    # Before Home From School
+    #-------------------------------------------
+    - choose:
+        - conditions:
+            - condition: trigger
+              id: 'prep_home_from_school'
+            - condition: state
+              entity_id: lock.front_door
+              state: 'locked'
+          sequence:
+            - service: lock.unlock
+              entity_id: lock.front_door
+            - service: browser_mod.toast
+              data:
+                duration: 16000
+                message: Unlocking Front Door...
+
+    #-------------------------------------------
+    # After Home From School
+    #-------------------------------------------
+    - choose:
+        - conditions:
+            - condition: trigger
+              id: 'after_home_from_school'
+            - condition: state
+              entity_id: lock.front_door
+              state: 'unlocked'
+          sequence:
+            - service: lock.lock
+              entity_id: lock.front_door
+            - service: browser_mod.toast
+              data:
+                duration: 16000
+                message: Locking Front Door...
