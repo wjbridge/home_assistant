@@ -4,7 +4,7 @@
 rest:
   - resource: https://api.github.com/repos/home-assistant/core/releases/latest
     authentication: basic
-    username: !secret github_username 
+    username: !secret github_username
     password: !secret github_token
     sensor:
       - name: hass_release_notes
@@ -19,7 +19,7 @@ rest:
       User-Agent: HAS Releases
 
   - resource: https://api.github.com/repos/home-assistant/core/releases?per_page=1
-    username: !secret github_username 
+    username: !secret github_username
     password: !secret github_token
     sensor:
       - name: hass_release_notes_rc
@@ -32,7 +32,7 @@ rest:
 
   - resource: https://api.github.com/repos/AdguardTeam/AdGuardHome/releases/latest
     authentication: basic
-    username: !secret github_username 
+    username: !secret github_username
     password: !secret github_token
     sensor:
       - name: adguardhome_release_notes
@@ -46,7 +46,7 @@ rest:
 
   - resource: https://api.github.com/repos/photoprism/photoprism/releases/latest
     authentication: basic
-    username: !secret github_username 
+    username: !secret github_username
     password: !secret github_token
     sensor:
       - name: photoprism_release_notes
@@ -60,7 +60,7 @@ rest:
 
   - resource: https://api.github.com/repos/firefly-iii/firefly-iii/releases/latest
     authentication: basic
-    username: !secret github_username 
+    username: !secret github_username
     password: !secret github_token
     sensor:
       - name: fireflyIII_release_notes
@@ -74,7 +74,7 @@ rest:
 
   - resource: https://api.github.com/repos/jonaswinkler/paperless-ng/releases/latest
     authentication: basic
-    username: !secret github_username 
+    username: !secret github_username
     password: !secret github_token
     sensor:
       - name: paperlessng_release_notes
@@ -88,7 +88,7 @@ rest:
 
   - resource: https://api.github.com/repos/bastienwirtz/homer/releases/latest
     authentication: basic
-    username: !secret github_username 
+    username: !secret github_username
     password: !secret github_token
     sensor:
       - name: homer_release_notes
@@ -102,7 +102,7 @@ rest:
 
   - resource: https://api.github.com/repos/mrvnklm/homeassistant-desktop/releases/latest
     authentication: basic
-    username: !secret github_username 
+    username: !secret github_username
     password: !secret github_token
     sensor:
       - name: homeassistant_desktop_release_notes

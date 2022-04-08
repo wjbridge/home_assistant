@@ -131,6 +131,19 @@ views:
                         - conditional_media
                         - icon_nvidia
 
+              - type: conditional
+                conditions:
+                  - entity: select.conditional_media
+                    state: Master Bedroom Shield
+                card:
+                  type: horizontal-stack
+                  cards:
+                    - type: custom:button-card
+                      entity: media_player.master_bedroom_shield
+                      template:
+                        - conditional_media
+                        - icon_nvidia
+
               - type: grid
                 columns: 2
                 cards:
@@ -163,6 +176,12 @@ views:
 
                   - type: custom:button-card
                     entity: media_player.living_room_shield
+                    template:
+                      - media
+                      - icon_nvidia
+
+                  - type: custom:button-card
+                    entity: media_player.master_bedroom_shield
                     template:
                       - media
                       - icon_nvidia
