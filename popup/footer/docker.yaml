@@ -80,9 +80,9 @@ browser_mod:
 
           - entity: sensor.hass_version_latest
 
-          - entity: sensor.home_assistant_log
+          - entity: sensor.home_assistant_log_size
 
-          - entity: sensor.home_assistant_v2_db
+          - entity: sensor.home_assistant_v2_db_size
 
           - type: attribute
             entity: sensor.docker_homeassistant
