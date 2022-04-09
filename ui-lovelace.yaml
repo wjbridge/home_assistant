@@ -563,7 +563,6 @@ views:
         view_layout:
           grid-area: footer
         cards:
-
           - type: custom:button-card
             name: >
               <ha-icon icon="mdi:docker"></ha-icon> Docker
@@ -654,34 +653,49 @@ views:
                 ]]]
             template: footer
 
-          - type: conditional
-            conditions:
-              - entity: sensor.template_batteries
-                state_not: '0'
-            card:
-              type: custom:button-card
-              name: >
-                <ha-icon icon="mdi:battery-heart-outline"></ha-icon>
-              tap_action:
-                !include popup/footer/battery.yaml
-              variables:
-                notify: >
-                  [[[
-                    let nbrbat = states['sensor.template_batteries'];
-                    if (nbrbat) {
-                      return parseInt(nbrbat.state);
-                    }
-                  ]]]
-              styles:
-                name:
-                  - color: red
-                  - animation: my-blink 1s linear infinite
-                  - align: center
-              style: |
-                @keyframes my-blink {
-                  from {opacity: 0;}
-                  to {opacity: 100;}
-                  from {opacity: 100;}
-                  to {opacity: 0;}
-                }
-              template: footer
+          - type: custom:button-card
+            name: >
+              <ha-icon icon="mdi:battery-heart-outline"></ha-icon>
+            tap_action:
+              !include popup/footer/battery.yaml
+            variables:
+              notify: >
+                [[[
+                  let nbrbat = states['sensor.template_batteries'];
+                  if (nbrbat) {
+                    return parseInt(nbrbat.state);
+                  }
+                ]]]
+            styles:
+              name:
+                - color: >
+                    [[[
+                      let nbrbat = states['sensor.template_batteries'];
+                      if (nbrbat) {
+                        if (parseInt(nbrbat.state) > 0) {
+                          return `red`;
+                        } else {
+                          return ``;
+                        }
+                      }
+                    ]]]
+                - animation: >
+                    [[[
+                      let nbrbat = states['sensor.template_batteries'];
+                      if (nbrbat) {
+                        if (parseInt(nbrbat.state) > 0) {
+                          return `my-blink 1s linear infinite`;
+                        } else {
+                          return ``;
+                        }
+                      }
+                    ]]]
+                - align: center
+            style: |
+              @keyframes my-blink {
+                from {opacity: 0;}
+                to {opacity: 100;}
+                from {opacity: 100;}
+                to {opacity: 0;}
+              }
+            template: footer

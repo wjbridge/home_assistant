@@ -7,17 +7,24 @@
       state: >
         {% set alertbat = states | selectattr('attributes.device_class', 'eq', 'battery')
               | rejectattr('state', 'eq', '100')
-              | selectattr('state', 'lt', '15')
+              | selectattr('state', 'lt', '20')
               | list | count
         %}
         {{alertbat}}
       attributes:
-        entities: >
+        entities_low: >
           {% set alertbat = states | selectattr('attributes.device_class', 'eq', 'battery')
               | rejectattr('state', 'eq', '100')
-              | selectattr('state', 'lt', '15')
+              | selectattr('state', 'lt', '20')
+              | map(attribute='entity_id')
               | list
           %}
           {{alertbat}}
+        entities_batt: >
+          {% set allbats = states | selectattr('attributes.device_class', 'eq', 'battery')
+              | map(attribute='entity_id')
+              | list
+          %}
+          {{allbats}}
         friendly_name: Battery Monitor
         icon: mdi:battery-heart-outline

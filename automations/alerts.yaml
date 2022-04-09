@@ -160,26 +160,6 @@
                     {% endif %}
 
 ###############################################################################
-# Battery Low
-###############################################################################
-- id: battery_low_alert
-  alias: 'Battery Low Alert'
-  trigger:
-    platform: numeric_state
-    entity_id:
-      - group.sensor_batteries
-    above: 0
-    below: 40
-    for:
-      minutes: 15
-
-  action:
-    - service: notify.groot_automation
-      data:
-        title: '<b>Alert</b>: Low Battery'
-        message: "Battery Report: {{ trigger.to_state.state }} \n The battery for {{ trigger.to_state.name }} is below 20 percent"
-
-###############################################################################
 # New Plex Version
 # https://codebeautify.org/python-formatter-beautifier
 ###############################################################################

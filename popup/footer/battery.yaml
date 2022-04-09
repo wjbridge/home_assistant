@@ -1,7 +1,7 @@
 action: fire-dom-event
 browser_mod:
   command: popup
-  title: Batteries
+  title: Sensor Batteries
   style:
     hui-vertical-stack-card:
       $: |
@@ -20,47 +20,64 @@ browser_mod:
         card_mod:
           class: content
         entities:
-
-          - entity: binary_sensor.template_udm_internet
-            secondary_info: last-changed
-
-          - entity: sensor.template_udm_cpu_temp
-            name: CPU Temp
-
           - type: custom:bar-card
             width: 55%
             height: 2em
             decimal: 0
             unit_of_measurement: '%'
-            positions:
+            columns: 1
+            positions: &bar_card_positions
               icon: outside
               indicator: 'off'
               name: outside
-            severity:
-              - color: '#6d2525'
-                from: 90
-                to: 999
+            severity: &bar_card_severity
+              - color: Red
+                from: 0
+                to: 25
+              - color: Orange
+                from: 26
+                to: 50
+              - color: Green
+                from: 51
+                to: 100
             entity_row: true
             entities:
-              - entity: sensor.template_udm_cpu
-              - entity: sensor.template_udm_mem
-              - entity: sensor.template_udm_disk
-
-          - entity: sensor.template_udm_uptime
-          - entity: binary_sensor.template_udm_upgradable
+              - entity: sensor.deck_door_battery
+                name: Deck Door
+                icon: mdi:battery
+              - entity: sensor.dining_room_window_battery
+                name: Dining Room
+                icon: mdi:battery
+              - entity: sensor.family_room_battery
+                name: Family Room
+                icon: mdi:battery
+              - entity: sensor.front_door_battery
+                name: Front Door
+                icon: mdi:battery
+              - entity: sensor.garage_battery
+                name: Garage Contact
+                icon: mdi:battery
+              - entity: sensor.garage_temp_battery
+                name: Garage Temp
+                icon: mdi:battery
+              - entity: sensor.master_bedroom_battery
+                name: Master Bedroom
+                icon: mdi:battery
+              - entity: sensor.master_bedroom_window_battery
+                name: Master Bedroom Temp
+                icon: mdi:battery
+              - entity: sensor.olivia_room_battery
+                name: Olivia Bedroom
+                icon: mdi:battery
+              - entity: sensor.office_window_battery
+                name: Office Window
+                icon: mdi:battery
+              - entity: sensor.weston_phone_ha_battery_level
+                name: Weston Phone
+                icon: mdi:battery
 
       - type: horizontal-stack
         cards:
-          - type: custom:button-card
-            name: Restart
-            icon: mdi:restart-alert
-            tap_action:
-              action: call-service
-              service: shell_command.unifi_reboot
-            confirmation:
-              text: Are you sure you want to restart your router?
-            template: icon_name
-
           - type: custom:button-card
             name: Shutdown...
             icon: mdi:alert
