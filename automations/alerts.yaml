@@ -172,7 +172,17 @@
   action:
     - service: notify.groot_automation
       data:
-        title: '{{ trigger.event.data.summary }}'
-        message: '{{ trigger.event.data.summary_detail.value }}'
+        title: "{{
+                  trigger.event.data.summary
+                    | regex_replace('(<p>)|</p>|<ul>|</ul>', '')
+                    | replace('<li>', '<code>')
+                    | replace('</li>', '</code>')
+                }}"
+        message: "{{
+                    trigger.event.data.summary_detail.value
+                      | regex_replace('(<p>)|</p>|<ul>|</ul>', '')
+                      | replace('<li>', '<code>')
+                      | replace('</li>', '</code>')
+                  }}"
         data:
           parse_mode: 'html'

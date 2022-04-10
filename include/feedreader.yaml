@@ -6,6 +6,7 @@ feedreader:
   urls:
     - https://forums.plex.tv/t/plex-media-server/30447.rss
     - https://forums.plex.tv/t/plex-web/20528.rss
+    - https://forums.plex.tv/t/plex-for-android/29115.rss
   scan_interval:
     minutes: 60
   max_entries: 5
