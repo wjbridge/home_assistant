@@ -100,20 +100,6 @@ rest:
     scan_interval: 21600
     headers: *rest_header
 
-  - resource: https://api.github.com/repos/mrvnklm/homeassistant-desktop/releases/latest
-    authentication: basic
-    username: !secret github_username
-    password: !secret github_token
-    sensor:
-      - name: homeassistant_desktop_release_notes
-        value_template: >
-          {{ value_json.tag_name }}
-        json_attributes:
-          - body
-          - html_url
-    scan_interval: 21600
-    headers: *rest_header
-
   #-------------------------------------------
   #  Plex Server
   #-------------------------------------------
