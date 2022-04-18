@@ -200,21 +200,19 @@ views:
         cards:
 
           - type: custom:button-card
-            entity: media_player.yamaha_receiver_family_room
-            name: Yamaha
+            entity: fan.master_bedroom
+            name: Master Bedroom
             template:
               - base
-              - icon_monitors
+              - icon_fan2
               - circle
               - loader
-            hold_action:
-              !include popup/media_yamaha.yaml
             variables:
               circle_input: >
                 [[[
                   return entity === undefined ?
                     null :
-                    parseInt(entity.attributes.volume_level * 100);
+                    parseInt(entity.attributes.percentage);
                 ]]]
 
       #################################################

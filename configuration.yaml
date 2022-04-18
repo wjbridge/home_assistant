@@ -49,7 +49,7 @@ lovelace:
       { url: /hacsfiles/light-entity-card/light-entity-card.js,                     type: module },
 
       # https://community.home-assistant.io/t/realtime-camera-streaming-without-any-delay-webrtc/258216/384
-      { url: '/webrtc/webrtc-camera.js?v2.2.0',                                     type: module },
+      { url: '/webrtc/webrtc-camera.js?v2.3.0',                                     type: module },
 
       { url: '/local/custom_icons.js?v=28082021',                                   type: module },
       { url: '/local/marked.min.js?v=4.0.12',                                       type: module },

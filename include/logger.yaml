@@ -10,7 +10,8 @@ logger:
     homeassistant.components.bluetooth_tracker.device_tracker: fatal
     homeassistant.components.command_line.switch: warning
     homeassistant.components.mqtt: warning
-    homeassistant.components.sensor: warn
+    homeassistant.components.sensor: info
+    homeassistant.components.feedreader: info
     homeassistant.setup: info
     homeassistant.core: info
     homeassistant.loader: warning
@@ -21,6 +22,7 @@ logger:
 
     homeassistant.components.samsungtv: info
     custom_components.androidtv: info
+    custom_components.localtuya: info
 
     homeassistant.components.homekit_controller: info
     samsungtvws: info
