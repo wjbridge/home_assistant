@@ -16,3 +16,15 @@
         {%- else -%}
           cool
         {%- endif %}
+
+#-------------------------------------------
+#  Template for Sun
+#-------------------------------------------
+
+    - unique_id: sun_azimuth
+      state: >
+        {{ state_attr('sun.sun', 'azimuth') }}
+
+    - unique_id: sun_elevation
+      state: >
+        {{ state_attr('sun.sun', 'elevation') }}
