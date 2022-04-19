@@ -26,6 +26,20 @@
             {%- endif -%}
           </b></font>
 
+        active: >
+            <b>
+            {% set windows_on     = states | selectattr('attributes.device_class', 'eq', 'door') | selectattr('state', 'eq', 'on') | list %}
+            {% set windows_name   = states | selectattr('attributes.device_class', 'eq', 'door') | selectattr('state', 'eq', 'on') | map(attribute='name') | join(', ') %}
+
+            {% if (windows_on | length == 1) %}
+              {{windows_name }} is on
+            {% elif (windows_on | length > 1) %}
+              {{windows_name }} are on
+            {% else %}
+              <font color='#6a7377'>All Windows & Doors Closed</font>
+            {% endif %}
+            </b>
+
         weather: |
           {%- set temperature = states('sensor.openweathermap_temperature') | float(default=0.0) | round(1) %}
           {%- set apparent = states('sensor.openweathermap_feels_like_temperature') | float(default=0.0) | round(1) %}
