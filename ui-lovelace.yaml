@@ -563,7 +563,7 @@ views:
         cards:
           - type: custom:button-card
             name: >
-              <ha-icon icon="mdi:docker"></ha-icon> Docker
+              <ha-icon icon="mdi:docker"></ha-icon> <span class="footer-title">Docker</span>
             tap_action:
               !include popup/footer/docker.yaml
             variables:
@@ -578,7 +578,7 @@ views:
 
           - type: custom:button-card
             name: >
-              <ha-icon icon="mdi:heart-box-outline"></ha-icon> Sys Health
+              <ha-icon icon="mdi:heart-box-outline"></ha-icon> <span class="footer-title">Sys Health</span>
             tap_action:
               !include popup/footer/alerts.yaml
             variables:
@@ -609,7 +609,7 @@ views:
 
           - type: custom:button-card
             name: >
-              <ha-icon icon="mdi:arrow-up-bold-circle-outline"></ha-icon> Updater
+              <ha-icon icon="mdi:arrow-up-bold-circle-outline"></ha-icon> <span class="footer-title">Updater</span>
             tap_action:
               !include popup/footer/updater.yaml
             variables:
@@ -634,7 +634,7 @@ views:
 
           - type: custom:button-card
             name: >
-              <ha-icon icon="mdi:router-wireless"></ha-icon> Router
+              <ha-icon icon="mdi:router-wireless"></ha-icon> <span class="footer-title">Router</span>
             tap_action:
               !include popup/footer/router.yaml
             variables:

@@ -283,6 +283,9 @@
             }
             /* phone */
             @media screen and (max-width: 800px) {
+              .footer-title {
+                display: none;
+              }
               #name {
                 font-size: calc(var(--name-font-size) * 2.7);
                 padding: calc(var(--name-padding-v) * 2.7) calc(var(--name-padding-h) * 2.7);
