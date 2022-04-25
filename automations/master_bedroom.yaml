@@ -9,12 +9,12 @@
     - platform: time
       id: master_bedroom_morning
       at:
-        - "08:00:00"
+        - "07:00:00"
 
     - platform: time
       id: master_bedroom_evening
       at:
-        - "20:10:00"
+        - "23:00:00"
 
   action:
     #-------------------------------------------

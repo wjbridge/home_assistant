@@ -14,6 +14,11 @@
           entity_id: sensor.hass_version_latest
           state: 'unavailable'
 
+    - condition: and
+      conditions:
+        - condition: template
+          value_template: "{{ states(trigger.from_state.state) != 'unavailable' }}"
+
   action:
     service: notify.groot_automation
     data:
