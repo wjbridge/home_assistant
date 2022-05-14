@@ -23,6 +23,7 @@ logger:
     homeassistant.components.samsungtv: info
     custom_components.androidtv: info
     custom_components.localtuya: info
+    custom_components.monitor_docker.helpers: fatal
 
     homeassistant.components.homekit_controller: info
     samsungtvws: info

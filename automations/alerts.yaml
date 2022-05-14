@@ -17,7 +17,7 @@
     - condition: and
       conditions:
         - condition: template
-          value_template: "{{ states(trigger.from_state.state) != 'unavailable' }}"
+          value_template: "{{ not is_state(trigger.from_state, 'unavailable') }}"
 
   action:
     service: notify.groot_automation
@@ -177,12 +177,7 @@
   action:
     - service: notify.groot_automation
       data:
-        title: "{{
-                  trigger.event.data.summary
-                    | regex_replace('(<p>)|</p>|<ul>|</ul>', '')
-                    | replace('<li>', '<code>')
-                    | replace('</li>', '</code>')
-                }}"
+        title: ""
         message: "{{
                     trigger.event.data.summary_detail.value
                       | regex_replace('(<p>)|</p>|<ul>|</ul>', '')
