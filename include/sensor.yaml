@@ -202,20 +202,20 @@ sensor:
     name: udm_unifios
     command: !secret udm_unifios
     value_template: |-
-      {% set json = value_json.data[2] %}
-      {% set json2 = value_json.data[1] %}
-      {{ json.model }}|
-      {{ json["system-stats"].cpu }}|
-      {{ json.temperatures[1].value | round(1) }}|
-      {{ json["system-stats"].mem }}|
-      {{ ((json.storage[1].used / json.storage[1].size) * 100) | round(1) }}|
-      {{ json2.internet }}|
-      {{ json.startup_timestamp | timestamp_local }}|
-      {{ json.displayable_version }}|
-      {{ json.upgradable }}|
-      {{ json2.upgradable }}|
-      {{ json2.version }}|
-      {{ json2.upgrade_to_firmware }}
+      {% set udmprose = value_json.data[4] %}
+      {% set ualr6v2 = value_json.data[2] %}
+      {{ udmprose.model }}|
+      {{ udmprose["system-stats"].cpu }}|
+      {{ udmprose.temperatures[1].value | round(1) }}|
+      {{ udmprose["system-stats"].mem }}|
+      {{ ((udmprose.storage[1].used / udmprose.storage[1].size) * 100) | round(1) }}|
+      {{ ualr6v2.internet }}|
+      {{ udmprose.startup_timestamp | timestamp_local }}|
+      {{ udmprose.displayable_version }}|
+      {{ udmprose.upgradable }}|
+      {{ ualr6v2.upgradable }}|
+      {{ ualr6v2.version }}|
+      {{ ualr6v2.upgrade_to_firmware | default(false) }}
     scan_interval: 120
 
   #---------------------------------------------------------------------------------------
