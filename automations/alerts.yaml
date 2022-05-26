@@ -17,7 +17,7 @@
     - condition: and
       conditions:
         - condition: template
-          value_template: "{{ not is_state(trigger.from_state, 'unavailable') }}"
+          value_template: "{{ not is_state(trigger.from_state.state, 'unavailable') }}"
 
   action:
     service: notify.groot_automation
