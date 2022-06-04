@@ -8,6 +8,7 @@ www/Plex_Recently_Added/*
 www/fonts
 scripts/*
 www/weather-icons/*
+www/gifs/*
 
 #-------------------------------------------
 # Ignore Files Starting with '.'

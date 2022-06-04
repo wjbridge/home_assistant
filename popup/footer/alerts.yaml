@@ -55,7 +55,9 @@ browser_mod:
               service: homeassistant.update_entity
               service_data:
                 entity_id:
-                  - sensor.template_unavailable_entities
                   - sensor.template_oakland_alert_1
                   - sensor.template_oakland_alert_2
+                  - sensor.plex_version_installed
+                  - sensor.plex_server_release_notes
+                  - sensor.template_unavailable_entities
             template: icon_name
