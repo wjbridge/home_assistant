@@ -161,6 +161,176 @@
           }
         ]]]
 
+  icon_garage2:
+    styles:
+      custom_fields:
+        icon:
+          - width: 100%
+          - margin-left: -7%
+          - margin-top: -10%
+    custom_fields:
+      icon: >
+        [[[
+          let garage;
+          if (variables.state === 'open' && variables.timeout < 2000) {
+            garage = '#f58216';
+          } 
+          if (variables.state === 'closed' && variables.timeout < 2000) {
+            garage = 'gray';
+          }
+          if (variables.state === 'open' && variables.timeout > 2000) {
+            garage = '#f58216';
+          }
+          if (variables.state === 'closed' && variables.timeout > 2000) {
+            garage = 'gray';
+          }
+          let handle;
+          if (variables.state === 'open' && variables.timeout < 2000) {
+            handle = 'hon';
+          } 
+          if (variables.state === 'closed' && variables.timeout < 2000) {
+            handle = 'hoff';
+          }
+          if (variables.state === 'open' && variables.timeout > 2000) {
+            handle = 'hon_timeout';
+          }
+          let state;
+          if (variables.state === 'open' && variables.timeout < 2000) {
+            state = 'on';
+          } 
+          if (variables.state === 'closed' && variables.timeout < 2000) {
+            state = 'off';
+          }
+          if (variables.state === 'open' && variables.timeout > 2000) {
+            state = 'on_timeout';
+          }
+          return `
+            <svg stroke-miterlimit="10" style="fill-rule:nonzero;clip-rule:evenodd;stroke-linecap:round;stroke-linejoin:round" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" xmlns:vectornator="http://vectornator.io" xmlns:xlink="http://www.w3.org/1999/xlink"><defs><clipPath id="TextBounds">
+            <path  d="M88.1901 187.348h322.372v269.59H88.1901z"/></clipPath></defs><g id="Layer-1" vectornator:layerName="Layer 1">
+            <path clip-path="url(#TextBounds)" d="M134.401 440.057h13.482C152.186 440.057 155.815 438.598 158.773 435.678 161.731 432.759 163.21 429.187 163.21 424.961V396.268L119.075 375.18V424.961C119.075 429.187 120.535 432.759 123.454 435.678 126.373 438.598 130.022 440.057 134.401 440.057zm228.51.0H376.508C380.811 440.057 384.421 438.598 387.341 435.678 390.26 432.759 391.719 429.187 391.719 424.961V375.18L347.7 396.268V424.961C347.7 429.187 349.16 432.759 352.079 435.678 354.998 438.598 358.609 440.057 362.911 440.057zM255.397 408.368C265.077 408.368 275.294 408.252 286.05 408.022 296.805 407.792 307.368 407.484 317.739 407.1 328.11 406.716 337.617 406.255 346.259 405.717 354.902 405.18 361.951 404.603 367.405 403.989 375.241 403.067 381.252 400.493 385.439 396.268 389.626 392.043 391.719 386.204 391.719 378.752V358.471C391.719 352.018 391.258 346.333 390.337 341.417 389.415 336.5 387.878 331.91 385.727 327.646 383.576 323.382 380.734 318.946 377.2 314.336L367.405 301.776C366.022 294.862 364.351 288.025 362.392 281.264 360.433 274.504 358.474 268.435 356.515 263.057 354.556 257.68 352.924 253.57 351.618 250.727 348.545 244.274 344.108 239.127 338.308 235.286 332.508 231.445 325.805 228.986 318.2 227.911 315.588 227.603 311.228 227.334 305.121 227.104 299.013 226.874 291.677 226.682 283.111 226.528 274.545 226.374 265.307 226.297 255.397 226.297 245.487 226.297 236.249 226.374 227.683 226.528 219.118 226.682 211.781 226.874 205.674 227.104 199.566 227.334 195.245 227.603 192.71 227.911 185.027 228.833 178.305 231.252 172.544 235.17 166.782 239.088 162.365 244.274 159.292 250.727 157.909 253.57 156.257 257.68 154.337 263.057 152.416 268.435 150.457 274.504 148.46 281.264 146.462 288.025 144.772 294.862 143.389 301.776L133.71 314.336C130.099 318.946 127.237 323.382 125.125 327.646 123.012 331.91 121.476 336.5 120.515 341.417 119.555 346.333 119.075 352.018 119.075 358.471V378.752C119.075 386.204 121.188 392.043 125.413 396.268 129.638 400.493 135.63 403.067 143.389 403.989 148.844 404.603 155.892 405.18 164.535 405.717 173.177 406.255 182.684 406.716 193.055 407.1 203.426 407.484 213.99 407.792 224.745 408.022 235.5 408.252 245.717 408.368 255.397 408.368zM172.313 377.254C167.012 377.254 162.595 375.487 159.061 371.954 155.527 368.42 153.76 364.002 153.76 358.702 153.76 353.478 155.527 349.099 159.061 345.565 162.595 342.031 167.012 340.264 172.313 340.264 177.614 340.264 182.031 342.031 185.565 345.565 189.099 349.099 190.866 353.478 190.866 358.702 190.866 364.002 189.099 368.42 185.565 371.954 182.031 375.487 177.614 377.254 172.313 377.254zM224.975 372.76C220.981 372.76 217.754 371.512 215.296 369.015 212.837 366.518 211.608 363.311 211.608 359.393 211.608 355.475 212.837 352.268 215.296 349.771 217.754 347.274 220.981 346.026 224.975 346.026H285.934C289.852 346.026 293.04 347.274 295.499 349.771 297.957 352.268 299.186 355.475 299.186 359.393 299.186 363.311 297.957 366.518 295.499 369.015 293.04 371.512 289.852 372.76 285.934 372.76H224.975zM338.481 377.254C333.257 377.254 328.878 375.487 325.344 371.954 321.811 368.42 320.044 364.002 320.044 358.702 320.044 353.478 321.811 349.099 325.344 345.565 328.878 342.031 333.257 340.264 338.481 340.264 343.782 340.264 348.199 342.031 351.733 345.565 355.267 349.099 357.034 353.478 357.034 358.702 357.034 364.002 355.267 368.42 351.733 371.954 348.199 375.487 343.782 377.254 338.481 377.254zM166.667 292.211C167.512 287.986 168.664 283.53 170.124 278.844 171.583 274.158 173.081 269.798 174.618 265.765 176.154 261.732 177.537 258.601 178.766 256.374 180.303 253.685 182.031 251.687 183.952 250.381 185.872 249.075 188.369 248.23 191.442 247.846 195.821 247.232 203.119 246.751 213.337 246.406 223.554 246.06 237.574 245.887 255.397 245.887 273.22 245.887 287.259 246.041 297.515 246.348 307.771 246.655 315.05 247.155 319.352 247.846 322.502 248.307 324.999 249.171 326.842 250.439 328.686 251.707 330.415 253.685 332.028 256.374 333.334 258.601 334.736 261.732 336.234 265.765 337.732 269.798 339.192 274.158 340.613 278.844 342.034 283.53 343.244 287.986 344.243 292.211 344.781 294.362 344.608 295.861 343.724 296.706 342.841 297.551 341.285 297.896 339.057 297.743 332.681 297.359 325.671 296.974 318.027 296.59 310.383 296.206 301.51 295.899 291.408 295.668 281.306 295.438 269.302 295.323 255.397 295.323 241.492 295.323 229.489 295.438 219.386 295.668 209.284 295.899 200.43 296.206 192.825 296.59 185.219 296.974 178.229 297.359 171.852 297.743 169.624 297.896 168.069 297.551 167.185 296.706 166.302 295.861 166.129 294.362 166.667 292.211z" fill="#2c2c2c" fill-rule="evenodd" opacity="1" stroke="none"/><g opacity="1">
+            <path class="${state}" d="M79.4908 151.521H435.399V419.425H79.4908V151.521z" fill="#fff" fill-rule="evenodd" opacity="1" stroke="none"/>
+            <path d="M77.9652 164.82H433.004v92.404H77.9652V164.82z" fill="${garage}" fill-rule="evenodd" opacity="1" stroke="none"/>
+            <path class="${state}"d="M81.04 263.026H430.772V352.135H81.04V263.026z" fill="#858585" fill-rule="evenodd" opacity="1" stroke="none"/>
+            <path class="${state}"d="M78.2453 357.809H433.85V443.086H78.2453V357.809z" fill="#828282" fill-rule="evenodd" opacity="1" stroke="none"/>
+            <path class="${handle}" d="M239.68 314.889 275.762 314.469" fill="#ffffff" fill-rule="evenodd" opacity="1" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-width="7.8284"/>
+            <path class="${handle}" d="M248.241 314.869C248.241 310.103 252.662 306.239 258.117 306.239 263.571 306.239 267.992 310.103 267.992 314.869 267.992 319.636 263.571 323.5 258.117 323.5 252.662 323.5 248.241 319.636 248.241 314.869z" fill="#ffffff" fill-rule="evenodd" opacity="1" stroke="none"/></g>
+            <path d="M256.439 68.023 400.495 137.373 427.219 150.238 81.2766 151.521 256.439 68.023z" fill="#5f5f5f" fill-rule="evenodd" opacity="1" stroke="#757575" stroke-linecap="butt" stroke-linejoin="round" stroke-width="12.466"/>
+            <path  d="M75.8011 444.381V153.619L256 67.619l180.199 86V444.381" fill="none" fill-rule="evenodd" opacity="1" stroke="#6b6b6b" stroke-linecap="butt" stroke-linejoin="round" stroke-width="12.466"/></g>
+            <style>
+                @keyframes off {
+                  0% {
+                    transform: translateY(-60%);
+                    opacity: 0;
+                    animation-timing-function: cubic-bezier(0.7, 0, 0.84, 0);
+                  }
+                  
+                  
+                  50% {
+                    transform: translateY(-30%);
+                    animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+                  }
+                  
+                  100% {
+                    transform: translateY(0%);
+                  }
+                }
+                @keyframes on_timeout {
+                  0% {
+                    transform: translateY(0%);
+                    
+                  }
+                  
+                  70% {
+                    transform: translateY(-40%);
+                  
+                  }
+                  80% {
+                     opacity: 0;
+                  }
+                  100% {
+                    transform: translateY(-60%);
+                    opacity: 0;
+                  }
+                }
+                @keyframes on {
+                  0% {
+                    transform: translateY(0%);
+                    
+                  }
+                  
+                  70% {
+                    transform: translateY(-40%);
+                  
+                  }
+                  80% {
+                     opacity: 0;
+                  }
+                  100% {
+                    transform: translateY(-60%);
+                    opacity: 0;
+                  }
+                }
+                .on {
+                  animation: on 0.7s;
+                  transform-origin: 40% 20%;
+                  animation-fill-mode: forwards;
+                  animation-delay: -0.1s;
+                }
+                .off {
+                  animation: off 0.7s;
+                  transform-origin: 40% 20%;
+                  animation-fill-mode: forwards;
+                  animation-delay: -0.4s;
+                }
+                .on_timeout {
+                  animation: on_timeout 0.7s;
+                  transform-origin: 40% 20%;
+                  animation-fill-mode: forwards;
+                  animation-delay: -0.1s;
+                }
+                @keyframes hoff {
+                  0% {
+                    transform: translateY(-21%);
+                    
+                  }
+                  
+                  
+                  100% {
+                    transform: translateY(0%);
+                  }
+                }
+                @keyframes hon {
+                  0% {
+                    transform: translateY(0%);
+                    
+                  }
+                  100% {
+                    transform: translateY(-21%);
+                  }
+                }
+                .hon {
+                  animation: hon 0.1s;
+                  transform-origin: 40% 20%;
+                  animation-fill-mode: forwards;
+                  animation-delay: -0.1s;
+                }
+                .hoff {
+                  animation: hoff 0.7s;
+                  transform-origin: 40% 20%;
+                  animation-fill-mode: forwards;
+                  animation-delay: -0.4s;
+                }
+                .hon_timeout {
+                  animation: hon 0.1s;
+                  transform-origin: 40% 20%;
+                  animation-fill-mode: forwards;
+                  animation-delay: -0.1s;
+                }
+              </style>
+            </svg>
+          `;
+        ]]]
+
   icon_washing:
     styles:
       custom_fields:
@@ -808,3 +978,370 @@
         <svg viewBox="0 0 50 50">
           <path d="M32.8 28.2V8.4A8.28 8.28 0 0 0 24.5.1a8.28 8.28 0 0 0-8.3 8.3v19.7c-2.5 2.3-4.1 5.6-4.1 9.3 0 6.9 5.6 12.4 12.4 12.4s12.4-5.6 12.4-12.4c0-3.7-1.6-7-4.1-9.2zm-8.3 17.5a8.28 8.28 0 0 1-8.3-8.3 8.2 8.2 0 0 1 2.8-6.2l1.4-1.2V8.4c0-2.3 1.9-4.1 4.1-4.1s4.1 1.9 4.1 4.1V30l1.4 1.2c1.7 1.6 2.8 3.8 2.8 6.2a8.28 8.28 0 0 1-8.3 8.3zm-2.1-29h4.1v24.8h-4.1V16.7zm2.1 14.5c3.4 0 6.2 2.8 6.2 6.2s-2.8 6.2-6.2 6.2-6.2-2.8-6.2-6.2 2.8-6.2 6.2-6.2z"/>
         </svg>
+
+  icon_pendant:
+    styles:
+      custom_fields:
+        icon:
+          - width: 100%
+          - margin-left: -9%
+          - margin-top: -9%
+    custom_fields:
+      icon: >
+        [[[
+          let state = variables.state_on && variables.timeout < 2000 ? 'on' : null;
+          return `
+            <svg stroke-miterlimit="10" style="fill-rule:nonzero;clip-rule:evenodd;stroke-linecap:round;stroke-linejoin:round" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" xmlns:vectornator="http://vectornator.io" xmlns:xlink="http://www.w3.org/1999/xlink">
+              <defs><filter color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse" height="178.015" id="Filter" width="15.7685" x="244.46" y="22.1442"><feDropShadow dx="0" dy="0" flood-color="#000" flood-opacity=".797297" in="SourceGraphic" result="Shadow" stdDeviation=".680957"/></filter><filter color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse" height="74.3896" id="Filter_2" width="49.2588" x="228.474" y="164.53"><feDropShadow dx="0" dy="0" flood-color="#000" flood-opacity=".333" in="SourceGraphic" result="Shadow" stdDeviation=".775166"/></filter><filter color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse" height="185.846" id="Filter_3" width="342.386" x="79.1407" y="201.683"><feDropShadow dx="0" dy="0" flood-color="#000" flood-opacity=".333" in="SourceGraphic" result="Shadow" stdDeviation=".387597"/></filter></defs><g  id="Layer-1" vectornator:layerName="Layer 1">
+              <path class="${state}" d="M252.33 30.0149 252.357 192.288" fill="blue" fill-rule="evenodd" filter="url(#Filter)" stroke="#a0a0a0" stroke-linecap="butt" stroke-linejoin="miter" stroke-width="13.0176" vectornator:shadowAngle="-.656674" vectornator:shadowColor="#000000" vectornator:shadowOffset="0" vectornator:shadowOpacity=".797297" vectornator:shadowRadius="1.36191"/>
+              <path class="${state}" d="M238.28 166.081H267.926C272.486 166.081 276.182 169.886 276.182 174.581V228.869C276.182 233.564 272.486 237.369 267.926 237.369H238.28C233.72 237.369 230.024 233.564 230.024 228.869V174.581C230.024 169.886 233.72 166.081 238.28 166.081z" fill="var(--light-outside)" fill-rule="evenodd" filter="url(#Filter_2)" stroke="none" vectornator:shadowAngle="1.5708" vectornator:shadowColor="#000000" vectornator:shadowOffset="0" vectornator:shadowOpacity=".333" vectornator:shadowRadius="1.55033"/>
+              <path class="${state}" d="M79.9394 336.998C78.8314 299.922 117.197 257.306 137.523 241.656 168.633 217.703 202.906 202.458 249.98 202.458 297.053 202.458 338.512 219.467 369.361 243.775 400.209 268.084 420.752 302.038 420.752 336.83 420.752 382.245 405.423 385.678 366.584 386.494 341.306 387.025 298.558 386.577 251.484 386.577 204.411 386.577 171.104 386.31 135.623 385.764 96.7806 385.167 81.331 383.565 79.9394 336.998z" fill="var(--light-outside)" fill-rule="evenodd" filter="url(#Filter_3)" stroke="none" vectornator:shadowAngle="1.5708" vectornator:shadowColor="#000000" vectornator:shadowOffset="0" vectornator:shadowOpacity=".333" vectornator:shadowRadius=".775194"/>
+              <path class="${state}" fill="var(--light-color)" d="M210.899 409.227C212.783 397.014 216.042 397.813 226.03 397.757 235.634 397.704 245.046 397.781 256.452 397.685 267.382 397.594 270.76 397.868 281.548 398.215 290.703 398.51 295.585 397.897 297.041 408.195 298.497 418.493 295.761 440.415 282.097 449.059 268.434 457.704 234.111 456.602 222.094 445.669 210.076 434.737 209.367 419.164 210.899 409.227z" fill="#ffdc00" fill-rule="evenodd" opacity="1" stroke="none"/>
+              </g>
+              
+              <style>
+                @keyframes on {
+                  0% {
+                    color: #26abff
+                    background-color: '#26abff';
+                  }
+                  23% {
+                    transform: rotateZ(-10deg);
+                    animation-timing-function: ease-in-out;
+                  }
+                 
+                  56% {
+                    transform: rotateZ(10deg);
+                    animation-timing-function: ease-in-out;
+                  }
+                  70% {
+                    transform: rotateZ(-2deg);
+                    animation-timing-function: ease-in-out;
+                  }
+                  85% {
+                    transform: rotateZ(2deg);
+                    animation-timing-function: ease-in-out;
+                  }
+                  100% {
+                    transform: rotateZ(0deg);
+                  }
+                }
+                .on {
+                  animation: on 1.7s;
+                  transform-origin: top;
+                  background-color: '#26abff';
+                  animation-fill-mode: forwards;
+                  animation-delay: -0.1s;
+                }
+                
+              </style>
+            </svg>
+            
+          `; 
+        ]]]
+
+  icon_recessed:
+    styles:
+      custom_fields:
+        icon:
+          - width: 75%
+          - margin-left: 3%
+          - margin-top: 3%
+    custom_fields:
+      icon: >
+        [[[
+          let state;
+          if (variables.state_on && variables.timeout < 2000) {
+            state = 'on';
+          }
+          return `
+      
+            <svg stroke-miterlimit="10" style="fill-rule:nonzero;clip-rule:evenodd;stroke-linecap:round;stroke-linejoin:round" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" xmlns:vectornator="http://vectornator.io" xmlns:xlink="http://www.w3.org/1999/xlink"><defs><filter color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse" height="243.941" id="Filter" width="446.197" x="39.6995" y="31.8418"><feComponentTransfer in="SourceGraphic" result="Alpha"><feFuncA slope=".998062" type="linear"/></feComponentTransfer><feDropShadow dx="0" dy="0" flood-color="#000" flood-opacity=".333" in="Alpha" result="Shadow" stdDeviation="25"/><feGaussianBlur in="Shadow" result="Blur" stdDeviation=".581395"/></filter><filter color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse" height="363.617" id="Filter_2" width="612.152" x="-43.8416" y="74.3619"><feGaussianBlur in="SourceGraphic" result="Blur" stdDeviation="44.3372"/></filter></defs><clipPath id="ArtboardFrame"><path d="M0 0h512v512H0z"/></clipPath><g clip-path="url(#ArtboardFrame)" id="Layer-1" vectornator:layerName="Layer 1">
+            <path d="M43.1762 148.671C43.1762 89.8466 140.636 42.1604 260.859 42.1604 381.082 42.1604 478.542 89.8466 478.542 148.671 478.542 207.494 381.082 255.181 260.859 255.181 140.636 255.181 43.1762 207.494 43.1762 148.671z" fill="#a0a0a0" fill-rule="evenodd" opacity=".982692" stroke="#717171" stroke-linecap="butt" stroke-linejoin="round" stroke-width="10"/>
+            <path class="${state}" fill="var(--light-color)"   d="M91.153 153.812C91.153 114.867 168.001 83.2953 262.798 83.2953 357.595 83.2953 434.443 114.867 434.443 153.812 434.443 192.758 357.595 224.329 262.798 224.329 168.001 224.329 91.153 192.758 91.153 153.812z" fill="#ffdc00" fill-rule="evenodd" filter="url(#Filter)" stroke="none" vectornator:shadowAngle="1.5708" vectornator:shadowColor="#000000" vectornator:shadowOffset="0" vectornator:shadowOpacity=".333" vectornator:shadowRadius="50"/>
+
+            <style>
+              @keyframes on {
+                0% {
+                  transform: scale(0.85);
+                }
+                20% {
+                  transform: scale(1.1);
+                }
+                40% {
+                  transform: scale(0.95);
+                }
+                60% {
+                  transform: scale(1.03);
+                }
+                80% {
+                  transform: scale(0.97);
+                }
+              }
+              .on {
+                animation: on 100s infinite;
+                transform-origin: center;
+              }
+            </style>
+          </svg>
+          `;
+         ]]]
+
+  icon_porch:
+    styles:
+      custom_fields:
+        icon:
+          - width: 120%
+          - margin-left: 0.00000001%
+          - margin-top: 3%
+    custom_fields:
+      icon: >
+        [[[
+          let state = variables.state_on && variables.timeout < 2000 ? 'on' : null;
+          return `
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 34 34" shape-rendering="geometricPrecision" xmlns:v="https://vecta.io/nano">
+            <path d="M7 14h14l-6-4.29V6c0-1.61-1.06-4-4-4S7 4.39 7 6c0 .45-.19 1-1 1H5V3H3v9h2V9h1c2.2 0 3-1.79 3-3 0-.33.1-2 2-2 1.83 0 2 1.54 2 2v3.71L7 14z" fill="#888888"/>
+            <path class="${state}" fill="var(--light-color)" d="M16.248 14.716h-4.499c0 4.768 4.672 4.682 4.499 0" fill="#036ba6"/>
+            <path fill="#BEBEBE" d="M6.819 14.002l6.217-4.481v4.481h-2.688-1.904-1.624z"/>
+            <style>
+                @keyframes on {
+                  0% {
+                    transform: scale(0.85);
+                  }
+                  20% {
+                    transform: scale(1.1);
+                  }
+                  40% {
+                    transform: scale(0.95);
+                  }
+                  60% {
+                    transform: scale(1.03);
+                  }
+                  80% {
+                    transform: scale(0.97);
+                  }
+                }
+                .on {
+                  animation: on 0.8s;
+                  transform-origin: center;
+                }
+              </style>
+            </svg>
+          `;
+        ]]]
+
+  icon_desk_lamp2:
+    styles:
+      custom_fields:
+        icon:
+          - width: 92%
+          - margin-left: -10%
+          - margin-top: -5%
+    custom_fields:
+      icon: >
+        [[[
+          let state;
+          if (variables.state_on && variables.timeout < 2000) {
+            state = 'on';
+          } 
+          if (variables.state === 'off' && variables.timeout < 2000) {
+            state = 'off';
+          }
+          if (variables.state_on && variables.timeout > 2000) {
+            state = 'on_timeout';
+          }
+          return `
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512.002 512.002" xmlns:v="https://vecta.io/nano">
+              <style>
+                @keyframes off {
+                  0% {
+                    transform: rotateZ(0deg);
+                    animation-timing-function: cubic-bezier(0.7, 0, 0.84, 0);
+                  }
+                  70% {
+                    transform: rotateZ(-30deg);
+                    animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+                  }
+                  75% {
+                    transform: rotateZ(-30deg);
+                    animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+                  }
+                  88% {
+                    transform: rotateZ(-21deg);
+                  }
+                  100% {
+                    transform: rotateZ(-30deg);
+                  }
+                }
+                @keyframes on {
+                  0% {
+                    transform: rotateZ(-30deg);
+                    animation-timing-function: cubic-bezier(0.7, 0, 0.84, 0);
+                  }
+                  70% {
+                    transform: rotateZ(5deg);
+                    animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+                  }
+                  75% {
+                    transform: rotateZ(5deg);
+                    animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+                  }
+                  88% {
+                    transform: rotateZ(-4deg);
+                  }
+                  100% {
+                    transform: rotateZ(5deg);
+                  }
+                }
+                .on {
+                  animation: on 0.7s;
+                  transform-origin: 40% 20%;
+                  animation-fill-mode: forwards;
+                  animation-delay: -0.1s;
+                }
+                .off {
+                  animation: off 0.7s;
+                  transform-origin: 40% 20%;
+                  animation-fill-mode: forwards;
+                }
+                .on_timeout {
+                  transform: rotateZ(-15deg);
+                  transform-origin: 40% 20%;
+                }
+              </style>
+            
+              <path d="M381.56 512.002H135.042a18.96 18.96 0 1 1 0-37.926H381.56a18.96 18.96 0 1 1 0 37.926" fill="#b2b5c8"/>
+              <path d="M296.227 436.151c0-20.945-16.981-37.926-37.926-37.926s-37.926 16.981-37.926 37.926 16.981 37.926 37.926 37.926 37.926-16.982 37.926-37.926m180.148-180.149c0-20.945-16.981-37.926-37.926-37.926s-37.926 16.981-37.926 37.926 16.981 37.926 37.926 37.926 37.926-16.981 37.926-37.926" fill="#868ba5"/>
+              <path class="${state}" d="M49.034 84.663L35.627 98.069l134.087 134.087 13.407-13.407c37.025-37.025 37.025-97.062 0-134.087h0c-37.025-37.025-97.062-37.025-134.087.001" fill="#b2b5c8"/>
+              <path class="${state}" fill="var(--light-color)" d="M64.738 127.269c-10.088 21.144-6.438 47.199 11.074 64.702 17.503 17.512 43.558 21.163 64.702 11.074l-75.776-75.776z" fill="#ecba16"/>
+              <path d="M429.64 219.209L265.421 63.57c-2.304 6.002-5.812 11.653-10.648 16.488l-13.672 13.521 160.825 152.747c3.546-13.417 14.174-23.884 27.714-27.117m-27.776 46.272L266.743 399.246h0c2.588.588 5.063 1.46 7.415 2.551.199.095.379.218.578.313 2.181 1.062 4.238 2.304 6.163 3.745.123.085.228.19.341.275a38.43 38.43 0 0 1 5.471 5.129c.009.009.019.019.019.028 1.726 1.972 3.224 4.105 4.513 6.409 1.726 3.081 3.119 6.372 3.935 9.908l133.357-135.149c-13.075-3.555-23.267-13.842-26.671-26.974" fill="#b2b5c8"/>
+              <path class="${state}" d="M253.898 13.888c-18.517-18.517-48.526-18.517-67.044 0l-45.89 46.393c15.436 4.191 30.037 12.26 42.155 24.377h0c12.127 12.127 20.196 26.728 24.386 42.164l46.393-45.89c18.517-18.518 18.517-48.527 0-67.044" fill="#868ba5"/>
+              
+            </svg>
+            
+          `;
+        ]]]
+
+  icon_chandelier:
+    styles:
+      custom_fields:
+        icon:
+          - width: 100%
+          - margin-left: 3%
+          - margin-top: 3%
+    custom_fields:
+      icon: >
+        [[[
+          let state = variables.state_on && variables.timeout < 2000 ? 'on' : null;
+          return `
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 700" xmlns:v="https://vecta.io/nano">
+            
+              <style>
+                @keyframes on {
+                  0% {
+                    transform: scale(0.85);
+                  }
+                  20% {
+                    transform: scale(1.1);
+                  }
+                  40% {
+                    transform: scale(0.95);
+                  }
+                  60% {
+                    transform: scale(1.03);
+                  }
+                  80% {
+                    transform: scale(0.97);
+                  }
+                }
+                .on {
+                  animation: on 0.8s;
+                  transform-origin: center;
+                }
+              </style>
+              <path d="M422.957 289.391c-9.223 0-16.696 7.473-16.696 16.696v16.696c0 36.826-29.956 66.782-66.782 66.782s-66.782-29.956-66.782-66.782V122.436h100.172c9.223 0 16.696-7.473 16.696-16.696s-7.473-16.696-16.696-16.696H139.131c-9.223 0-16.696 7.473-16.696 16.696s7.473 16.696 16.696 16.696h100.175v200.347c0 36.826-29.956 66.782-66.782 66.782s-66.782-29.956-66.782-66.782v-16.696c0-9.223-7.473-16.696-16.696-16.696s-16.696 7.473-16.696 16.696v16.696c0 55.233 44.94 100.173 100.173 100.173 34.82 0 65.52-17.882 83.478-44.923 17.958 27.042 48.658 44.923 83.478 44.923 55.233 0 100.173-44.94 100.173-100.173v-16.696c.001-9.223-7.472-16.696-16.695-16.696z" fill="#3e3d42"/>
+              <path class="${state}" fill="var(--light-color)" d="M161.392 322.783H16.697c-5.364 0-10.408-2.581-13.543-6.934A16.67 16.67 0 0 1 .86 300.811l33.391-105.739c2.272-6.821 8.652-11.419 15.837-11.419h77.913a16.69 16.69 0 0 1 15.837 11.419l33.391 105.739c1.701 5.087.848 10.685-2.294 15.038a16.7 16.7 0 0 1-13.543 6.934z" fill="#a3e05a"/>
+              <path class="${state}" fill="var(--light-color)" d="M177.228 300.81l-33.391-105.739c-2.272-6.821-8.652-11.419-15.837-11.419H89.045v139.13h72.346c5.364 0 10.408-2.581 13.543-6.934 3.142-4.354 3.996-9.951 2.294-15.038z" fill="#6cb52d"/>
+              <path class="${state}" fill="var(--light-color)" d="M495.303 322.783H350.608c-5.364 0-10.408-2.581-13.543-6.934a16.67 16.67 0 0 1-2.294-15.038l33.391-105.739c2.272-6.821 8.652-11.419 15.837-11.419h77.913a16.69 16.69 0 0 1 15.837 11.419l33.391 105.739c1.701 5.087.848 10.685-2.294 15.038a16.7 16.7 0 0 1-13.543 6.934z" fill="#a3e05a"/>
+              <path class="${state}" fill="var(--light-color)" d="M511.14 300.81l-33.391-105.739c-2.272-6.821-8.652-11.419-15.837-11.419h-38.955v139.13h72.346c5.364 0 10.408-2.581 13.543-6.934 3.142-4.354 3.996-9.951 2.294-15.038z" fill="#6cb52d"/>
+            </svg>
+          `;
+        ]]]
+
+  icon_lock:
+    styles:
+      custom_fields:
+        icon:
+          - width: 90%
+          - margin-left: 1%
+          - margin-top: 3%
+    custom_fields:
+      icon: >
+        [[[
+          let color;
+          if (variables.state === 'unlocked' && variables.timeout < 2000) {
+            color = '#fbd734';
+          } 
+          if (variables.state === 'locked' && variables.timeout < 2000) {
+            color = '#a0a0a0';
+          }
+          if (variables.state === 'unlocked' && variables.timeout > 2000) {
+            color = '#fbd734';
+          }
+          if (variables.state === 'locked' && variables.timeout > 2000) {
+            color = '#a0a0a0';
+          }
+          let state;
+          if (variables.state === 'unlocked' && variables.timeout < 2000) {
+            state = 'on';
+          } 
+          if (variables.state === 'locked' && variables.timeout < 2000) {
+            state = 'off';
+          }
+          if (variables.state === 'unlocked' && variables.timeout > 2000) {
+            state = 'on_timeout';
+          }
+          return `
+            <svg stroke-miterlimit="10" style="fill-rule:nonzero;clip-rule:evenodd;stroke-linecap:round;stroke-linejoin:round" viewBox="0 0 612 512" xmlns="http://www.w3.org/2000/svg" xmlns:vectornator="http://vectornator.io" xmlns:xlink="http://www.w3.org/1999/xlink"><defs/><clipPath id="ArtboardFrame">
+            <path d="M0 0h612v512H0z"/></clipPath><g clip-path="url(#ArtboardFrame)" id="Untitled" vectornator:layerName="Untitled">
+            <path d="M25.529 185.393H367.228C381.097 185.393 392.341 197.098 392.341 211.537V487.706C392.341 502.145 381.097 513.85 367.228 513.85H25.529C11.6597 513.85.416354 502.145.416352 487.706V211.494C.416349 197.055 11.6597 185.35 25.529 185.35V185.393z" fill="${color}" fill-rule="evenodd" opacity="1" stroke="none"/>
+            <path d="M175.744 367.312 148.665 441.169h95.386L218.938 366.179C239.362 355.207 249.806 331.009 244.124 307.825 238.442 284.641 218.139 268.611 195.162 269.167 172.186 269.723 152.62 286.719 147.98 310.153 143.339 333.587 154.853 357.254 175.744 367.225V367.312z" fill="#36464e" fill-rule="evenodd" opacity="1" stroke="none"/>
+            <path class="${state}" d="M336.913 181.305H293.793V145.384C293.945 118.423 283.677 92.4534 265.148 72.9335 247.611 54.0123 223.024 43.2642 197.277 43.2642 171.53 43.2642 146.942 54.0123 129.406 72.9335 110.876 92.4534 100.608 118.423 100.76 145.384V181.305H57.6403V145.384C57.5795 107.312 72.17 70.6868 98.3667 43.1524 123.999 15.7146 159.802.147898 197.277.147896 234.751.147896 270.554 15.7146 296.187 43.1524 322.404 70.6737 336.997 107.307 336.913 145.384c0 0 0 35.92100000000002.0 35.92100000000002z" fill="#808080" fill-rule="evenodd" opacity="1" stroke="none"/></g>
+              <style>
+                @keyframes off {
+                    0% {
+                       transform: rotateY(180deg);
+                       transform-origin: 310px bottom -50px;
+                    }
+                    100% {
+                       transform: rotateY(0deg);
+                    }
+                  }
+                @keyframes on {
+                    0% {
+                       transform: rotateY(0deg)
+                    }
+                    100% {
+                       transform: rotateY(180deg) ;
+                       transform-origin: 305px bottom -200px;
+                    }
+                  }
+                .on {
+                  animation: on 0.5s;
+                 
+                  animation-fill-mode: forwards;
+                  animation-delay: -0.1s;
+                }
+                .off {
+                  animation: off 0.5s;
+                  transform-origin: 40% 20%;
+                  animation-fill-mode: forwards;
+                }
+                .on_timeout {
+                  transform: rotateY(180deg) ;
+                  transform-origin: 305px bottom -200px;
+                }
+              </style>
+            </svg>
+          `;
+        ]]]

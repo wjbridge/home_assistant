@@ -240,7 +240,7 @@ views:
             name: Desk
             template:
               - light
-              - icon_desk_lamp
+              - icon_desk_lamp2
 
           - type: custom:button-card
             entity: light.family_room
@@ -331,7 +331,7 @@ views:
             template:
               - base
               - loader
-              - icon_hue
+              - icon_porch
 
           - type: custom:button-card
             entity: lock.front_door
@@ -340,7 +340,7 @@ views:
               - base
               - loader
               - lock
-              - icon_closet
+              - icon_lock
             variables:
               lock: >
                 [[[
@@ -354,7 +354,7 @@ views:
             template:
               - base
               - loader
-              - icon_hue
+              - icon_porch
 
           - type: custom:button-card
             entity: binary_sensor.garage_contact
@@ -363,7 +363,7 @@ views:
               !include popup/home_garage.yaml
             template:
               - base
-              - icon_garage
+              - icon_garage2
 
       #################################################
       #                                               #
