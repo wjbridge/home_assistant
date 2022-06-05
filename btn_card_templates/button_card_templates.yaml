@@ -1073,7 +1073,7 @@ media:
 #################################################
 #                                               #
 #               CONDITIONAL MEDIA               #
-#                                               #
+#                                               # 
 #################################################
 
 conditional_media:
@@ -1097,8 +1097,7 @@ conditional_media:
           await = setTimeout(marquee,0),
           data = entity.attributes.data,
           artist = entity.attributes.media_artist,
-          title = entity.attributes.media_title,
-          app_name = entity.attributes.app_name;
+          title = entity.attributes.media_title;
           if (data !== undefined) {
             var number = data[variables.i].number === undefined && data[variables.i].aired !== undefined
               ? `(${data[variables.i].aired.split("-")[0]})`
@@ -1113,9 +1112,7 @@ conditional_media:
                 ? artist
                 : title !== undefined && artist !== undefined
                   ? `${artist} - ${title}`
-                    : title === undefined && artist === undefined
-                      ? app_name
-                      : variables.translate_idle;
+                  : variables.translate_idle;
           }
         function marquee() {
           let state = elt.getElementById("state"),
@@ -1170,7 +1167,7 @@ conditional_media:
       - background-image: &media_background_image >
           [[[
             if (entity) {
-              return (entity.attributes.data !== undefined || entity.attributes.data[variables.i].fanart !== undefined)
+              return entity.attributes.data !== undefined
                 ? `url("${entity.attributes.data[variables.i].fanart}"), url("${entity.attributes.data[variables.i].poster}")`
                 : `url("${variables.entity_picture}")`;
             }
