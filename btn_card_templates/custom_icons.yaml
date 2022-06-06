@@ -172,36 +172,36 @@
       icon: >
         [[[
           let garage;
-          if (variables.state === 'open' && variables.timeout < 2000) {
+          if (variables.state === 'on' && variables.timeout < 2000) {
             garage = '#f58216';
           } 
-          if (variables.state === 'closed' && variables.timeout < 2000) {
+          if (variables.state === 'off' && variables.timeout < 2000) {
             garage = 'gray';
           }
-          if (variables.state === 'open' && variables.timeout > 2000) {
+          if (variables.state === 'on' && variables.timeout > 2000) {
             garage = '#f58216';
           }
-          if (variables.state === 'closed' && variables.timeout > 2000) {
+          if (variables.state === 'off' && variables.timeout > 2000) {
             garage = 'gray';
           }
           let handle;
-          if (variables.state === 'open' && variables.timeout < 2000) {
+          if (variables.state === 'on' && variables.timeout < 2000) {
             handle = 'hon';
           } 
-          if (variables.state === 'closed' && variables.timeout < 2000) {
+          if (variables.state === 'off' && variables.timeout < 2000) {
             handle = 'hoff';
           }
-          if (variables.state === 'open' && variables.timeout > 2000) {
+          if (variables.state === 'on' && variables.timeout > 2000) {
             handle = 'hon_timeout';
           }
           let state;
-          if (variables.state === 'open' && variables.timeout < 2000) {
+          if (variables.state === 'on' && variables.timeout < 2000) {
             state = 'on';
           } 
-          if (variables.state === 'closed' && variables.timeout < 2000) {
+          if (variables.state === 'off' && variables.timeout < 2000) {
             state = 'off';
           }
-          if (variables.state === 'open' && variables.timeout > 2000) {
+          if (variables.state === 'on' && variables.timeout > 2000) {
             state = 'on_timeout';
           }
           return `
@@ -223,8 +223,6 @@
                     opacity: 0;
                     animation-timing-function: cubic-bezier(0.7, 0, 0.84, 0);
                   }
-                  
-                  
                   50% {
                     transform: translateY(-30%);
                     animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
@@ -237,12 +235,9 @@
                 @keyframes on_timeout {
                   0% {
                     transform: translateY(0%);
-                    
                   }
-                  
                   70% {
                     transform: translateY(-40%);
-                  
                   }
                   80% {
                      opacity: 0;
@@ -255,12 +250,10 @@
                 @keyframes on {
                   0% {
                     transform: translateY(0%);
-                    
                   }
                   
                   70% {
                     transform: translateY(-40%);
-                  
                   }
                   80% {
                      opacity: 0;
@@ -291,10 +284,7 @@
                 @keyframes hoff {
                   0% {
                     transform: translateY(-21%);
-                    
                   }
-                  
-                  
                   100% {
                     transform: translateY(0%);
                   }
