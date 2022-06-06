@@ -48,9 +48,6 @@ browser_mod:
               - entity: sensor.dining_room_window_battery
                 name: Dining Room
                 icon: mdi:battery
-              - entity: sensor.family_room_battery
-                name: Family Room
-                icon: mdi:battery
               - entity: sensor.front_door_battery
                 name: Front Door
                 icon: mdi:battery
@@ -60,14 +57,8 @@ browser_mod:
               - entity: sensor.garage_temp_battery
                 name: Garage Temp
                 icon: mdi:battery
-              - entity: sensor.master_bedroom_battery
-                name: Master Bedroom
-                icon: mdi:battery
               - entity: sensor.master_bedroom_window_battery
                 name: Master Bedroom Temp
-                icon: mdi:battery
-              - entity: sensor.olivia_room_battery
-                name: Olivia Bedroom
                 icon: mdi:battery
               - entity: sensor.office_window_battery
                 name: Office Window
