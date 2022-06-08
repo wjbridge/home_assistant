@@ -456,7 +456,7 @@ views:
                   attribute_two: sensor.template_weather_low_temp
 
               - type: custom:button-card
-                entity: sensor.garage_temperature
+                entity: sensor.garage_device_temperature
                 name: Garage
                 tap_action:
                   action: none

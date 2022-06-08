@@ -69,26 +69,6 @@ base:
   state_display: >
     [[[ if (variables.state === true) return variables.translate_unknown; ]]]
   tap_action:
-    ui_sound_tablet: |
-      [[[
-        let screensaver = states[variables.entity_tablet] === undefined || 
-          states[variables.entity_tablet].state;
-
-        if (variables.state === 'off' && screensaver === 'off') {
-          hass.callService('media_player', 'play_media', {
-            entity_id: variables.entity_browser_mod,
-            media_content_id: '/local/sound/on.m4a',
-            media_content_type: 'music'
-          });
-        }
-        if (variables.state_on && screensaver === 'off') {
-          hass.callService('media_player', 'play_media', {
-            entity_id: variables.entity_browser_mod,
-            media_content_id: '/local/sound/off.m4a',
-            media_content_type: 'music'
-          });
-        }
-      ]]]
     action: toggle
     haptic: medium
   hold_action:
@@ -1167,7 +1147,7 @@ conditional_media:
       - background-image: &media_background_image >
           [[[
             if (entity) {
-              return entity.attributes.data !== undefined
+              return (entity.attributes.data !== undefined)
                 ? `url("${entity.attributes.data[variables.i].fanart}"), url("${entity.attributes.data[variables.i].poster}")`
                 : `url("${variables.entity_picture}")`;
             }
