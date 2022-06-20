@@ -8,16 +8,13 @@
     entity_id: sensor.hass_version_latest
 
   condition:
-    - condition: not
-      conditions:
+    and:
+      - condition: template
+        value_template: "{{ not is_state(trigger.from_state.state, 'unavailable') }}"
+      - not:
         - condition: state
           entity_id: sensor.hass_version_latest
           state: 'unavailable'
-
-    - condition: and
-      conditions:
-        - condition: template
-          value_template: "{{ not is_state(trigger.from_state.state, 'unavailable') }}"
 
   action:
     service: notify.groot_automation
@@ -46,7 +43,9 @@
     - condition: template
       value_template: "{{ trigger.from_state != none }}"
     - condition: template
-      value_template: "{{ trigger.platform == 'state' and trigger.to_state.state  and trigger.from_state.state is not none and states(trigger.entity_id) != none}}"
+      value_template: "{{ trigger.from_state.state != 'unavailable' }}"
+    - condition: template
+      value_template: "{{ trigger.platform == 'state' and trigger.to_state.state and trigger.from_state.state is not none and states(trigger.entity_id) != none}}"
 
   action:
     service: notify.groot_automation

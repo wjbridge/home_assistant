@@ -17,11 +17,10 @@
       offset: "-00:30:00"
 
   condition:
-    - condition: not
-      conditions:
-        - condition: state
-          entity_id: light.outside_front_door_light
-          state: 'unavailable'
+    not:
+      - condition: state
+        entity_id: light.outside_front_door_light
+        state: 'unavailable'
 
   action:
     - choose:

@@ -17,18 +17,16 @@
         - "18:15:00"
 
   condition:
-    - condition: not
-      conditions:
+    and:
+      - condition: time
+        weekday:
+          - tue
+          - fri
+
+      - not:
         - condition: state
           entity_id: light.outside_garage_lights
           state: 'unavailable'
-
-    - condition: and
-      conditions:
-        - condition: time
-          weekday:
-            - tue
-            - fri
 
   action:
     - choose:

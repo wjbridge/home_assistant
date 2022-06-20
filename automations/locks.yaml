@@ -15,21 +15,18 @@
       at: !secret lock_time
 
   condition:
-    - condition: not
-      conditions:
+    and:
+      - condition: time
+        weekday:
+          - mon
+          - tue
+          - wed
+          - thu
+          - fri
+      - not:
         - condition: state
           entity_id: lock.front_door
           state: 'unavailable'
-
-    - condition: and
-      conditions:
-        - condition: time
-          weekday:
-            - mon
-            - tue
-            - wed
-            - thu
-            - fri
 
   action:
     #-------------------------------------------

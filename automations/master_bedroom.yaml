@@ -12,6 +12,15 @@
         - "07:00:00"
 
     - platform: time
+      id: master_bedroom_fan_refresh
+      at:
+        - "21:30:00"
+        - "22:00:00"
+        - "22:30:00"
+        - "23:00:00"
+        - "23:30:00"
+
+    - platform: time
       id: master_bedroom_evening
       at:
         - "23:00:00"
@@ -40,6 +49,47 @@
                     - delay:
                         seconds: 3
 
+            # IF Morning: Fan
+            - choose:
+                - conditions:
+                    - condition: state
+                      entity_id: input_boolean.master_bedroom_fan_en
+                      state: 'on'
+                    - condition: state
+                      entity_id: fan.master_bedroom
+                      state: 'on'
+                  sequence:
+                    - service: fan.set_percentage
+                      entity_id: fan.master_bedroom
+                      data:
+                        percentage: 0
+
+    #-------------------------------------------
+    # Evening Refresh Fan
+    #-------------------------------------------
+    - choose:
+        - conditions:
+            - condition: trigger
+              id: 'master_bedroom_fan_refresh'
+          sequence:
+            # IF Morning: Fan Refresh
+            - choose:
+                - conditions:
+                    - condition: state
+                      entity_id: input_boolean.master_bedroom_fan_en
+                      state: 'on'
+                    - condition: not
+                      conditions:
+                        - condition: state
+                          entity_id: fan.master_bedroom
+                          attribute: percentage
+                          state: "{{ states('sensor.template_master_bedroom_fan_setting') }}"
+                  sequence:
+                    - service: fan.set_percentage
+                      entity_id: fan.master_bedroom
+                      data:
+                        percentage: "{{ states('sensor.template_master_bedroom_fan_setting') }}"
+
     #-------------------------------------------
     # Evening
     #-------------------------------------------
@@ -52,14 +102,29 @@
             - choose:
                 - conditions:
                     - condition: state
+                      entity_id: input_boolean.master_bedroom_echo_en
+                      state: 'on'
+                    - condition: state
                       entity_id: media_player.weston_echo
                       attribute: available
                       state: true
-                    - condition: state
-                      entity_id: input_boolean.master_bedroom_echo_en
-                      state: 'on'
                   sequence:
                     - service: script.alexa_fan_sounds
                       data:
                         alexa_device: media_player.weston_echo
                         bool_fan: true
+
+            # IF Evening: Fan
+            - choose:
+                - conditions:
+                    - condition: state
+                      entity_id: input_boolean.master_bedroom_fan_en
+                      state: 'on'
+                    - condition: state
+                      entity_id: fan.master_bedroom
+                      state: 'off'
+                  sequence:
+                    - service: fan.set_percentage
+                      entity_id: fan.master_bedroom
+                      data:
+                        percentage: "{{ states('sensor.template_master_bedroom_fan_setting') }}"
