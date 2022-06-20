@@ -8,14 +8,21 @@
     - unique_id: weather_low_temp
       state: "{{ state_attr('weather.homedev', 'forecast')[0]['templow'] }}"
 
-    - unique_id: equipment_resume
+    - unique_id: master_bedroom_fan_setting
       state: >
-        {% set new_temp = states('sensor.openweathermap_forecast_temperature_low') | float(default=0.0) %}
-        {% if new_temp < 50 -%}
-          heat
-        {%- else -%}
-          cool
-        {%- endif %}
+        {% set master_bedroom_temp = states("sensor.master_bedroom_temperature") | float(default=0.0) %}
+
+        {% if master_bedroom_temp >= 77 %}
+          {{ 100 }}
+        {% elif master_bedroom_temp >= 76 %}
+          {{ 75 }}
+        {% elif master_bedroom_temp >= 74 %}
+          {{ 50 }}
+        {% elif master_bedroom_temp >= 71 %}
+          {{ 25 }}
+        {% else %}
+          {{ 0 }}
+        {% endif %}
 
 #-------------------------------------------
 #  Template for Sun

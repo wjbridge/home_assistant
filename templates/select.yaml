@@ -1,5 +1,5 @@
 #-------------------------------------------
-# Template for Pretty Date
+# Template for Select
 #-------------------------------------------
 - select:
     - name: conditional_media

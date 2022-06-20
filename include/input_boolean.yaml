@@ -22,11 +22,6 @@ input_boolean:
   oli_bedroom_fan_en:
 
   #-------------------------------------------
-  # Fresh Air Mode
-  #-------------------------------------------
-  fresh_air_mode_en:
-
-  #-------------------------------------------
   # Enables / Disables Master Bedroom Fan
   #-------------------------------------------
   master_bedroom_fan_en:

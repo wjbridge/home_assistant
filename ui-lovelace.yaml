@@ -422,7 +422,7 @@ views:
                 ]]]
 
           - type: custom:button-card
-            entity: input_boolean.fresh_air_mode_en
+            entity: input_select.master_bedroom_fan_mode
             name: Air Mode
             template:
               - base

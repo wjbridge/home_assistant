@@ -1,0 +1,11 @@
+#-------------------------------------------
+#  Input Select
+#  https://www.home-assistant.io/integrations/input_select/
+#-------------------------------------------
+input_select:
+  master_bedroom_fan_mode:
+    options:
+      - inactive
+      - cool
+      - heat
+      - 'off'
