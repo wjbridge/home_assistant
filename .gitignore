@@ -4,7 +4,7 @@
 blueprints
 tts
 __pycache__
-www/Plex_Recently_Added/*
+www/plex_recently_added_show/*
 www/fonts
 scripts/*
 www/weather-icons/*

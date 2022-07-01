@@ -110,7 +110,7 @@ views:
                     state_not: Living Room Shield
                 card:
                   type: custom:button-card
-                  entity: sensor.plex_recently_added
+                  entity: sensor.plex_recently_added_show
                   name: Last Downloaded
                   tap_action:
                     action: none

@@ -15,10 +15,11 @@ sensor:
 
   #---------------------------------------------------------------------------------------
   # Plex Recently Added
-  # https://github.com/custom-components/sensor.plex_recently_added
+  # https://github.com/NemesisRE/sensor.plex_recently_added
   # https://support.plex.tv/articles/204059436-finding-an-authentication-token-x-plex-token/
   #---------------------------------------------------------------------------------------
   - platform: plex_recently_added
+    name: plex_recently_added_show
     token: !secret plex_token
     host: !secret plex_host
     port: !secret plex_port
@@ -26,7 +27,6 @@ sensor:
     img_dir: /
     image_resolution: 900
     exclude_keywords:
-      - Linus
       - RenoVision
       - Meld
       - Lawrence
@@ -38,7 +38,6 @@ sensor:
       - Chris
     section_types:
       - show
-      - movie
 
   #---------------------------------------------------------------------------------------
   #  Weather Alerts

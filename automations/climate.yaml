@@ -41,6 +41,9 @@
           - conditions:
               - condition: trigger
                 id: 'close_to_open'
+              - condition: state
+                entity_id: input_select.master_bedroom_fan_mode
+                state: "inactive"
             sequence:
               - service: notify.groot_automation
                 data:
@@ -64,8 +67,13 @@
 
           # ELIF all windows & doors closed
           - conditions:
-              - condition: trigger
-                id: 'open_to_close'
+              and:
+                - condition: trigger
+                  id: 'open_to_close'
+                - not:
+                    - condition: state
+                      entity_id: input_select.master_bedroom_fan_mode
+                      state: "inactive"
             sequence:
               - service: notify.groot_automation
                 data:
