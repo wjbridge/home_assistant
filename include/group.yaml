@@ -55,6 +55,8 @@ group:
       - sensor.openweathermap_dew_point
       - sensor.openweathermap_forecast_temperature_low
       - sensor.openweathermap_uv_index
+      - sensor.nest_protect_entryway_battery_level
+      - sensor.nest_protect_hallway_battery_level
 
       ##############################
       # Switches
