@@ -14,7 +14,7 @@
     - platform: time
       id: sam_bedroom_evening
       at:
-        - "19:30:00"
+        - "20:30:00"
 
   action:
     #-------------------------------------------

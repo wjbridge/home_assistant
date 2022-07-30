@@ -14,7 +14,7 @@
     - platform: time
       id: oli_bedroom_evening
       at:
-        - "20:30:00"
+        - "21:00:00"
 
   action:
     #-------------------------------------------
