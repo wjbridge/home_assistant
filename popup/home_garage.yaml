@@ -42,8 +42,7 @@ browser_mod:
           - entity: sensor.garage_temp_humidity
             name: Humidity
 
-      - type: 'custom:webrtc-camera'
-        entity: camera.garage
-        poster: /local/stream_loading.gif
-        muted: true
-        background: true
+      - type: picture-glance
+        camera_image: camera.garage
+        camera_view: live
+        entities: []

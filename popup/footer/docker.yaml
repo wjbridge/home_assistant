@@ -196,17 +196,17 @@ browser_mod:
                 template: icon_name
 
               - type: custom:button-card
-                name: Restart Plex
+                name: Restart Jellyfin
                 icon: mdi:reload
                 tap_action:
                   services: |
                     [[[
                       return `[[[
                         hass.callService('browser_mod', 'toast', {
-                          message: 'Restart Plex Container...'
+                          message: 'Restart Jellyfin Container...'
                         });
                         hass.callService('monitor_docker', 'restart', {
-                          name: 'plex'
+                          name: 'jellyfin'
                         });
                       ]]]`
                     ]]]

@@ -5,15 +5,14 @@
     - unique_id: updates
       state: template
       attributes:
-        plex: >
-          {% set installed = states('sensor.plex_version_installed') %}
-          {% set latest = states('sensor.plex_server_release_notes') %}
-          {% set update_available = state_attr('sensor.plex_server_release_notes', 'update_available') %}
-          {% set url = 'https://forums.plex.tv/t/plex-media-server/30447' %}
+        jellyfin: >
+          {% set installed = state_attr('sensor.jellyfin_bridgehacker', 'version') %}
+          {% set latest = states('sensor.jellyfin_release_notes') %}
+          {% set url = 'https://github.com/jellyfin/jellyfin/releases' %}
 
-          {% if update_available and installed != 'unavailable' and latest != 'unavailable' %}
-            {% if installed != latest and update_available %}
-              <b><a href="#" onclick="window.open('{{ url }}');">plex</a></b> {{ installed + ' <b>&rarr;</b> ' + latest }}
+          {% if installed != latest and installed != 'unavailable' and latest != 'unavailable' %}
+            {% if installed != latest and installed != latest %}
+              <b><a href="#" onclick="window.open('{{ url }}');">jellyfin</a></b> {{ installed + ' <b>&rarr;</b> ' + latest }}
             {% endif %}
           {% endif %}
 

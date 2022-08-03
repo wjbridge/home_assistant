@@ -110,13 +110,13 @@ views:
                     state_not: Living Room Shield
                 card:
                   type: custom:button-card
-                  entity: sensor.plex_recently_added_show
+                  entity: sensor.jellyfin_bridgehacker
                   name: Last Downloaded
                   tap_action:
                     action: none
                   template:
                     - conditional_media
-                    - icon_plex
+                    - icon_jellyfin
 
               - type: conditional
                 conditions:
@@ -129,7 +129,7 @@ views:
                       entity: media_player.living_room_shield
                       template:
                         - conditional_media
-                        - icon_nvidia
+                        - conditional_icons
 
               - type: conditional
                 conditions:
@@ -142,7 +142,7 @@ views:
                       entity: media_player.master_bedroom_shield
                       template:
                         - conditional_media
-                        - icon_nvidia
+                        - conditional_icons
 
               - type: grid
                 columns: 2
@@ -253,7 +253,7 @@ views:
             name: Oli Night
             template:
               - light
-              - icon_shade
+              - icon_ledstripe
 
           - type: custom:button-card
             entity: light.ana_desk_light
@@ -299,38 +299,40 @@ views:
               - type: grid
                 columns: 1
                 cards:
-                  - type: 'custom:webrtc-camera'
-                    entity: camera.sambedroom
-                    poster: /local/stream_loading.gif
-                    muted: true
-                    background: true
+                  - type: picture-glance
+                    camera_image: camera.oli_bedroom
+                    camera_view: live
+                    entities:
+                      - light.oli_night_light
+                      - binary_sensor.olivia_room
+                    aspect_ratio: 16:9
+                    state_filter:
+                      "on": brightness(110%) saturate(1.2)
+                      "off": brightness(50%) hue-rotate(45deg)
 
               - type: grid
                 columns: 1
                 cards:
-                  - type: 'custom:webrtc-camera'
-                    entity: camera.olibedroom
-                    poster: /local/stream_loading.gif
-                    muted: true
-                    background: true
+                  - type: picture-glance
+                    camera_image: camera.sam_bedroom
+                    camera_view: live
+                    entities: []
 
               - type: grid
                 columns: 1
                 cards:
-                  - type: 'custom:webrtc-camera'
-                    entity: camera.garage
-                    poster: /local/stream_loading.gif
-                    muted: true
-                    background: true
+                  - type: picture-glance
+                    camera_image: camera.garage
+                    camera_view: live
+                    entities: []
 
               - type: grid
                 columns: 1
                 cards:
-                  - type: 'custom:webrtc-camera'
-                    entity: camera.basement
-                    poster: /local/stream_loading.gif
-                    muted: true
-                    background: true
+                  - type: picture-glance
+                    camera_image: camera.basement
+                    camera_view: live
+                    entities: []
 
       #################################################
       #                                               #

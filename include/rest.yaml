@@ -100,36 +100,16 @@ rest:
     scan_interval: 21600
     headers: *rest_header
 
-  #-------------------------------------------
-  #  Plex Server
-  #-------------------------------------------
-
-  - resource: !secret tautulli_api_get_pms_update
+  - resource: https://api.github.com/repos/jellyfin/jellyfin/releases/latest
+    authentication: basic
+    username: !secret github_username
+    password: !secret github_token
     sensor:
-      - name: plex_server_release_notes
-        value_template: "{{ value_json.response.data.version }}"
-        json_attributes_path: "$.response.data"
-        json_attributes:
-          - update_available
-          - platform
-          - release_date
-          - requirements
-          - extra_info
-          - changelog_added
-          - changelog_fixed
-          - label
-          - distro
-          - distro_build
-    scan_interval: 21600
-
-  - resource: !secret tautulli_api_get_server_info
-    sensor:
-      - name: plex_version_installed
+      - name: jellyfin_release_notes
         value_template: >
-          {{ value_json.response.data.pms_version }}
-        json_attributes_path: "$.response.data"
+          {{ value_json.tag_name }}
         json_attributes:
-          - pms_name
-          - pms_platform
-          - pms_plexpass
+          - body
+          - html_url
     scan_interval: 21600
+    headers: *rest_header

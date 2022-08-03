@@ -162,26 +162,3 @@
                     {% else %}
                       The {{ open_windows[:-1] | join(' door, ') }}{{' door,' if open_windows | length > 2 else ' door'}} and {{ open_windows[-1]}} are open at night.
                     {% endif %}
-
-###############################################################################
-# New Plex Version
-# https://codebeautify.org/python-formatter-beautifier
-###############################################################################
-- id: plex_version
-  alias: 'Plex Version'
-  trigger:
-    platform: event
-    event_type: feedreader
-
-  action:
-    - service: notify.groot_automation
-      data:
-        title: ""
-        message: "{{
-                    trigger.event.data.summary_detail.value
-                      | regex_replace('(<p>)|</p>|<ul>|</ul>', '')
-                      | replace('<li>', '<code>')
-                      | replace('</li>', '</code>')
-                  }}"
-        data:
-          parse_mode: 'html'

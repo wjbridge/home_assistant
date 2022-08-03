@@ -49,7 +49,7 @@ lovelace:
       { url: /hacsfiles/light-entity-card/light-entity-card.js,                     type: module },
 
       # https://community.home-assistant.io/t/realtime-camera-streaming-without-any-delay-webrtc/258216/384
-      { url: '/webrtc/webrtc-camera.js?v2.3.0',                                     type: module },
+      # { url: '/webrtc/webrtc-camera.js?v2.3.0',                                     type: module },
 
       { url: '/local/custom_icons.js?v=28082021',                                   type: module },
       { url: '/local/marked.min.js?v=4.0.12',                                       type: module },
@@ -108,7 +108,7 @@ ffmpeg:
 # Stream
 # https://www.home-assistant.io/integrations/stream/
 #-------------------------------------------
-# stream:
+stream:
 
 #-------------------------------------------
 # Homekit Controller
@@ -177,7 +177,7 @@ monitor_docker:
       - nzbget
       - youtubedl
       - nzbhydra
-      - plex
+      - jellyfin
       - speedtest_vpn
     rename:
       homeassistant: HomeAssistant
@@ -185,7 +185,7 @@ monitor_docker:
       youtubedl: YoutubeDL
       nzbhydra: Nzbhydra
       speedtest_vpn: Speedtest VPN
-      plex: Plex
+      jellyfin: Jellyfin
     monitored_conditions: [allinone]
 
 #-------------------------------------------

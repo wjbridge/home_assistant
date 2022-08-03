@@ -18,6 +18,7 @@ logger:
     pynetgear: warn
 
     custom_components.alexa_media: info
+    custom_components.webrtc: info
     alexapy.alexaapi: info
 
     homeassistant.components.samsungtv: info

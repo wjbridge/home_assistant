@@ -32,6 +32,9 @@ group:
       - sensor.ecobee_next_alarm
       - sensor.ecobee_next_reminder
       - sensor.ecobee_next_timer
+      - sensor.this_device_next_alarm
+      - sensor.this_device_next_reminder
+      - sensor.this_device_next_timer
       - sensor.oli_echo_next_reminder
       - sensor.oli_echo_next_timer
       - sensor.spot_next_alarm
