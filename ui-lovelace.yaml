@@ -322,6 +322,14 @@ views:
                 columns: 1
                 cards:
                   - type: picture-glance
+                    camera_image: camera.basement_cat
+                    camera_view: live
+                    entities: []
+
+              - type: grid
+                columns: 1
+                cards:
+                  - type: picture-glance
                     camera_image: camera.garage
                     camera_view: live
                     entities: []
